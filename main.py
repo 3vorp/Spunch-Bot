@@ -1,10 +1,14 @@
 import discord, os, wikipedia, random
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
+load_dotenv()
 
 ### GENERAL
 PREFIX = '~' # change this to change prefix
-BOT_ID = '1034301829179248640' # if you want to rebrand the bot put the bot id here so it doesn't create infinite loops and stuff
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
+
+### BOT SPECIFIC/PRIVATE
+BOT_ID = os.getenv("BOT_ID")
+TOKEN = os.getenv("TOKEN")
 
 class main(discord.Client):
     async def on_ready(self): # starts the bot
@@ -32,7 +36,7 @@ class main(discord.Client):
                 await message.channel.send('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif')
             
             #LOGGER
-            await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at <t:{message.created_at}> in {message.channel.mention} in *"{message.guild.name}"*.')  # praise f strings
+            await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
@@ -100,4 +104,4 @@ intents.message_content = True
 client = main(intents=intents)
 
 load_dotenv() # uses token from that .env file thingy to actually run the program
-client.run(os.getenv("TOKEN")) 
+client.run(TOKEN) 
