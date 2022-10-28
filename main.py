@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random, datetime,time
+import discord, os, wikipedia, random
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 
 ### GENERAL
@@ -15,7 +15,8 @@ class main(discord.Client):
     async def on_message(self, message):
         LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
-        if str(message.author.id) == BOT_ID:
+
+        if str(message.author.id) == BOT_ID: # makes sure the bot can't reply to itself and cause an infinite loop
             return
         elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
