@@ -36,14 +36,14 @@ class main(discord.Client):
 
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
-            CMD=WORD_LIST[0] # gets the command portion
+            COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use CMD for command
+            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use COMMAND for command
 
             # everything that needs prefix
-            if CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
+            if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
-                    SENTENCE=random.choice(['rock','paper','scissors']) # if user provides no arguments it just randomly chooses for them
+                    WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
 
                 bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
@@ -59,25 +59,25 @@ class main(discord.Client):
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
             elif len(WORD_LIST) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
-                if CMD == 'say':
+                if COMMAND == 'say':
                     await message.delete()
                     await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
                 
-                elif CMD == 'wikipedia':
+                elif COMMAND == 'wikipedia':
                     try:
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
                         await message.reply('multiple/no wikipedia article found with that name', mention_author=False)
 
-                elif CMD == '8ball' or CMD == 'ball':
+                elif COMMAND == '8ball' or COMMAND == 'ball':
                     await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
 
-                elif CMD == 'suggest' or CMD == 'feedback':
+                elif COMMAND == 'suggest' or COMMAND == 'feedback':
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
                     await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                     
-            elif CMD == 'help' or CMD == 'info':
+            elif COMMAND == 'help' or COMMAND == 'info':
                 await message.reply (
 f'''**spunch bot** 
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
