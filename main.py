@@ -17,7 +17,9 @@ class main(discord.Client):
     async def on_message(self, message):
         LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
-        if str(message.author.id) != BOT_ID and message.content[0] != PREFIX:
+        if str(message.author.id) == BOT_ID:
+            return
+        elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
 
             if 'baller' == str(message.content).lower():
@@ -34,70 +36,47 @@ class main(discord.Client):
             await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in {message.channel.mention}.')  # praise f strings
 
 
-        if str(message.author.id) != BOT_ID and message.content[0] == PREFIX:
-            CMD=message.content[1:] # removes the ~ part so I can change the prefix and it still works
-            CMD=CMD.lower() # removes case sensitivity because mobile bad
-            CMD=CMD.split( ) # splits message into each argument as a list, can be reused for all commands
+        elif message.content[0] == PREFIX:
+            CONTENTS=message.content[1:] # removes the ~ part so I can change the prefix and it still works
+            CONTENTS=CONTENTS.lower().split( ) # removes case sensitivity because mobile bad, splits contents into list
+            CMD=CONTENTS[0] # gets the command portion
+            CONTENTS.pop(0) # removes command from the actual contents
+            SENTENCE=' '.join(CONTENTS) # use CONTENTS for list, use SENTENCE for string
 
             # everything that needs prefix
 
-            if CMD[0] == 'say':
-                if len(CMD) >= 2: # this has to be in every command separately or it will remove the actual command before it gets into the condition
-                    CMD.pop(0)
-                    sentence=' '.join(CMD)
+            if len(CONTENTS) >= 1:
+                if CMD == 'say':
                     await message.delete()
-                    await message.channel.send(sentence)
-                else:
-                    await message.reply('you absolute clampongus you need to actually say something', mention_author=False) # error handling if you don't actually pass any arguments
-            
-            elif CMD[0] == 'wikipedia':
-                if len(CMD) >= 2:
-                    CMD.pop(0)
-                    sentence=' '.join(CMD)
-                    await message.reply(f'```{wikipedia.page(sentence).content[0:1900]}```', mention_author=False)
-                else:
-                    await message.reply('you absolute clampongus you need to actually give the article')
-            
-            elif CMD[0] == '8ball':
-                if len(CMD) >= 2:
-                    CMD.pop(0)
-                    sentence=' '.join(CMD)
-                    await message.reply(f'**{sentence}**\n{random.choice(BALL_CHOICES)}') # picks random selection from BALL_CHOICES variable
-                else:
-                    await message.reply('you absolute clampongus you need to actually say something for me to respond to', mention_author=False)
+                    await message.channel.send(SENTENCE)
+                
+                elif CMD == 'wikipedia':
+                    await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False)
+                
+                elif CMD == '8ball':
+                    await message.reply(f'**{SENTENCE}**\n{random.choice(BALL_CHOICES)}', mention_author=False) # picks random selection from BALL_CHOICES variable
 
-            elif CMD[0] == 'suggest' or CMD[0] == 'feedback':
-                if len(CMD) >= 2:
-                    CMD.pop(0)
-                    sentence=' '.join(CMD)
-                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{sentence}`') # formats and sends to specific channel
+                elif CMD == 'suggest' or CMD == 'feedback':
+                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`') # formats and sends to specific channel
                     await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False)
+                
+            elif CMD == 'rps':
+                if SENTENCE == '':
+                    SENTENCE=random.choice(['rock','paper','scissors'])
+                bot_answer=random.choice(['rock','paper','scissors']) # same concept as 8ball
+                await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}', mention_author=False)
+                if bot_answer == SENTENCE:
+                    await message.channel.send("it's a tie")
+
+                elif (SENTENCE == 'scissors' and bot_answer == 'paper') or (SENTENCE == 'paper' and bot_answer == 'rock') or (SENTENCE == 'rock' and bot_answer == 'scissors'):
+                    await message.channel.send('you win')
+
+                elif (SENTENCE == 'paper' and bot_answer == 'scissors') or (SENTENCE == 'rock' and bot_answer == 'paper') or (SENTENCE == 'scissors' and bot_answer == 'rock'):
+                    await message.channel.send('i win')
                 else:
-                    await message.reply('you absolute clampongus you need to actually say something', mention_author=False)
-            
-            elif CMD[0] == 'rps':
-                if len(CMD) == 2 or len(CMD) == 1:
-                    CMD.pop(0)
-                    sentence=''.join(CMD)
-                    user_answer = sentence.lower() # formats arguments into one string
-                    if user_answer == '':
-                        user_answer=random.choice(['rock','paper','scissors'])
-                    bot_answer=random.choice(['rock','paper','scissors']) # same concept as 8ball
-                    await message.reply(f'you sent {user_answer}, i sent {bot_answer}', mention_author=False)
-                    if bot_answer == user_answer:
-                        await message.channel.send("it's a tie")
-
-                    elif (user_answer == 'scissors' and bot_answer == 'paper') or (user_answer == 'paper' and bot_answer == 'rock') or (user_answer == 'rock' and bot_answer == 'scissors'):
-                        await message.channel.send('you win')
-
-                    elif (user_answer == 'paper' and bot_answer == 'scissors') or (user_answer == 'rock' and bot_answer == 'paper') or (user_answer == 'scissors' and bot_answer == 'rock'):
-                        await message.channel.send('i win')
-                    else:
-                        await message.channel.send("that wasn't an option so I automatically win :sunglasses:")
-                else:
-                    await message.reply('you sent too much stuff', mention_author=False)
-
-            elif CMD[0] == 'help' or CMD[0] == 'info':
+                    await message.channel.send("that wasn't an option so I automatically win :sunglasses:")
+                    
+            elif CMD == 'help' or CMD == 'info':
                 await message.reply (
 f'''**funny spunch bop bot** 
 made by `{DEVELOPER}` because I was bored idk
@@ -112,6 +91,8 @@ made by `{DEVELOPER}` because I was bored idk
 
 *that's all for now more coming soon ig go suggest stuff to me using `{PREFIX}feedback` if you want*
 ''', mention_author=False) # praise f strings 2: electric boogaloo
+            else:
+                await message.channel.send('you probably provided too many or too few arguments idk too lazy to implement proper error handling')
 
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
