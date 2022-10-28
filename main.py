@@ -77,8 +77,8 @@ class main(discord.Client):
                     
             elif CMD == 'help' or CMD == 'info':
                 await message.reply (
-f'''**funny spunch bop bot** 
-made by `{DEVELOPER}` because I was bored idk
+f'''**spunch bot** 
+an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
 *commands (more to be added soon™):*
 > `{PREFIX}say`: say stuff with bot
