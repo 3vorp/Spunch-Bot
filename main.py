@@ -50,8 +50,9 @@ class main(discord.Client):
                 elif CMD == 'wikipedia':
                     try:
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
-                    except (wikipedia.exceptions.PageError): # if there's no article with that name catches error and gives info
-                        await message.reply('no wikipedia article found with that name', mention_author=False)
+
+                    except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
+                        await message.reply('multiple/no wikipedia article found with that name', mention_author=False)
 
                 elif CMD == '8ball' or CMD == 'ball':
                     await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
@@ -95,6 +96,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 ''', mention_author=False) # praise f strings 2: electric boogaloo
             else:
                 await message.reply('something went wrong (you probably sent too much stuff or not enough stuff), too lazy to implement proper errors', mention_author=False)
+    
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
 client = main(intents=intents)
