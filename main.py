@@ -37,8 +37,7 @@ class main(discord.Client):
 
 
         elif message.content[0] == PREFIX:
-            CONTENTS=message.content[1:] # removes the ~ part so I can change the prefix and it still works
-            CONTENTS=CONTENTS.lower().split( ) # removes case sensitivity because mobile bad, splits contents into list
+            CONTENTS=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             CMD=CONTENTS[0] # gets the command portion
             CONTENTS.pop(0) # removes command from the actual contents
             SENTENCE=' '.join(CONTENTS) # use CONTENTS for list, use SENTENCE for string
