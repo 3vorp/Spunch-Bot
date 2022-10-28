@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random
+import discord, os, wikipedia, random, datetime,time
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 
 ### GENERAL
@@ -31,8 +31,7 @@ class main(discord.Client):
                 await message.channel.send('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif')
             
             #LOGGER
-            await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in {message.channel.mention}.')  # praise f strings
-
+            await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at <t:{message.created_at}> in {message.channel.mention} in *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
             CONTENTS=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
@@ -48,8 +47,11 @@ class main(discord.Client):
                     await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
                 
                 elif CMD == 'wikipedia':
-                    await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
-                
+                    try:
+                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
+                    except (wikipedia.exceptions.PageError): # if there's no article with that name catches error and gives info
+                        await message.reply('no wikipedia article found with that name', mention_author=False)
+
                 elif CMD == '8ball' or CMD == 'ball':
                     await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
 
@@ -57,7 +59,7 @@ class main(discord.Client):
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
                     await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                 
-            if CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
+            elif CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
                     SENTENCE=random.choice(['rock','paper','scissors']) # if user provides no arguments it just randomly chooses for them
 
@@ -91,8 +93,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 *that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig*
 ''', mention_author=False) # praise f strings 2: electric boogaloo
             else:
-                await message.channel.send('you probably provided too many or too few arguments idk too lazy to implement proper error handling')
-
+                await message.reply('something went wrong (you probably sent too much stuff or not enough stuff), too lazy to implement proper errors', mention_author=False)
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
 client = main(intents=intents)
