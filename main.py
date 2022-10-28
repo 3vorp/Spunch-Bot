@@ -6,9 +6,6 @@ PREFIX = '~' # change this to change prefix
 BOT_ID = '1034301829179248640' # if you want to rebrand the bot put the bot id here so it doesn't create infinite loops and stuff
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 
-### FOR COMMANDS
-BALL_CHOICES = ['yes','no','maybe','idk','ask later','definitely','never','never ask me that again'] # for 8ball command so it's easier to edit later
-
 class main(discord.Client):
     async def on_ready(self): # starts the bot
         STARTUP_CHANNEL = client.get_channel(1034609478005436436)
@@ -54,7 +51,7 @@ class main(discord.Client):
                     await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False)
                 
                 elif CMD == '8ball' or CMD == 'ball':
-                    await message.reply(random.choice(BALL_CHOICES), mention_author=False) # picks random selection from BALL_CHOICES variable
+                    await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
 
                 elif CMD == 'suggest' or CMD == 'feedback':
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`') # formats and sends to specific channel
