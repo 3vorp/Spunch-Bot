@@ -41,26 +41,6 @@ class main(discord.Client):
             SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use CMD for command
 
             # everything that needs prefix
-
-            if len(WORD_LIST) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
-                if CMD == 'say':
-                    await message.delete()
-                    await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
-                
-                elif CMD == 'wikipedia':
-                    try:
-                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
-
-                    except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply('multiple/no wikipedia article found with that name', mention_author=False)
-
-                elif CMD == '8ball' or CMD == 'ball':
-                    await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
-
-                elif CMD == 'suggest' or CMD == 'feedback':
-                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
-                    await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
-                
             if CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
                     SENTENCE=random.choice(['rock','paper','scissors']) # if user provides no arguments it just randomly chooses for them
@@ -78,6 +58,24 @@ class main(discord.Client):
 
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
+            elif len(WORD_LIST) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
+                if CMD == 'say':
+                    await message.delete()
+                    await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
+                
+                elif CMD == 'wikipedia':
+                    try:
+                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
+
+                    except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
+                        await message.reply('multiple/no wikipedia article found with that name', mention_author=False)
+
+                elif CMD == '8ball' or CMD == 'ball':
+                    await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
+
+                elif CMD == 'suggest' or CMD == 'feedback':
+                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
+                    await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                     
             elif CMD == 'help' or CMD == 'info':
                 await message.reply (
