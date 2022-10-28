@@ -1,4 +1,5 @@
 import discord, os, wikipedia, random
+from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 
 ### GENERAL
 PREFIX = '~' # change this to change prefix
@@ -97,6 +98,5 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = main(intents=intents)
 
-from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
-load_dotenv() # literally googled this entire process don't ask me how it works
-client.run(os.getenv("TOKEN")) # uses token from that .env file thingy to actually run the program
+load_dotenv() # uses token from that .env file thingy to actually run the program
+client.run(os.getenv("TOKEN")) 
