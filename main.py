@@ -38,7 +38,7 @@ class main(discord.Client):
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             CMD=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string
+            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use CMD for command
 
             # everything that needs prefix
 
