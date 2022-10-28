@@ -24,6 +24,7 @@ TOKEN="your_bot_token_here"
 this just makes the connection between the app and this repo
 
 > **Warning**
+> 
 > also go to `main.py` and change the `BOT_ID` to your bot's id otherwise it will start getting into infinite loops and crash/break
 > make sure to change the hardcoded channel IDs (`SUGGEST_CHANNEL`, `LOGGING_CHANNEL`, `STARTUP_CHANNEL`, etc) to your desired ones
 
