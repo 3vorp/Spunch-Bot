@@ -6,8 +6,10 @@ use at your own risk lol
 
 ## installation and forking and all that stuff
 
-- have python installed
-- check the first line of the `main.py` file for specific libraries and modules
+requirements
+
+- have python installed (who would have guessed)
+- check the first line of the `main.py` file for specific libraries and modules to install via pip
 
 go make a discord app at https://discord.com/developers
 
