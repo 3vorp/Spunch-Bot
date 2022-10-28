@@ -42,36 +42,38 @@ class main(discord.Client):
 
             # everything that needs prefix
 
-            if len(CONTENTS) >= 1:
+            if len(CONTENTS) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
                 if CMD == 'say':
                     await message.delete()
-                    await message.channel.send(SENTENCE)
+                    await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
                 
                 elif CMD == 'wikipedia':
-                    await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False)
+                    await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
                 
                 elif CMD == '8ball' or CMD == 'ball':
                     await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
 
                 elif CMD == 'suggest' or CMD == 'feedback':
-                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`') # formats and sends to specific channel
-                    await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False)
+                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
+                    await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                 
-            elif CMD == 'rps':
+            if CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
-                    SENTENCE=random.choice(['rock','paper','scissors'])
-                bot_answer=random.choice(['rock','paper','scissors']) # same concept as 8ball
-                await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}', mention_author=False)
+                    SENTENCE=random.choice(['rock','paper','scissors']) # if user provides no arguments it just randomly chooses for them
+
+                bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
+
                 if bot_answer == SENTENCE:
-                    await message.channel.send("it's a tie")
+                    await message.reply(f"you sent {SENTENCE}, i sent {bot_answer}:\n**it's a tie**", mention_author=False)
 
-                elif (SENTENCE == 'scissors' and bot_answer == 'paper') or (SENTENCE == 'paper' and bot_answer == 'rock') or (SENTENCE == 'rock' and bot_answer == 'scissors'):
-                    await message.channel.send('you win')
+                elif (SENTENCE == 'scissors' and bot_answer == 'paper') or (SENTENCE == 'paper' and bot_answer == 'rock') or (SENTENCE == 'rock' and bot_answer == 'scissors'): # pain
+                    await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}:\n**you win**', mention_author=False)
 
-                elif (SENTENCE == 'paper' and bot_answer == 'scissors') or (SENTENCE == 'rock' and bot_answer == 'paper') or (SENTENCE == 'scissors' and bot_answer == 'rock'):
-                    await message.channel.send('i win')
+                elif (SENTENCE == 'paper' and bot_answer == 'scissors') or (SENTENCE == 'rock' and bot_answer == 'paper') or (SENTENCE == 'scissors' and bot_answer == 'rock'): # pain II
+                    await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}:\n**i win**', mention_author=False)
+
                 else:
-                    await message.channel.send("that wasn't an option so I automatically win :sunglasses:")
+                    await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
                     
             elif CMD == 'help' or CMD == 'info':
                 await message.reply (
@@ -86,7 +88,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 > `{PREFIX}rps`: rock paper scissors against spunch bot
 > `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
 
-*that's all for now more coming soon ig go suggest stuff to me using `{PREFIX}feedback` if you want*
+*that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig*
 ''', mention_author=False) # praise f strings 2: electric boogaloo
             else:
                 await message.channel.send('you probably provided too many or too few arguments idk too lazy to implement proper error handling')
