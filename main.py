@@ -34,7 +34,7 @@ class main(discord.Client):
             await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at <t:{message.created_at}> in {message.channel.mention} in *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
-            WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits WORD_LIST into list
+            WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             CMD=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
             SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string
