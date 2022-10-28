@@ -61,20 +61,20 @@ class main(discord.Client):
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
                     await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                 
-            elif CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
+            if CMD == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
                     SENTENCE=random.choice(['rock','paper','scissors']) # if user provides no arguments it just randomly chooses for them
 
                 bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
-                if bot_answer == SENTENCE:
-                    await message.reply(f"you sent {SENTENCE}, i sent {bot_answer}:\n**it's a tie**", mention_author=False)
+                if bot_answer == WORD_LIST[0]:
+                    await message.reply(f"you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**it's a tie**", mention_author=False)
 
-                elif (SENTENCE == 'scissors' and bot_answer == 'paper') or (SENTENCE == 'paper' and bot_answer == 'rock') or (SENTENCE == 'rock' and bot_answer == 'scissors'): # pain
-                    await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}:\n**you win**', mention_author=False)
+                elif (WORD_LIST[0] == 'scissors' and bot_answer == 'paper') or (WORD_LIST[0] == 'paper' and bot_answer == 'rock') or (WORD_LIST[0] == 'rock' and bot_answer == 'scissors'): # pain
+                    await message.reply(f'you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**you win**', mention_author=False)
 
-                elif (SENTENCE == 'paper' and bot_answer == 'scissors') or (SENTENCE == 'rock' and bot_answer == 'paper') or (SENTENCE == 'scissors' and bot_answer == 'rock'): # pain II
-                    await message.reply(f'you sent {SENTENCE}, i sent {bot_answer}:\n**i win**', mention_author=False)
+                elif (WORD_LIST[0] == 'paper' and bot_answer == 'scissors') or (WORD_LIST[0] == 'rock' and bot_answer == 'paper') or (WORD_LIST[0] == 'scissors' and bot_answer == 'rock'): # pain II
+                    await message.reply(f'you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**i win**', mention_author=False)
 
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
