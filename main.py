@@ -2,7 +2,7 @@ import discord, os, wikipedia, random
 
 ### GENERAL
 PREFIX = '~' # change this to change prefix
-BOT_ID = '1034301829179248640' # putting this in the .env file felt pointless so here it goes
+BOT_ID = '1034301829179248640' # if you want to rebrand the bot put the bot id here so it doesn't create infinite loops and stuff
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 
 ### FOR COMMANDS
@@ -36,8 +36,8 @@ class main(discord.Client):
 
         if str(message.author.id) != BOT_ID and message.content[0] == PREFIX:
             CMD=message.content[1:] # removes the ~ part so I can change the prefix and it still works
+            CMD=CMD.lower() # removes case sensitivity because mobile bad
             CMD=CMD.split( ) # splits message into each argument as a list, can be reused for all commands
-            CMD[0] = CMD[0].lower() # removes case sensitivity because mobile bad
 
             # everything that needs prefix
 
@@ -76,11 +76,12 @@ class main(discord.Client):
                     await message.reply('you absolute clampongus you need to actually say something', mention_author=False)
             
             elif CMD[0] == 'rps':
-                if len(CMD) == 2:
+                if len(CMD) == 2 or len(CMD) == 1:
                     CMD.pop(0)
                     sentence=''.join(CMD)
                     user_answer = sentence.lower() # formats arguments into one string
-
+                    if user_answer == '':
+                        user_answer=random.choice(['rock','paper','scissors'])
                     bot_answer=random.choice(['rock','paper','scissors']) # same concept as 8ball
                     await message.reply(f'you sent {user_answer}, i sent {bot_answer}', mention_author=False)
                     if bot_answer == user_answer:
@@ -94,7 +95,7 @@ class main(discord.Client):
                     else:
                         await message.channel.send("that wasn't an option so I automatically win :sunglasses:")
                 else:
-                    await message.reply('you either sent too much stuff or too little stuff idk too lazy to implement this message properly', mention_author=False)
+                    await message.reply('you sent too much stuff', mention_author=False)
 
             elif CMD[0] == 'help' or CMD[0] == 'info':
                 await message.reply (
