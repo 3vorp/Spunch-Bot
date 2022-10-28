@@ -34,14 +34,14 @@ class main(discord.Client):
             await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at <t:{message.created_at}> in {message.channel.mention} in *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
-            CONTENTS=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
-            CMD=CONTENTS[0] # gets the command portion
-            CONTENTS.pop(0) # removes command from the actual contents
-            SENTENCE=' '.join(CONTENTS) # use CONTENTS for list, use SENTENCE for string
+            WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits WORD_LIST into list
+            CMD=WORD_LIST[0] # gets the command portion
+            WORD_LIST.pop(0) # removes command from the actual WORD_LIST
+            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string
 
             # everything that needs prefix
 
-            if len(CONTENTS) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
+            if len(WORD_LIST) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
                 if CMD == 'say':
                     await message.delete()
                     await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
