@@ -53,8 +53,8 @@ class main(discord.Client):
                 elif CMD == 'wikipedia':
                     await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False)
                 
-                elif CMD == '8ball':
-                    await message.reply(f'**{SENTENCE}**\n{random.choice(BALL_CHOICES)}', mention_author=False) # picks random selection from BALL_CHOICES variable
+                elif CMD == '8ball' or CMD == 'ball':
+                    await message.reply(random.choice(BALL_CHOICES), mention_author=False) # picks random selection from BALL_CHOICES variable
 
                 elif CMD == 'suggest' or CMD == 'feedback':
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`') # formats and sends to specific channel
@@ -84,9 +84,9 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 *commands (more to be added soon™):*
 > `{PREFIX}say`: say stuff with bot
 > `{PREFIX}wikipedia`: returns wikipedia article
-> `{PREFIX}8ball`: random answers for random questions
+> `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 > `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
-> `{PREFIX}rps`: rock paper scissors against me
+> `{PREFIX}rps`: rock paper scissors against spunch bot
 > `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
 
 *that's all for now more coming soon ig go suggest stuff to me using `{PREFIX}feedback` if you want*
