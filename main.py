@@ -35,7 +35,7 @@ class main(discord.Client):
             if 'spongeboy' == str(message.content).lower(): 
                 await message.channel.send('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif')
             
-            #LOGGER
+            # LOGGER
             await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
@@ -44,7 +44,8 @@ class main(discord.Client):
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
             SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use COMMAND for command
 
-            # everything that needs prefix
+            # everything that needs prefix and doesn't require arguments goes here
+
             if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
                     WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
@@ -62,7 +63,24 @@ class main(discord.Client):
 
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
-            elif len(WORD_LIST) >= 1: # checks that there are arguments being passed so there's no errors, if not it will go all the way down this list and hit the else statement
+
+            elif COMMAND == 'help' or COMMAND == 'info':
+                await message.reply (
+f'''**spunch bot** 
+an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
+
+*commands (more to be added soon™):*
+> `{PREFIX}say`: say stuff with bot
+> `{PREFIX}wikipedia`: returns wikipedia article
+> `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
+> `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
+> `{PREFIX}rps`: rock paper scissors against spunch bot
+> `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
+
+*that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig*
+''', mention_author=False) # praise f strings 2: electric boogaloo
+
+            elif len(WORD_LIST) >= 1: # every command that requires arguments goes here
                 if COMMAND == 'say':
                     await message.delete()
                     await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
@@ -81,23 +99,8 @@ class main(discord.Client):
                     await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
                     await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
                     
-            elif COMMAND == 'help' or COMMAND == 'info':
-                await message.reply (
-f'''**spunch bot** 
-an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
-
-*commands (more to be added soon™):*
-> `{PREFIX}say`: say stuff with bot
-> `{PREFIX}wikipedia`: returns wikipedia article
-> `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
-> `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
-> `{PREFIX}rps`: rock paper scissors against spunch bot
-> `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
-
-*that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig*
-''', mention_author=False) # praise f strings 2: electric boogaloo
             else:
-                await message.reply('something went wrong (you probably sent too much stuff or not enough stuff), too lazy to implement proper errors', mention_author=False)
+                await message.reply("too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command", mention_author=False)
     
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
