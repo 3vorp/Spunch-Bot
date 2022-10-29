@@ -19,7 +19,6 @@ create a `.env` file in the root folder with the following formatting:
 
 ```
 TOKEN="your_bot_token_here"
-BOT_ID="your_bot_id_here"
 ```
 
 this just makes the connection between the app and this repo

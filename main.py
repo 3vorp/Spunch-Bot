@@ -7,7 +7,6 @@ PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 
 ### BOT SPECIFIC/PRIVATE
-BOT_ID = os.getenv("BOT_ID")
 TOKEN = os.getenv("TOKEN")
 
 class main(discord.Client):
@@ -20,7 +19,7 @@ class main(discord.Client):
         LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
 
-        if str(message.author.id) == BOT_ID: # makes sure the bot can't reply to itself and cause an infinite loop
+        if str(message.author.id) == client.user: # makes sure the bot can't reply to itself and cause an infinite loop
             return
         elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
