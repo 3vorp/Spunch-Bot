@@ -19,7 +19,7 @@ class main(discord.Client):
         LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
 
-        if str(message.author.id) == client.user: # makes sure the bot can't reply to itself and cause an infinite loop
+        if message.author == client.user: # makes sure the bot can't reply to itself and cause an infinite loop
             return
         elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
