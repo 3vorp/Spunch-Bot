@@ -19,7 +19,7 @@ class main(discord.Client):
         LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
 
-        if message.author == client.user: # makes sure the bot can't reply to itself and cause an infinite loop
+        if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
         elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
@@ -35,7 +35,7 @@ class main(discord.Client):
                 await message.channel.send('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif')
             
             # LOGGER
-            await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
+            # await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
