@@ -16,7 +16,6 @@ class main(discord.Client):
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
-        LOGGING_CHANNEL = client.get_channel(1034329397450244136)
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942)
 
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
@@ -25,16 +24,17 @@ class main(discord.Client):
             # everything that doesn't need a prefix goes here
 
             if 'baller' == str(message.content).lower():
-                await message.channel.send('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4')
+                await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', mention_author=False)
 
             if 'mhhh' in str(message.content).lower():
-                await message.channel.send('**mhhh**\n`uh oh moment` \nswahili → english')
+                await message.reply('**mhhh**\n`uh oh moment` \nswahili → english', mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring')
             
             if 'spongeboy' == str(message.content).lower(): 
-                await message.channel.send('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif')
+                await message.reply('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif', mention_author=False)
             
             # LOGGER
+            # LOGGING_CHANNEL = client.get_channel(1034329397450244136)
             # await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
