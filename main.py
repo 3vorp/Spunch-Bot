@@ -5,6 +5,7 @@ load_dotenv()
 ### GENERAL
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
+EMBED_COLOR = 0xc3ba5c
 
 ### BOT SPECIFIC/PRIVATE
 TOKEN = os.getenv("TOKEN")
@@ -27,7 +28,7 @@ class main(discord.Client):
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', mention_author=False)
 
             if 'mhhh' in str(message.content).lower():
-                await message.reply('**mhhh**\n`uh oh moment` \nswahili → english', mention_author=False)
+                await message.reply(embed = discord.Embed(title='**mhhh**', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English'), mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring')
             
             if 'spongeboy' == str(message.content).lower(): 
@@ -52,32 +53,29 @@ class main(discord.Client):
                 bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
                 if bot_answer == WORD_LIST[0]:
-                    await message.reply(f"you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**it's a tie**", mention_author=False)
+                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "it's a tie", color=EMBED_COLOR), mention_author=False)
 
                 elif (WORD_LIST[0] == 'scissors' and bot_answer == 'paper') or (WORD_LIST[0] == 'paper' and bot_answer == 'rock') or (WORD_LIST[0] == 'rock' and bot_answer == 'scissors'): # pain
-                    await message.reply(f'you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**you win**', mention_author=False)
+                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "you win", color=EMBED_COLOR), mention_author=False)
 
                 elif (WORD_LIST[0] == 'paper' and bot_answer == 'scissors') or (WORD_LIST[0] == 'rock' and bot_answer == 'paper') or (WORD_LIST[0] == 'scissors' and bot_answer == 'rock'): # pain II
-                    await message.reply(f'you sent {WORD_LIST[0]}, i sent {bot_answer}:\n**i win**', mention_author=False)
+                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "i win", color=EMBED_COLOR), mention_author=False)
 
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
 
             elif COMMAND == 'help' or COMMAND == 'info':
-                await message.reply (
-f'''**spunch bot** 
+                await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
-*commands (more to be added soon™):*
-> `{PREFIX}say`: say stuff with bot
-> `{PREFIX}wikipedia`: returns wikipedia article
-> `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
-> `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
-> `{PREFIX}rps`: rock paper scissors against spunch bot
-> `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
+**commands available (more to be added soon™):**
 
-*that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig*
-''', mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}say`: say stuff with bot
+— `{PREFIX}wikipedia`: returns wikipedia article
+— `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
+— `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
+— `{PREFIX}rps`: rock paper scissors against spunch bot
+— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig"), mention_author=False) # praise f strings 2: electric boogaloo
 
             elif len(WORD_LIST) >= 1: # every command that requires arguments goes here
                 if COMMAND == 'say':
@@ -89,17 +87,17 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply('multiple/no wikipedia article found with that name', mention_author=False)
+                        await message.reply(embed = discord.Embed(description='multiple/no wikipedia article found with that name', title = 'insert helpful error name here', color = EMBED_COLOR), mention_author=False)
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
-                    await message.reply(random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), mention_author=False) # picks random selection from these options
+                    await message.reply(embed = discord.Embed(description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']),title=SENTENCE,color=EMBED_COLOR), mention_author=False) # picks random selection from these options
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(f'feedback sent by **{message.author}** in {message.channel.mention}: `{SENTENCE}`')
-                    await message.reply('your feedback has been sent, in the meantime idk go touch grass', mention_author=False) # sends confirmation message to user
+                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'`{SENTENCE}`, in {message.channel.mention}', color = EMBED_COLOR))
+                    await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), mention_author=False) # sends confirmation message to user
                     
             else:
-                await message.reply("too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command", mention_author=False)
+                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR), mention_author=False)
     
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
