@@ -13,7 +13,7 @@ TOKEN = os.getenv("TOKEN")
 class main(discord.Client):
     async def on_ready(self): # starts the bot
         STARTUP_CHANNEL = client.get_channel(1034609478005436436)
-        await STARTUP_CHANNEL.send(f'Online as **{self.user}**.\n——————————————') # sends startup message
+        await STARTUP_CHANNEL.send(embed = discord.Embed(description = f'Online as {self.user.mention}',color = EMBED_COLOR)) # sends startup message
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
@@ -28,7 +28,7 @@ class main(discord.Client):
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', mention_author=False)
 
             if 'mhhh' in str(message.content).lower():
-                await message.reply(embed = discord.Embed(title='**mhhh**', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English'), mention_author=False)
+                await message.reply(embed = discord.Embed(title='mhhh', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English'), mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring')
             
             if 'spongeboy' == str(message.content).lower(): 
