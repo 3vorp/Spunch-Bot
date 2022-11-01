@@ -9,12 +9,16 @@ ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' 
 
 TOKEN = os.getenv("TOKEN")
 
+
+
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
         super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
     @discord.ui.button(label = 'delete', style = discord.ButtonStyle.red) # creates a red button object thingy, edit this to edit all delete buttons
     async def red_button(self,interaction:discord.Interaction,button:discord.ui.Button): # whenever button is clicked calls this function
         await interaction.message.delete()
+
+
 
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
@@ -24,13 +28,17 @@ class Main(discord.Client):
 
     async def on_message(self, message):
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
-
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
+
+
+
         elif message.content[0] != PREFIX:
             SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
 
+
             # everything that doesn't need a prefix goes here
+
 
             if 'baller' == SENTENCE:
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
@@ -42,13 +50,17 @@ class Main(discord.Client):
             if 'spongeboy' == SENTENCE:
                 await message.reply('https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon_big.gif', view = Delete_Button(), mention_author=False)
 
+
+
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
             SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use COMMAND for command
 
-            # everything that needs prefix and doesn't require arguments goes here
+
+            # everything that needs a prefix and doesn't require arguments goes here
+
 
             if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
                 if SENTENCE == '':
@@ -81,7 +93,11 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig",icon_url=ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
-            elif len(WORD_LIST) >= 1: # every command that requires arguments goes here
+
+            # every command that requires arguments goes here
+
+
+            elif len(WORD_LIST) >= 1: 
                 if COMMAND == 'say':
                     await message.delete()
                     await message.channel.send(SENTENCE) # deletes original message and sends the sentence back
