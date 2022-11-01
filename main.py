@@ -23,16 +23,18 @@ class main(discord.Client):
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
         elif message.content[0] != PREFIX:
+            SENTENCE = str(message.content).lower()
+            
             # everything that doesn't need a prefix goes here
 
-            if 'baller' == str(message.content).lower(): # the .lower() is just used to remove all case sensitivity
+            if 'baller' == SENTENCE: # the .lower() is just used to remove all case sensitivity
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', mention_author=False)
 
-            if 'mhhh' in str(message.content).lower(): # can't use elif because it's checking if it's contained within any of the message contents
+            if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
                 await message.reply(embed = discord.Embed(title='mhhh', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English'), mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
-            if 'spongeboy' == str(message.content).lower():
+            if 'spongeboy' == SENTENCE:
                 await message.reply('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif', mention_author=False)
 
         elif message.content[0] == PREFIX:
