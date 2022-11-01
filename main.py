@@ -5,8 +5,8 @@ load_dotenv()
 ### GENERAL
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
-EMBED_COLOR = 0xc3ba5c
-ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png'
+EMBED_COLOR = 0xc3ba5c # this is just a hex code with 0x in front of it for some reason
+ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' # probably some better way to get the icon but this works too :P
 
 ### BOT SPECIFIC/PRIVATE
 TOKEN = os.getenv("TOKEN")
@@ -25,19 +25,15 @@ class main(discord.Client):
         elif message.content[0] != PREFIX:
             # everything that doesn't need a prefix goes here
 
-            if 'baller' == str(message.content).lower():
+            if 'baller' == str(message.content).lower(): # the .lower() is just used to remove all case sensitivity
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', mention_author=False)
 
-            if 'mhhh' in str(message.content).lower():
+            if 'mhhh' in str(message.content).lower(): # can't use elif because it's checking if it's contained within any of the message contents
                 await message.reply(embed = discord.Embed(title='mhhh', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English'), mention_author=False)
-                await message.channel.send('smh my head ripping off compli:b:ot very cring')
+                await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
-            if 'spongeboy' == str(message.content).lower(): 
+            if 'spongeboy' == str(message.content).lower():
                 await message.reply('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif', mention_author=False)
-            
-            # LOGGER
-            # LOGGING_CHANNEL = client.get_channel(1034329397450244136)
-            # await LOGGING_CHANNEL.send(f'**{message.author} ** sent `"{message.content}"` at {message.created_at} in channel {message.channel.mention} in server *"{message.guild.name}"*.')  # praise f strings
 
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
@@ -54,13 +50,13 @@ class main(discord.Client):
                 bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
                 if bot_answer == WORD_LIST[0]:
-                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "it's a tie", color=EMBED_COLOR), mention_author=False)
+                    await message.reply(embed = discord.Embed(title= "it's a tie", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), mention_author=False)
 
                 elif (WORD_LIST[0] == 'scissors' and bot_answer == 'paper') or (WORD_LIST[0] == 'paper' and bot_answer == 'rock') or (WORD_LIST[0] == 'rock' and bot_answer == 'scissors'): # pain
-                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "you win", color=EMBED_COLOR), mention_author=False)
+                    await message.reply(embed = discord.Embed(title= "you win", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), mention_author=False)
 
                 elif (WORD_LIST[0] == 'paper' and bot_answer == 'scissors') or (WORD_LIST[0] == 'rock' and bot_answer == 'paper') or (WORD_LIST[0] == 'scissors' and bot_answer == 'rock'): # pain II
-                    await message.reply(embed = discord.Embed(description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", title= "i win", color=EMBED_COLOR), mention_author=False)
+                    await message.reply(embed = discord.Embed(title= "i win", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), mention_author=False)
 
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", mention_author=False)
@@ -85,22 +81,23 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                 
                 elif COMMAND == 'wikipedia':
                     try:
-                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
+                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply(embed = discord.Embed(description='multiple/no wikipedia article found with that name', title = 'insert helpful error name here', color = EMBED_COLOR).set_footer(icon_url=ICON, text="you're probably just an absolute clampongus though"), mention_author=False)
+                        await message.reply(embed = discord.Embed(title = 'insert helpful error name here', description='multiple/no wikipedia article found with that name', color = EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url=ICON), mention_author=False)
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
-                    await message.reply(embed = discord.Embed(description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']),title=SENTENCE,color=EMBED_COLOR), mention_author=False) # picks random selection from these options
+                    await message.reply(embed = discord.Embed(title=SENTENCE, description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), color=EMBED_COLOR), mention_author=False) # picks random selection from these options
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'`{SENTENCE}`, in {message.channel.mention}', color = EMBED_COLOR))
+                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'`{SENTENCE}`, in {message.channel.mention}', color = EMBED_COLOR)) # sends to hardcoded suggestion channel
                     await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), mention_author=False) # sends confirmation message to user
+
                 else:
-                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're probably just an absolute clampongus though", icon_url = ICON), mention_author=False)
+                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), mention_author=False) # generic error handling
                     
             else:
-                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're probably just an absolute clampongus though", icon_url = ICON), mention_author=False)
+                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), mention_author=False) # generic error handling 2
     
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
