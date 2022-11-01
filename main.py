@@ -5,7 +5,7 @@ load_dotenv()
 ### GENERAL
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
-EMBED_COLOR = 0xc3ba5c # this is just a hex code with 0x in front of it for some reason
+EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
 ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' # probably some better way to get the icon but this works too :P
 
 ### BOT SPECIFIC/PRIVATE
