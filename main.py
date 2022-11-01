@@ -92,7 +92,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                     await message.reply(embed = discord.Embed(title=SENTENCE, description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), color=EMBED_COLOR), mention_author=False) # picks random selection from these options
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'`{SENTENCE}`, in {message.channel.mention}', color = EMBED_COLOR)) # sends to hardcoded suggestion channel
+                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: `{SENTENCE}`', color = EMBED_COLOR)) # sends to hardcoded suggestion channel
                     await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), mention_author=False) # sends confirmation message to user
 
                 else:
