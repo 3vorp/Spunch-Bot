@@ -24,7 +24,7 @@ class main(discord.Client):
             return
         elif message.content[0] != PREFIX:
             SENTENCE = str(message.content).lower()
-            
+
             # everything that doesn't need a prefix goes here
 
             if 'baller' == SENTENCE: # the .lower() is just used to remove all case sensitivity
@@ -72,7 +72,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}wikipedia`: returns wikipedia article
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
-— `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
+— `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now more coming soon go suggest stuff to me using {PREFIX}feedback if you want ig",icon_url=ICON), mention_author=False) # praise f strings 2: electric boogaloo
 
