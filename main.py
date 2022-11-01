@@ -35,7 +35,7 @@ class main(discord.Client):
                 await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
             if 'spongeboy' == SENTENCE:
-                await message.reply('https://media.discordapp.net/attachments/774035111981219870/831335411787759667/pee.gif', mention_author=False)
+                await message.reply('https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon_big.gif', mention_author=False)
 
         elif message.content[0] == PREFIX:
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
