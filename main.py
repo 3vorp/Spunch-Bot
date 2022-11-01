@@ -74,7 +74,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now more coming soon go suggest stuff to me using {PREFIX}feedback if you want ig",icon_url=ICON), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig",icon_url=ICON), mention_author=False) # praise f strings 2: electric boogaloo
 
             elif len(WORD_LIST) >= 1: # every command that requires arguments goes here
                 if COMMAND == 'say':
