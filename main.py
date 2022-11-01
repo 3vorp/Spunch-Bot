@@ -6,6 +6,7 @@ load_dotenv()
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c
+ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png'
 
 ### BOT SPECIFIC/PRIVATE
 TOKEN = os.getenv("TOKEN")
@@ -75,7 +76,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}suggest`, `{PREFIX}feedback`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig"), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now more coming soon go suggest stuff to me using `{PREFIX}feedback` if you want ig",icon_url=ICON), mention_author=False) # praise f strings 2: electric boogaloo
 
             elif len(WORD_LIST) >= 1: # every command that requires arguments goes here
                 if COMMAND == 'say':
@@ -87,7 +88,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', mention_author=False) # this atrocity takes the input, finds wikipedia article, and trims it to 1900 characters
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply(embed = discord.Embed(description='multiple/no wikipedia article found with that name', title = 'insert helpful error name here', color = EMBED_COLOR), mention_author=False)
+                        await message.reply(embed = discord.Embed(description='multiple/no wikipedia article found with that name', title = 'insert helpful error name here', color = EMBED_COLOR).set_footer(icon_url=ICON, text="you're probably just an absolute clampongus though"), mention_author=False)
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
                     await message.reply(embed = discord.Embed(description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']),title=SENTENCE,color=EMBED_COLOR), mention_author=False) # picks random selection from these options
@@ -95,9 +96,11 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
                     await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'`{SENTENCE}`, in {message.channel.mention}', color = EMBED_COLOR))
                     await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), mention_author=False) # sends confirmation message to user
+                else:
+                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're probably just an absolute clampongus though", icon_url = ICON), mention_author=False)
                     
             else:
-                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR), mention_author=False)
+                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're probably just an absolute clampongus though", icon_url = ICON), mention_author=False)
     
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
