@@ -126,5 +126,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-load_dotenv() # uses token from that .env file thingy to actually run the program
 client.run(TOKEN) 
