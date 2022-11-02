@@ -78,7 +78,7 @@ class Main(discord.Client):
                     await message.reply(embed = discord.Embed(title= "i win", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
                 else:
-                    await message.reply("that wasn't an option so I automatically win :sunglasses:", view=Delete_Button(), mention_author=False)
+                    await message.reply(embed = discord.Embed(title="that wasn't an option so I automatically win :sunglasses:",description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}",color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
                 await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
