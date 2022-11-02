@@ -80,7 +80,7 @@ class Main(discord.Client):
                 else:
                     await message.reply("that wasn't an option so I automatically win :sunglasses:", view=Delete_Button(), mention_author=False)
 
-            elif COMMAND == 'help' or COMMAND == 'info':
+            elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
                 await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
