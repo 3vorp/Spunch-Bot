@@ -100,7 +100,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
             elif len(WORD_LIST) >= 1:  # deletes original message and sends the sentence back
                 if COMMAND == 'say':
                     await message.delete()
-                    await message.channel.send(message.contents.partition(' ')[2]) # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+                    await message.channel.send(message.content.partition(' ')[2]) # praise stackoverflow, I wanted to keep uppercase but just remove the first word
                 
                 elif COMMAND == 'wikipedia':
                     try:
