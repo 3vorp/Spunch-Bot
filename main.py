@@ -101,7 +101,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                 if COMMAND == 'say':
                     await message.delete()
                     await message.channel.send(message.content.partition(' ')[2]) # praise stackoverflow, I wanted to keep uppercase but just remove the first word
-                
+
                 elif COMMAND == 'wikipedia':
                     try:
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', view=Delete_Button(), mention_author=False) # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
@@ -118,10 +118,10 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
                 else:
                     await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling
-                    
+
             else:
                 await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling 2
-    
+
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
 client = Main(intents=intents)
