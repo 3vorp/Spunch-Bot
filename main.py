@@ -56,7 +56,9 @@ class Main(discord.Client):
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE=' '.join(WORD_LIST) # use WORD_LIST for list, use SENTENCE for string, use COMMAND for command
+            SENTENCE=message.content.partition(' ')[2]  # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+
+            # use WORD_LIST for list (lowercase), use SENTENCE for string (exactly as user sent it), use COMMAND for command (literally just the first word)
 
 
             # everything that needs a prefix and doesn't require arguments goes here
@@ -91,6 +93,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
+— `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
 — `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig",icon_url=ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
@@ -100,7 +103,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
             elif len(WORD_LIST) >= 1:  # deletes original message and sends the sentence back
                 if COMMAND == 'say':
                     await message.delete()
-                    await message.channel.send(message.content.partition(' ')[2]) # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+                    await message.channel.send(SENTENCE)
 
                 elif COMMAND == 'wikipedia':
                     try:
@@ -115,6 +118,9 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
                     await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: `{SENTENCE}`', color = EMBED_COLOR)) # sends to hardcoded suggestion channel
                     await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), view=Delete_Button(), mention_author=False) # sends confirmation message to user
+                
+                elif COMMAND == 'len' or COMMAND == 'length':
+                    await message.reply(embed = discord.Embed(title=f'Your sentence is {len(SENTENCE)} characters long, {len(WORD_LIST)} words long.', description = f'You sent `{SENTENCE}`',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
 
                 else:
                     await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling
