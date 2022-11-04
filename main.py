@@ -68,19 +68,19 @@ class Main(discord.Client):
                 if SENTENCE == '':
                     WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
 
-                bot_answer=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
+                BOT_ANSWER=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
-                if bot_answer == WORD_LIST[0]:
-                    await message.reply(embed = discord.Embed(title= "it's a tie", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                if BOT_ANSWER == WORD_LIST[0]:
+                    await message.reply(embed = discord.Embed(title= "it's a tie", description=f"you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
-                elif (WORD_LIST[0] == 'scissors' and bot_answer == 'paper') or (WORD_LIST[0] == 'paper' and bot_answer == 'rock') or (WORD_LIST[0] == 'rock' and bot_answer == 'scissors'): # pain
-                    await message.reply(embed = discord.Embed(title= "you win", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
+                    await message.reply(embed = discord.Embed(title= "you win", description=f"you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
-                elif (WORD_LIST[0] == 'paper' and bot_answer == 'scissors') or (WORD_LIST[0] == 'rock' and bot_answer == 'paper') or (WORD_LIST[0] == 'scissors' and bot_answer == 'rock'): # pain II
-                    await message.reply(embed = discord.Embed(title= "i win", description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                elif (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock'): # pain II
+                    await message.reply(embed = discord.Embed(title= "i win", description=f"you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
                 else:
-                    await message.reply(embed = discord.Embed(title="that wasn't an option so I automatically win :sunglasses:",description=f"you sent {WORD_LIST[0]}, i sent {bot_answer}",color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                    await message.reply(embed = discord.Embed(title="that wasn't an option so I automatically win :sunglasses:",description=f"you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}",color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
                 await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
