@@ -15,7 +15,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
     def __init__(self):
         super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
     @discord.ui.button(label = 'delete', style = discord.ButtonStyle.red) # creates a red button object thingy, edit this to edit all delete buttons
-    async def red_button(self,interaction:discord.Interaction,button:discord.ui.Button): # whenever button is clicked calls this function
+    async def button_clicked(self,interaction:discord.Interaction,button:discord.ui.Button): # whenever button is clicked calls this function
         await interaction.message.delete()
 
 
