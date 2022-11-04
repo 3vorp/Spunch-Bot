@@ -44,7 +44,7 @@ class Main(discord.Client):
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
 
             if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
-                await message.reply(embed = discord.Embed(title='mhhh', description='`uh oh moment`', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=ICON), view=Delete_Button(), mention_author=False)
+                await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=ICON), view=Delete_Button(), mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
             if 'spongeboy' == SENTENCE:
@@ -116,11 +116,11 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                     await message.reply(embed = discord.Embed(title=SENTENCE, description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), color=EMBED_COLOR), view=Delete_Button(), mention_author=False) # picks random selection from these options
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: `{SENTENCE}`', color = EMBED_COLOR)) # sends to hardcoded suggestion channel
-                    await message.reply(embed = discord.Embed(title = 'your feedback has been sent', description = 'in the meantime idk go touch grass',color = EMBED_COLOR), view=Delete_Button(), mention_author=False) # sends confirmation message to user
+                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: ```{SENTENCE}```', color = EMBED_COLOR).set_footer(text='idk maybe react to this if you complete it or something',icon_url=ICON)) # sends to hardcoded suggestion channel
+                    await message.reply(embed = discord.Embed(title = f'your feedback has been sent to {DEVELOPER}:', description = f'```{SENTENCE}```',color = EMBED_COLOR).set_footer(text='in the meantime idk go touch grass',icon_url=ICON), view=Delete_Button(), mention_author=False) # sends confirmation message to user
                 
                 elif COMMAND == 'len' or COMMAND == 'length':
-                    await message.reply(embed = discord.Embed(title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long.', description = f'You sent `{SENTENCE}`',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
+                    await message.reply(embed = discord.Embed(title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:', description = f'```{SENTENCE}```',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
 
                 else:
                     await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling
