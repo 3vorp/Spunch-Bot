@@ -5,7 +5,7 @@ load_dotenv()
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
-ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
+EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
 
 TOKEN = os.getenv("TOKEN")
 
@@ -44,7 +44,7 @@ class Main(discord.Client):
                 await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
 
             if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
-                await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=ICON), view=Delete_Button(), mention_author=False)
+                await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
                 await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
             if 'spongeboy' == SENTENCE:
@@ -70,7 +70,7 @@ class Main(discord.Client):
 
                 BOT_ANSWER=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
-                if BOT_ANSWER == WORD_LIST[0]:
+                if BOT_ANSWER == WORD_LIST[0]: # uses WORD_LIST as opposed to SENTENCE so that if you send multiple arguments it just ignores the rest, also WORD_LIST removes case sensitivity
                     await message.reply(embed = discord.Embed(title= "it's a tie", description=f"you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}", color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
 
                 elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
@@ -94,7 +94,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig",icon_url=ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f"that's all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig",icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
             # every command that requires arguments goes here
@@ -110,23 +110,23 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
                         await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', view=Delete_Button(), mention_author=False) # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply(embed = discord.Embed(title = 'insert helpful error name here', description='multiple/no wikipedia article found with that name', color = EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url=ICON), view=Delete_Button(), mention_author=False)
+                        await message.reply(embed = discord.Embed(title = 'insert helpful error name here', description='multiple/no wikipedia article found with that name', color = EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
                     await message.reply(embed = discord.Embed(title=SENTENCE, description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), color=EMBED_COLOR), view=Delete_Button(), mention_author=False) # picks random selection from these options
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: ```{SENTENCE}```', color = EMBED_COLOR).set_footer(text='idk maybe react to this if you complete it or something',icon_url=ICON)) # sends to hardcoded suggestion channel
-                    await message.reply(embed = discord.Embed(title = f'your feedback has been sent to {DEVELOPER}:', description = f'```{SENTENCE}```',color = EMBED_COLOR).set_footer(text='in the meantime idk go touch grass',icon_url=ICON), view=Delete_Button(), mention_author=False) # sends confirmation message to user
+                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: ```{SENTENCE}```', color = EMBED_COLOR).set_footer(text='idk maybe react to this if you complete it or something',icon_url=EMBED_ICON)) # sends to hardcoded suggestion channel
+                    await message.reply(embed = discord.Embed(title = f'your feedback has been sent to {DEVELOPER}:', description = f'```{SENTENCE}```',color = EMBED_COLOR).set_footer(text='in the meantime idk go touch grass',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # sends confirmation message to user
                 
                 elif COMMAND == 'len' or COMMAND == 'length':
                     await message.reply(embed = discord.Embed(title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:', description = f'```{SENTENCE}```',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
 
                 else:
-                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling
+                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = EMBED_ICON), view=Delete_Button(), mention_author=False) # generic error handling
 
             else:
-                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = ICON), view=Delete_Button(), mention_author=False) # generic error handling 2
+                await message.reply(embed = discord.Embed(title='insert helpful error name here', description="too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that's not a command",color=EMBED_COLOR).set_footer(text="you're still an absolute clampongus though", icon_url = EMBED_ICON), view=Delete_Button(), mention_author=False) # generic error handling 2
 
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
