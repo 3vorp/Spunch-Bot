@@ -66,10 +66,9 @@ class Main(discord.Client):
 
 
             if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
+                BOT_ANSWER=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
                 if SENTENCE == '':
                     WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
-
-                BOT_ANSWER=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
 
                 if BOT_ANSWER == WORD_LIST[0]: # uses WORD_LIST as opposed to SENTENCE so that if you send multiple arguments it just ignores the rest, also WORD_LIST removes case sensitivity
                     await message.reply(embed = discord.Embed(title= 'it\'s a tie', description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
