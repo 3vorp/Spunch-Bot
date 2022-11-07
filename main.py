@@ -6,7 +6,7 @@ load_dotenv()
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
-EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
+EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
 
 TOKEN = os.getenv('TOKEN')
 
@@ -24,7 +24,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
         STARTUP_CHANNEL = client.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
-        await STARTUP_CHANNEL.send(embed = discord.Embed(title = f'hello i\'m alive now',description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```',color = EMBED_COLOR).set_footer(text=f'Online as {client.user}',icon_url=EMBED_ICON)) # sends startup message
+        await STARTUP_CHANNEL.send(embed = discord.Embed(title = f'hello i\'m alive now',description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```',color = EMBED_COLOR).set_footer(text=f'Online as {client.user}',icon_url=EMBED_ICON)) # sends startup message, you have to use the .split() and .join() methods because the strftime string by default has a double space which really bothered me
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
@@ -49,7 +49,7 @@ class Main(discord.Client):
                 await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
             
             if 'spongeboy' == SENTENCE:
-                await message.reply('https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/image/icon_big.gif', view = Delete_Button(), mention_author=False)
+                await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url='https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/icon_big.gif'), view = Delete_Button(), mention_author=False)
 
 
 
