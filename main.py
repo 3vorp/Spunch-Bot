@@ -82,6 +82,9 @@ class Main(discord.Client):
 
                 else:
                     await message.reply(embed = discord.Embed(title='that wasn\'t an option so I automatically win :sunglasses:',description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+            
+            elif COMMAND == 'github':
+                await message.reply(embed=discord.Embed(title='you can find my code on github here:',description='https://github.com/3vorp/Spunch-Bot',color=EMBED_COLOR).set_footer(text='fair warning that it\'s is a dumpster fire to read through',icon_url=EMBED_ICON),view=Delete_Button(), mention_author=False)
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
                 await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
@@ -95,6 +98,7 @@ an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
+— `{PREFIX}github`: show github listing
 — `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
@@ -133,4 +137,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-client.run(TOKEN) 
+client.run(TOKEN)
