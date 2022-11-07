@@ -24,7 +24,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
         STARTUP_CHANNEL = client.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
-        await STARTUP_CHANNEL.send(embed = discord.Embed(title = f'hello i\'m alive now',description=f'```started at {datetime.now().strftime("%c")}```',color = EMBED_COLOR).set_footer(text=f'Online as {client.user}',icon_url=EMBED_ICON)) # sends startup message
+        await STARTUP_CHANNEL.send(embed = discord.Embed(title = f'hello i\'m alive now',description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```',color = EMBED_COLOR).set_footer(text=f'Online as {client.user}',icon_url=EMBED_ICON)) # sends startup message
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
