@@ -90,16 +90,21 @@ class Main(discord.Client):
                 await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
-**commands available (more to be added soon™):**
+__**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
-— `{PREFIX}say`: say stuff with bot
+**utility:**
+
 — `{PREFIX}wikipedia`: returns wikipedia article
-— `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
-— `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
 — `{PREFIX}github`: show github listing
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
+
+**fun:**
+
+— `{PREFIX}say`: say stuff with bot
+— `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
+— `{PREFIX}rps`: rock paper scissors against spunch bot''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
             # every command that requires arguments goes here
