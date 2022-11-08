@@ -6,7 +6,8 @@ load_dotenv()
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
-EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
+EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
+BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.png'
 
 TOKEN = os.getenv('TOKEN')
 
@@ -59,6 +60,9 @@ class Main(discord.Client):
                     url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
 
                 await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
+            
+            if 'nut' == SENTENCE:
+                await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
 
 
 
@@ -112,7 +116,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
-— `{PREFIX}rps`: rock paper scissors against spunch bot''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}rps`: rock paper scissors against spunch bot''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_image(url=BIG_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
             # every command that requires arguments goes here
