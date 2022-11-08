@@ -38,7 +38,7 @@ class Main(discord.Client):
             SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
 
 
-            # everything that doesn't need a prefix goes here
+            # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
 
 
             if 'baller' == SENTENCE:
@@ -50,6 +50,15 @@ class Main(discord.Client):
             
             if 'spongeboy' == SENTENCE:
                 await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url='https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/icon_big.gif'), view = Delete_Button(), mention_author=False)
+            
+            if 'hello there' == SENTENCE:
+                PROBABILITY=random.randint(0,5) # special chance for easter egg
+                if PROBABILITY == 0:
+                    url = 'https://i.imgur.com/hAuUsnD.png'
+                else:
+                    url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
+
+                await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
 
 
 
