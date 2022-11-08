@@ -8,6 +8,8 @@ DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
 EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
 BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.png'
+EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
+BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
 TOKEN = os.getenv('TOKEN')
 
@@ -33,40 +35,37 @@ class Main(discord.Client):
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
 
+        SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
 
 
-        elif message.content[0] != PREFIX:
-            SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
+        # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
 
 
-            # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
+        if 'baller' == SENTENCE:
+            await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
 
+        if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
+            await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
+            await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
+        
+        if 'spongeboy' == SENTENCE:
+            await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=BIG_GIF), view = Delete_Button(), mention_author=False)
+        
+        if 'hello there' == SENTENCE:
+            PROBABILITY=random.randint(0,5) # special chance for easter egg
+            if PROBABILITY == 0:
+                url = 'https://i.imgur.com/hAuUsnD.png'
+            else:
+                url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
 
-            if 'baller' == SENTENCE:
-                await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
-
-            if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
-                await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
-                await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
-            
-            if 'spongeboy' == SENTENCE:
-                await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url='https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/icon_big.gif'), view = Delete_Button(), mention_author=False)
-            
-            if 'hello there' == SENTENCE:
-                PROBABILITY=random.randint(0,5) # special chance for easter egg
-                if PROBABILITY == 0:
-                    url = 'https://i.imgur.com/hAuUsnD.png'
-                else:
-                    url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
-
-                await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
-            
-            if 'nut' == SENTENCE:
-                await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
+            await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
+        
+        if 'nut' == SENTENCE:
+            await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
 
 
 
-        elif message.content[0] == PREFIX:
+        elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
@@ -120,7 +119,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}crimes`: show all of my crimes''', color = EMBED_COLOR).set_footer(text= f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_thumbnail(url=BIG_ICON), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}crimes`: show all of my crimes''', color = EMBED_COLOR).set_footer(text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_thumbnail(url=BIG_GIF), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
             # every command that requires arguments goes here
