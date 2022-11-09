@@ -60,7 +60,7 @@ class Main(discord.Client):
 
             await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
         
-        if 'nut' == SENTENCE:
+        if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
             DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # type conversions yes yes
             with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
                 json.dump(DATABASE, db, ensure_ascii=False, indent=4) # adds one to the total nut_count
