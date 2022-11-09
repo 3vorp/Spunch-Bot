@@ -11,9 +11,7 @@ BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_i
 EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
 BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
-db=open(os.path.join(os.path.dirname(__file__), 'database.json'),'r') # the amount of work I had to go through to use relative filenames lol
-DATABASE = json.loads(db.read()) # I stil have no idea why I couldn't just use database.json but whatever it works
-db.close()
+DATABASE = json.loads(open(os.path.join(os.path.dirname(__file__), 'database.json'),'r').read()) # I'm sorry to whoever has to read this abomination
 
 TOKEN = os.getenv('TOKEN')
 
