@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random
+import discord, os, wikipedia, random, json
 from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
@@ -11,9 +11,11 @@ BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_i
 EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
 BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
+db=open(os.path.join(os.path.dirname(__file__), 'database.json'),'r') # the amount of work I had to go through to use relative filenames lol
+DATABASE = json.loads(db.read()) # I stil have no idea why I couldn't just use database.json but whatever it works
+db.close()
+
 TOKEN = os.getenv('TOKEN')
-
-
 
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
@@ -61,8 +63,10 @@ class Main(discord.Client):
             await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
         
         if 'nut' == SENTENCE:
-            await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
-
+            DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # type conversions yes yes
+            with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
+                json.dump(DATABASE, db, ensure_ascii=False, indent=4) # adds one to the total nut_count
+            await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR).set_footer(text=f'total nuts collected: {DATABASE["nut_count"]}',icon_url=EMBED_ICON),view=Delete_Button(),mention_author=False)
 
 
         elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain

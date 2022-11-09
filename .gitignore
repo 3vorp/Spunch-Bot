@@ -2,3 +2,4 @@
 .env
 bot-env/
 discord.log
+database.json
