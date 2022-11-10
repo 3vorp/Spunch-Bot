@@ -3,7 +3,15 @@ from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
 
-DATABASE = json.loads(open(os.path.join(os.path.dirname(__file__), 'database.json'),'r').read()) # I'm sorry to whoever has to read this abomination
+DATABASE = json.loads (
+    open (
+        os.path.join (
+            os.path.dirname(__file__),'database.json'
+        ),
+        'r' # in reading mode
+    )
+    .read()
+) # I'm sorry to whoever has to read this abomination
 
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
@@ -16,8 +24,13 @@ BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_ic
 TOKEN = os.getenv('TOKEN')
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
-    with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
-        json.dump(DATABASE, db, ensure_ascii=False, indent=4) # allows me to write everything into the json file
+    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding='utf-8') as db:
+        json.dump( # allows me to write everything into the json file
+            DATABASE, 
+            db, 
+            ensure_ascii=False, 
+            indent=4
+        )
     return # idk if this is necessary but I don't want to mess things up because of the whole async await thing
 
 
@@ -25,7 +38,11 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
         super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
-    @discord.ui.button(label = 'delete', style = discord.ButtonStyle.red) # creates a red button object thingy, edit this to edit all delete buttons
+        
+    @discord.ui.button ( # creates a red button object thingy, edit this to edit all delete buttons
+        label = 'delete', 
+        style = discord.ButtonStyle.red
+    )
     async def button_clicked(self,interaction:discord.Interaction,button:discord.ui.Button): # whenever button is clicked calls this function
         await interaction.message.delete()
 
@@ -79,6 +96,7 @@ class Main(discord.Client):
                 view=Delete_Button(), 
                 mention_author=False
             )
+
             await message.channel.send ('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
         
         if 'spongeboy' == SENTENCE:
@@ -108,11 +126,13 @@ class Main(discord.Client):
                     url=url
                 ),
                 view=Delete_Button(),
-                mention_author=False)
+                mention_author=False
+            )
         
         if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
             DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
             await write_database()
+            
             await message.reply (
                 embed=discord.Embed (
                     title='you have sacrificed NUT',
@@ -156,7 +176,8 @@ class Main(discord.Client):
                         mention_author=False
                     )
 
-                elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
+                elif (
+                    WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
                     await message.reply (
                         embed = discord.Embed (
                             title = 'you win', 
@@ -373,4 +394,12 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-client.run(TOKEN, log_handler=logging.FileHandler(filename=(os.path.join(os.path.dirname(__file__), 'discord.log')), encoding='utf-8', mode='w'), log_level=logging.DEBUG)
+client.run (
+    TOKEN, 
+    log_handler=logging.FileHandler (
+        filename = (os.path.join(os.path.dirname(__file__), 'discord.log')), 
+        encoding='utf-8', 
+        mode='w'
+    ), 
+    log_level=logging.DEBUG
+)
