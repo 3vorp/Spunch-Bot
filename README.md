@@ -17,10 +17,6 @@ further instructions are at https://discordpy.readthedocs.io/en/stable/discord.h
 
 create a `.env` file in the root folder, following the formatting of the `.env.example` file:
 
-```
-TOKEN="your_bot_token_here"
-```
-
 this just makes the connection between the app and the python files
 
 > **Warning**
@@ -28,5 +24,11 @@ this just makes the connection between the app and the python files
 > **your bot token is basically your bot password, be careful with it and do not post it anywhere**
 >  
 > make sure to change the hardcoded channel IDs (`SUGGEST_CHANNEL`, `STARTUP_CHANNEL`, etc) to your desired ones in the `main.py` file.
+
+## using a database properly
+
+in your main working folder (the one that this file and the `main.py` file is contained in) create a file called `database.json`.
+
+it just uses regular json formatting, read the example file for specifics
 
 from there just run the python file and enjoy

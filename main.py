@@ -3,6 +3,8 @@ from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
 
+DATABASE = json.loads(open(os.path.join(os.path.dirname(__file__), 'database.json'),'r').read()) # I'm sorry to whoever has to read this abomination
+
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
@@ -11,9 +13,16 @@ BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_i
 EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
 BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
-DATABASE = json.loads(open(os.path.join(os.path.dirname(__file__), 'database.json'),'r').read()) # I'm sorry to whoever has to read this abomination
-
 TOKEN = os.getenv('TOKEN')
+
+
+
+async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
+    with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
+        json.dump(DATABASE, db, ensure_ascii=False, indent=4) # allows me to write everything into the json file
+    return # idk if this is necessary but I don't want to mess things up because of the whole async await thing
+
+
 
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
@@ -61,9 +70,8 @@ class Main(discord.Client):
             await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
         
         if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
-            DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # type conversions yes yes
-            with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
-                json.dump(DATABASE, db, ensure_ascii=False, indent=4) # adds one to the total nut_count
+            DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
+            await write_database()
             await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR).set_footer(text=f'total nuts collected: {DATABASE["nut_count"]}',icon_url=EMBED_ICON),view=Delete_Button(),mention_author=False)
 
 
