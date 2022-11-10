@@ -79,7 +79,7 @@ class Main(discord.Client):
             WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
             COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE=message.content.partition(' ')[2]  # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+            SENTENCE=message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
 
             # use WORD_LIST for list (lowercase), use SENTENCE for string (exactly as user sent it), use COMMAND for command (literally just the first word)
 
@@ -135,7 +135,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
             # every command that requires arguments goes here
 
 
-            elif len(WORD_LIST) >= 1:  # deletes original message and sends the sentence back
+            elif len(WORD_LIST) >= 1: # deletes original message and sends the sentence back
                 if COMMAND == 'say':
                     await message.delete()
                     await message.channel.send(SENTENCE)
