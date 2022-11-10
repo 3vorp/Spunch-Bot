@@ -41,7 +41,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
         label = 'delete',
         style = discord.ButtonStyle.red
     )
-    async def button_clicked(self,interaction:discord.Interaction,button:discord.ui.Button): # whenever button is clicked calls this function
+    async def button_clicked(self, interaction:discord.Interaction, button:discord.ui.Button): # whenever button is clicked calls this function
         await interaction.message.delete()
 
 
@@ -75,7 +75,7 @@ class Main(discord.Client):
 
         if 'baller' == SENTENCE:
             await message.reply (
-                'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', 
+                'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
                 view=Delete_Button(),
                 mention_author=False
             )
@@ -110,7 +110,7 @@ class Main(discord.Client):
             )
         
         if 'hello there' == SENTENCE:
-            PROBABILITY = random.randint(0,5) # special chance for easter egg
+            PROBABILITY = random.randint(0, 5) # special chance for easter egg
             if PROBABILITY == 0:
                 url = 'https://i.imgur.com/hAuUsnD.png'
             else:
@@ -159,9 +159,9 @@ class Main(discord.Client):
 
 
             if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
-                BOT_ANSWER=random.choice(['rock','paper','scissors']) # works same way as 8ball, randomly chooses from list
+                BOT_ANSWER=random.choice(['rock', 'paper', 'scissors']) # works same way as 8ball, randomly chooses from list
                 if SENTENCE == '':
-                    WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
+                    WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])] # if user provides no arguments it just randomly chooses for them
 
                 if BOT_ANSWER == WORD_LIST[0]: # uses WORD_LIST as opposed to SENTENCE so that if you send multiple arguments it just ignores the rest, also WORD_LIST removes case sensitivity
                     await message.reply (
@@ -312,7 +312,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                         embed = discord.Embed (
                             title=SENTENCE,
                             description=random.choice (
-                                ['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']
+                                ['yes', 'no', 'maybe', 'idk', 'ask later', 'definitely', 'never', 'never ask me that again']
                             ),
                             color=EMBED_COLOR
                         ),
