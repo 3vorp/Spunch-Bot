@@ -166,4 +166,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-client.run(TOKEN, log_handler=logging.FileHandler(filename=(os.path.join(os.path.dirname(__file__), 'discord.log')), encoding='utf-8', mode='w'))
+client.run(TOKEN, log_handler=logging.FileHandler(filename=(os.path.join(os.path.dirname(__file__), 'discord.log')), encoding='utf-8', mode='w'), log_level=logging.DEBUG)
