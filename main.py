@@ -3,13 +3,13 @@ from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
 
-DATABASE = json.loads (
+DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
     open (
         os.path.join (os.path.dirname(__file__), 'database.json'),
         'r' # in reading mode
     )
     .read()
-) # I'm sorry to whoever has to read this abomination
+)
 
 PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
@@ -59,7 +59,7 @@ class Main(discord.Client):
                 text=f'Online as {client.user}',
                 icon_url=EMBED_ICON
             )
-        ) 
+        )
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
@@ -281,8 +281,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
             elif len(WORD_LIST) >= 1: # deletes original message and sends the sentence back
                 if COMMAND == 'say':
-                    await message.delete()
-                    await message.channel.send(SENTENCE)
+                    await message.delete ()
+                    await message.channel.send (SENTENCE)
 
                 elif COMMAND == 'wikipedia':
                     try:
@@ -333,7 +333,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                         )
                     )
 
-                    await message.reply( # sends confirmation message to user
+                    await message.reply ( # sends confirmation message to user
                         embed = discord.Embed (
                             title = f'your feedback has been sent to {DEVELOPER}:',
                             description = f'```{SENTENCE}```',
@@ -345,7 +345,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                         ),
                         view=Delete_Button(),
                         mention_author=False
-                    ) 
+                    )
                 
                 elif COMMAND == 'len' or COMMAND == 'length':
                     await message.reply (
