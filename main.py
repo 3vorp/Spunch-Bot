@@ -129,7 +129,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}crimes`: show all of my crimes''', color = EMBED_COLOR).set_footer(text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_thumbnail(url=BIG_GIF), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}crimes`: show all of my crimes
+— `{PREFIX}nut`: sacrifice NUT to me''', color = EMBED_COLOR).set_footer(text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_thumbnail(url=BIG_GIF), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
 
 
             # every command that requires arguments goes here
