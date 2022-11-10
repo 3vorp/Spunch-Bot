@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random, json
+import discord, os, wikipedia, random, json, logging
 from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
@@ -14,8 +14,6 @@ EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embe
 BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
 TOKEN = os.getenv('TOKEN')
-
-
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
     with open(os.path.join(os.path.dirname(__file__), 'database.json'), 'w', encoding='utf-8') as db:
@@ -168,4 +166,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-client.run(TOKEN)
+client.run(TOKEN, log_handler=logging.FileHandler(filename=(os.path.join(os.path.dirname(__file__), 'discord.log')), encoding='utf-8', mode='w'))
