@@ -34,7 +34,17 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
         STARTUP_CHANNEL = client.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
-        await STARTUP_CHANNEL.send(embed = discord.Embed(title = f'hello i\'m alive now',description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```',color = EMBED_COLOR).set_footer(text=f'Online as {client.user}',icon_url=EMBED_ICON)) # sends startup message, you have to use the .split() and .join() methods because the strftime string by default has a double space which really bothered me
+        await STARTUP_CHANNEL.send (
+            embed = discord.Embed (
+                title = f'hello i\'m alive now',
+                description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```', # the redundant .join() and .split( ) methods removes a really annoying double space
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text=f'Online as {client.user}',
+                icon_url=EMBED_ICON
+            )
+        ) 
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
@@ -49,28 +59,73 @@ class Main(discord.Client):
 
 
         if 'baller' == SENTENCE:
-            await message.reply('https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', view=Delete_Button(), mention_author=False)
+            await message.reply (
+                'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4', 
+                view=Delete_Button(), 
+                mention_author=False
+            )
 
         if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
-            await message.reply(embed = discord.Embed(title='mhhh', description='```Uh-oh moment```', color = EMBED_COLOR).set_footer(text='Swahili → English',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
-            await message.channel.send('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
+            await message.reply (
+                embed = discord.Embed (
+                    title='mhhh', 
+                    description='```Uh-oh moment```', 
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text='Swahili → English',
+                    icon_url=EMBED_ICON
+                ),
+                view=Delete_Button(), 
+                mention_author=False
+            )
+            await message.channel.send ('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
         
         if 'spongeboy' == SENTENCE:
-            await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=BIG_GIF), view = Delete_Button(), mention_author=False)
+            await message.reply (
+                embed=discord.Embed (
+                    color=EMBED_COLOR
+                )
+                .set_image (
+                    url=BIG_GIF
+                ), 
+                view = Delete_Button(), 
+                mention_author=False
+            )
         
         if 'hello there' == SENTENCE:
-            PROBABILITY=random.randint(0,5) # special chance for easter egg
+            PROBABILITY = random.randint(0,5) # special chance for easter egg
             if PROBABILITY == 0:
                 url = 'https://i.imgur.com/hAuUsnD.png'
             else:
                 url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
 
-            await message.reply(embed=discord.Embed(color=EMBED_COLOR).set_image(url=url),view=Delete_Button(),mention_author=False)
+            await message.reply (
+                embed=discord.Embed (
+                    color=EMBED_COLOR
+                )
+                .set_image (
+                    url=url
+                ),
+                view=Delete_Button(),
+                mention_author=False)
         
         if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
             DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
             await write_database()
-            await message.reply(embed=discord.Embed(title='you have sacrificed NUT',description='this will make a fine addition to my collection',color=EMBED_COLOR).set_footer(text=f'total nuts collected: {DATABASE["nut_count"]}',icon_url=EMBED_ICON),view=Delete_Button(),mention_author=False)
+            await message.reply (
+                embed=discord.Embed (
+                    title='you have sacrificed NUT',
+                    description='this will make a fine addition to my collection',
+                    color=EMBED_COLOR
+                )
+                .set_footer (
+                    text=f'total nuts collected: {DATABASE["nut_count"]}',
+                    icon_url=EMBED_ICON
+                ),
+                view=Delete_Button(),
+                mention_author=False
+            )
 
 
         elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
@@ -91,25 +146,84 @@ class Main(discord.Client):
                     WORD_LIST = [random.choice(['rock','paper','scissors'])] # if user provides no arguments it just randomly chooses for them
 
                 if BOT_ANSWER == WORD_LIST[0]: # uses WORD_LIST as opposed to SENTENCE so that if you send multiple arguments it just ignores the rest, also WORD_LIST removes case sensitivity
-                    await message.reply(embed = discord.Embed(title= 'it\'s a tie', description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                    await message.reply (
+                        embed = discord.Embed (
+                            title = 'it\'s a tie', 
+                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', 
+                            color=EMBED_COLOR
+                        ),
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
 
                 elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
-                    await message.reply(embed = discord.Embed(title= 'you win', description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                    await message.reply (
+                        embed = discord.Embed (
+                            title = 'you win', 
+                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color=EMBED_COLOR
+                        ), 
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
 
                 elif (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock'): # pain II
-                    await message.reply(embed = discord.Embed(title= 'i win', description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                    await message.reply (
+                        embed = discord.Embed (
+                            title= 'i win', 
+                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}', 
+                            color=EMBED_COLOR
+                        ), 
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
 
                 else:
-                    await message.reply(embed = discord.Embed(title='that wasn\'t an option so I automatically win :sunglasses:',description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',color=EMBED_COLOR), view=Delete_Button(), mention_author=False)
+                    await message.reply (
+                        embed = discord.Embed (
+                            title='that wasn\'t an option so I automatically win :sunglasses:',
+                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color=EMBED_COLOR
+                        ), 
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
             
             elif COMMAND == 'github':
-                await message.reply(embed=discord.Embed(title='you can find my code on github here:',description='https://github.com/3vorp/Spunch-Bot',color=EMBED_COLOR).set_footer(text='fair warning that it\'s is a dumpster fire to read through',icon_url=EMBED_ICON),view=Delete_Button(), mention_author=False)
+                await message.reply (
+                    embed=discord.Embed (
+                        title='you can find my code on github here:',
+                        description='https://github.com/3vorp/Spunch-Bot',
+                        color=EMBED_COLOR
+                    )
+                    .set_footer (
+                        text='fair warning that it\'s is a dumpster fire to read through',
+                        icon_url=EMBED_ICON
+                    ),
+                    view=Delete_Button(), 
+                    mention_author=False
+                )
             
             elif COMMAND == 'crimes':
-                await message.reply(embed=discord.Embed(title='officer i drop kicked that child in SELF DEFENSE',description='you gotta believe me',color=EMBED_COLOR).set_footer(text='what do you mean gotta go fast isn\'t a medical condition',icon_url=EMBED_ICON),view=Delete_Button(),mention_author=False)
+                await message.reply (
+                    embed=discord.Embed (
+                        title='officer i drop kicked that child in SELF DEFENSE',
+                        description='you gotta believe me',
+                        color=EMBED_COLOR
+                    )
+                    .set_footer (
+                        text='what do you mean gotta go fast isn\'t a medical condition',
+                        icon_url=EMBED_ICON
+                    ),
+                    view=Delete_Button(),
+                    mention_author=False
+                )
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
-                await message.reply (embed = discord.Embed(title = '**spunch bot**', description = f''' 
+                await message.reply (
+                    embed = discord.Embed (
+                        title = '**spunch bot**', 
+                        description = f''' 
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
@@ -128,7 +242,19 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}crimes`: show all of my crimes
-— `{PREFIX}nut`: sacrifice NUT to me''', color = EMBED_COLOR).set_footer(text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',icon_url=EMBED_ICON).set_thumbnail(url=BIG_GIF), view=Delete_Button(), mention_author=False) # praise f strings 2: electric boogaloo
+— `{PREFIX}nut`: sacrifice NUT to me''', # praise f strings 2: electric boogaloo
+                        color = EMBED_COLOR
+                    )
+                    .set_footer (
+                        text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
+                        icon_url=EMBED_ICON
+                    )
+                    .set_thumbnail (
+                        url=BIG_GIF
+                    ), 
+                    view=Delete_Button(), 
+                    mention_author=False
+                )
 
 
             # every command that requires arguments goes here
@@ -141,26 +267,107 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
                 elif COMMAND == 'wikipedia':
                     try:
-                        await message.reply(f'```{wikipedia.page(SENTENCE).content[0:1900]}```', view=Delete_Button(), mention_author=False) # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
+                        await message.reply ( # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
+                            f'```{wikipedia.page(SENTENCE).content[0:1900]}```', 
+                            view=Delete_Button(), 
+                            mention_author=False
+                        )
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
-                        await message.reply(embed = discord.Embed(title = 'insert helpful error name here', description='multiple/no wikipedia article found with that name', color = EMBED_COLOR).set_footer(text='you\'re still an absolute clampongus though', icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False)
+                        await message.reply (
+                            embed = discord.Embed (
+                                title = 'insert helpful error name here', 
+                                description='multiple/no wikipedia article found with that name', 
+                                color = EMBED_COLOR
+                            )
+                            .set_footer (
+                                text='you\'re still an absolute clampongus though', 
+                                icon_url=EMBED_ICON
+                            ), 
+                            view=Delete_Button(), 
+                            mention_author=False
+                        )
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
-                    await message.reply(embed = discord.Embed(title=SENTENCE, description=random.choice(['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']), color=EMBED_COLOR), view=Delete_Button(), mention_author=False) # picks random selection from these options
+                    await message.reply (
+                        embed = discord.Embed (
+                            title=SENTENCE, 
+                            description=random.choice (
+                                ['yes','no','maybe','idk','ask later','definitely','never','never ask me that again']
+                            ),
+                            color=EMBED_COLOR
+                        ), 
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
-                    await SUGGEST_CHANNEL.send(embed = discord.Embed(title = f'feedback sent by **{message.author}**:', description = f'sent in {message.channel.mention}: ```{SENTENCE}```', color = EMBED_COLOR).set_footer(text='idk maybe react to this if you complete it or something',icon_url=EMBED_ICON)) # sends to hardcoded suggestion channel
-                    await message.reply(embed = discord.Embed(title = f'your feedback has been sent to {DEVELOPER}:', description = f'```{SENTENCE}```',color = EMBED_COLOR).set_footer(text='in the meantime idk go touch grass',icon_url=EMBED_ICON), view=Delete_Button(), mention_author=False) # sends confirmation message to user
+                    await SUGGEST_CHANNEL.send ( # sends to hardcoded suggestion channel
+                        embed = discord.Embed (
+                            title = f'feedback sent by **{message.author}**:',
+                            description = f'sent in {message.channel.mention}: ```{SENTENCE}```', 
+                            color = EMBED_COLOR
+                        )
+                        .set_footer (
+                            text='idk maybe react to this if you complete it or something',
+                            icon_url=EMBED_ICON
+                        )
+                    )
+
+                    await message.reply( # sends confirmation message to user
+                        embed = discord.Embed (
+                            title = f'your feedback has been sent to {DEVELOPER}:', 
+                            description = f'```{SENTENCE}```',
+                            color = EMBED_COLOR
+                        )
+                        .set_footer (
+                            text='in the meantime idk go touch grass',
+                            icon_url=EMBED_ICON
+                        ), 
+                        view=Delete_Button(),
+                        mention_author=False
+                    ) 
                 
                 elif COMMAND == 'len' or COMMAND == 'length':
-                    await message.reply(embed = discord.Embed(title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:', description = f'```{SENTENCE}```',color=EMBED_COLOR),view=Delete_Button(),mention_author=False)
+                    await message.reply (
+                        embed = discord.Embed (
+                            title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:', 
+                            description = f'```{SENTENCE}```',
+                            color=EMBED_COLOR
+                        ),
+                        view=Delete_Button(),
+                        mention_author=False
+                    )
 
                 else:
-                    await message.reply(embed = discord.Embed(title='insert helpful error name here', description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',color=EMBED_COLOR).set_footer(text='you\'re still an absolute clampongus though', icon_url = EMBED_ICON), view=Delete_Button(), mention_author=False) # generic error handling
+                    await message.reply ( # generic error handling
+                        embed = discord.Embed (
+                            title='insert helpful error name here', 
+                            description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',
+                            color=EMBED_COLOR
+                        )
+                        .set_footer (
+                            text='you\'re still an absolute clampongus though', 
+                            icon_url = EMBED_ICON
+                        ), 
+                        view=Delete_Button(), 
+                        mention_author=False
+                    )
 
             else:
-                await message.reply(embed = discord.Embed(title='insert helpful error name here', description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',color=EMBED_COLOR).set_footer(text='you\'re still an absolute clampongus though', icon_url = EMBED_ICON), view=Delete_Button(), mention_author=False) # generic error handling 2
+                await message.reply ( # generic error handling 2
+                    embed = discord.Embed (
+                        title='insert helpful error name here', 
+                        description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',
+                        color=EMBED_COLOR
+                    )
+                    .set_footer (
+                        text='you\'re still an absolute clampongus though',
+                        icon_url = EMBED_ICON
+                    ), 
+                    view=Delete_Button(), 
+                    mention_author=False
+                )
 
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
