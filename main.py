@@ -5,13 +5,12 @@ load_dotenv()
 
 DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
     open (
-        os.path.join (os.path.dirname(__file__), 'database.json'),
+        os.path.join (os.path.dirname(__file__), 'database.json'), # gets absolute file path from the relative file path
         'r' # in reading mode
     )
     .read()
 )
 
-PREFIX = '~' # change this to change prefix
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
 EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
@@ -22,7 +21,7 @@ BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_ic
 TOKEN = os.getenv('TOKEN')
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
-    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding='utf-8') as db:
+    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding='utf-8') as db: # same thing as reading from the DB
         json.dump( # allows me to write everything into the json file
             DATABASE,
             db,
@@ -63,10 +62,15 @@ class Main(discord.Client):
         await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
-        SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
 
+        SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
+        try: 
+            PREFIX = DATABASE[f'prefix_{message.guild.id}']
+        except KeyError: # if there's no custom prefix set it just uses ~ as the default, change this if you want to change all prefixes
+            PREFIX = '~'
+        
         SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
 
 
@@ -174,8 +178,7 @@ class Main(discord.Client):
                         mention_author=False
                     )
 
-                elif (
-                    WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
+                elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
                     await message.reply (
                         embed = discord.Embed (
                             title = 'you win',
@@ -311,9 +314,16 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                     await message.reply (
                         embed = discord.Embed (
                             title=SENTENCE,
-                            description=random.choice (
-                                ['yes', 'no', 'maybe', 'idk', 'ask later', 'definitely', 'never', 'never ask me that again']
-                            ),
+                            description=random.choice ([ # you can add as many options as you want to this list
+                                'yes', 
+                                'no', 
+                                'maybe', 
+                                'idk', 
+                                'ask later', 
+                                'definitely', 
+                                'never', 
+                                'never ask me that again'
+                            ]),
                             color=EMBED_COLOR
                         ),
                         view=Delete_Button(),
@@ -347,7 +357,32 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                         mention_author=False
                     )
                 
-                elif COMMAND == 'len' or COMMAND == 'length':
+                elif COMMAND == 'prefix' or COMMAND == 'setprefix':
+                    if len(WORD_LIST[0]) == 1: # I know it's stupid but the way I search for prefixes requires it to only be one character
+                        DATABASE[f'prefix_{message.guild.id}'] = f'{WORD_LIST[0]}' # writes the prefix to the DATABASE dictionary variable
+                        await write_database() # writes the DATABASE dictionary into the database.json file
+                        await message.reply (
+                            embed = discord.Embed (
+                                title=f'server prefix changed to {WORD_LIST[0]}',
+                                description='you can change it back using this command and the desired prefix',
+                                color=EMBED_COLOR
+                            ),
+                            view=Delete_Button(),
+                            mention_author=False
+                        )
+
+                    else: # catches in case you send too much stuff
+                        await message.reply (
+                            embed = discord.Embed (
+                                title='the prefix has to be exactly one character',
+                                description='i know it\'s stupid but there\'s some technical limitations that I hate just as much as you',
+                                color=EMBED_COLOR
+                            ),
+                            view=Delete_Button(),
+                            mention_author=False
+                        )
+                
+                elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
                     await message.reply (
                         embed = discord.Embed (
                             title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
@@ -392,12 +427,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents=intents)
 
-client.run (
-    TOKEN,
-    log_handler=logging.FileHandler (
-        filename = (os.path.join(os.path.dirname(__file__), 'discord.log')),
-        encoding='utf-8',
-        mode='w'
-    ),
-    log_level=logging.DEBUG
-)
+client.run (TOKEN)
