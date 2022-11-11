@@ -52,7 +52,7 @@ class Main(discord.Client):
         await STARTUP_CHANNEL.send (
             embed = discord.Embed (
                 title = f'hello i\'m alive now',
-                description=f'```started at {" ".join(datetime.now().strftime("%c").split( ))}```', # the redundant .join() and .split( ) methods removes a really annoying double space
+                description=f'```started at {" ".join(datetime.now().strftime("%c").split())}```', # the redundant .join() and .split() methods removes a really annoying double space
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -152,7 +152,7 @@ class Main(discord.Client):
 
 
         elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
-            WORD_LIST=message.content[1:].lower().split( ) # removes the prefix and any uppercase, splits contents into list
+            WORD_LIST=message.content[1:].lower().split() # removes the prefix and any uppercase, splits contents into list
             COMMAND=WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
             SENTENCE=message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
@@ -246,7 +246,7 @@ class Main(discord.Client):
                 await message.reply (
                     embed = discord.Embed (
                         title = '**spunch bot**',
-                        description = f''' 
+                        description = f'''
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
