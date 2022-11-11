@@ -11,6 +11,7 @@ DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
     .read()
 )
 
+DEFAULT_PREFIX = '~' # change this to change the default prefix if the server hasn't set one
 DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
 EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
 EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
@@ -68,8 +69,8 @@ class Main(discord.Client):
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
         try: 
             PREFIX = DATABASE[f'prefix_{message.guild.id}']
-        except KeyError: # if there's no custom prefix set it just uses ~ as the default, change this if you want to change all prefixes
-            PREFIX = '~'
+        except KeyError: # all of this code essentially just checks if a server prefix already exists, if it does then it uses that, if it doesn't it set it to the DEFAULT_PREFIX
+            PREFIX = DEFAULT_PREFIX
         
         SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
 
@@ -414,7 +415,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                     await message.reply ( # generic error handling
                         embed = discord.Embed (
                             title='insert helpful error name here',
-                            description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',
+                            description=f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
                             color=EMBED_COLOR
                         )
                         .set_footer (
@@ -429,7 +430,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                 await message.reply ( # generic error handling 2
                     embed = discord.Embed (
                         title='insert helpful error name here',
-                        description='too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command',
+                        description=f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
                         color=EMBED_COLOR
                     )
                     .set_footer (
