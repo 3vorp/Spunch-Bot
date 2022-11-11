@@ -363,7 +363,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                     if WORD_LIST[0] == 'reset':
                         try:
                             del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
-                            await write_database() # wries the DATABASE dictionbary into the actual json file
+                            await write_database() # writes the DATABASE dictionary into the actual json file
                             await message.reply (
                                 embed = discord.Embed (
                                     title='server prefix has been reset',
@@ -388,7 +388,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                                 mention_author=False
                             )
                     else:
-                        DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE[0]}' # writes the prefix to the DATABASE dictionary variable
+                        DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE[0]}' # writes the prefix to the DATABASE dictionary variable using the guild id as a key
                         await write_database() # writes the DATABASE dictionary into the database.json file
                         await message.reply (
                             embed = discord.Embed (
