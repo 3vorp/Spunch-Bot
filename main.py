@@ -285,8 +285,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
             elif len(WORD_LIST) >= 1: # deletes original message and sends the sentence back
                 if COMMAND == 'say':
-                    await message.delete ()
-                    await message.channel.send (SENTENCE)
+                    await message.delete()
+                    await message.channel.send(SENTENCE)
 
                 elif COMMAND == 'wikipedia':
                     try:
@@ -444,4 +444,4 @@ intents = discord.Intents.default() # I have no idea what any of this does but i
 intents.message_content = True
 client = Main(intents = intents)
 
-client.run (TOKEN)
+client.run(TOKEN)
