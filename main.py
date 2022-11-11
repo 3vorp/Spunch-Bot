@@ -1,5 +1,4 @@
-import discord, os, wikipedia, random, json
-from datetime import datetime # used for startup message
+import discord, os, wikipedia, random, json, datetime
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
 
