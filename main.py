@@ -367,7 +367,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                             await message.reply (
                                 embed = discord.Embed (
                                     title='server prefix has been reset',
-                                    description=f'you can set it again using `{PREFIX}prefix <prefix>`',
+                                    description=f'default prefix is {DEFAULT_PREFIX}',
                                     color=EMBED_COLOR
                                 ),
                                 view=Delete_Button(),
