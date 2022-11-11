@@ -21,12 +21,12 @@ BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_ic
 TOKEN = os.getenv('TOKEN')
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
-    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding='utf-8') as db: # same thing as reading from the DB
+    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding = 'utf-8') as db: # same thing as reading from the DB
         json.dump( # allows me to write everything into the json file
             DATABASE,
             db,
-            ensure_ascii=False,
-            indent=4
+            ensure_ascii = False,
+            indent = 4
         )
     return # idk if this is necessary but I don't want to mess things up because of the whole async await thing
 
@@ -51,15 +51,15 @@ class Main(discord.Client):
         await STARTUP_CHANNEL.send (
             embed = discord.Embed (
                 title = f'hello i\'m alive now',
-                description=f'```started at {" ".join(datetime.now().strftime("%c").split())}```', # the redundant .join() and .split() methods removes a really annoying double space
+                description = f'```started at {" ".join(datetime.now().strftime("%c").split())}```', # the redundant .join() and .split() methods removes a really annoying double space
                 color = EMBED_COLOR
             )
             .set_footer (
-                text=f'Online as {client.user}',
-                icon_url=EMBED_ICON
+                text = f'Online as {client.user}',
+                icon_url = EMBED_ICON
             )
         )
-        await client.change_presence(activity=discord.Game('spongeboy gif on repeat')) # discord activity
+        await client.change_presence(activity = discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
@@ -80,37 +80,37 @@ class Main(discord.Client):
         if 'baller' == SENTENCE:
             await message.reply (
                 'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
-                view=Delete_Button(),
-                mention_author=False
+                view = Delete_Button(),
+                mention_author = False
             )
 
         if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
             await message.reply (
                 embed = discord.Embed (
-                    title='mhhh',
-                    description='```Uh-oh moment```',
+                    title = 'mhhh',
+                    description = '```Uh-oh moment```',
                     color = EMBED_COLOR
                 )
                 .set_footer (
-                    text='Swahili → English',
-                    icon_url=EMBED_ICON
+                    text = 'Swahili → English',
+                    icon_url = EMBED_ICON
                 ),
-                view=Delete_Button(),
-                mention_author=False
+                view = Delete_Button(),
+                mention_author = False
             )
 
             await message.channel.send ('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
         
         if 'spongeboy' == SENTENCE:
             await message.reply (
-                embed=discord.Embed (
-                    color=EMBED_COLOR
+                embed = discord.Embed (
+                    color = EMBED_COLOR
                 )
                 .set_image (
-                    url=BIG_GIF
+                    url = BIG_GIF
                 ),
                 view = Delete_Button(),
-                mention_author=False
+                mention_author = False
             )
         
         if 'hello there' == SENTENCE:
@@ -121,14 +121,14 @@ class Main(discord.Client):
                 url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
 
             await message.reply (
-                embed=discord.Embed (
-                    color=EMBED_COLOR
+                embed = discord.Embed (
+                    color = EMBED_COLOR
                 )
                 .set_image (
-                    url=url
+                    url = url
                 ),
-                view=Delete_Button(),
-                mention_author=False
+                view = Delete_Button(),
+                mention_author = False
             )
         
         if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
@@ -136,25 +136,25 @@ class Main(discord.Client):
             await write_database()
             
             await message.reply (
-                embed=discord.Embed (
-                    title='you have sacrificed NUT',
-                    description='this will make a fine addition to my collection',
-                    color=EMBED_COLOR
+                embed = discord.Embed (
+                    title = 'you have sacrificed NUT',
+                    description = 'this will make a fine addition to my collection',
+                    color = EMBED_COLOR
                 )
                 .set_footer (
-                    text=f'total nuts collected: {DATABASE["nut_count"]}',
-                    icon_url=EMBED_ICON
+                    text = f'total nuts collected: {DATABASE["nut_count"]}',
+                    icon_url = EMBED_ICON
                 ),
-                view=Delete_Button(),
-                mention_author=False
+                view = Delete_Button(),
+                mention_author = False
             )
 
 
         elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
-            WORD_LIST=message.content[1:].lower().split() # removes the prefix and any uppercase, splits contents into list
-            COMMAND=WORD_LIST[0] # gets the command portion
+            WORD_LIST = message.content[1:].lower().split() # removes the prefix and any uppercase, splits contents into list
+            COMMAND = WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE=message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+            SENTENCE = message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
 
             # use WORD_LIST for list (lowercase), use SENTENCE for string (exactly as user sent it), use COMMAND for command (literally just the first word)
 
@@ -163,7 +163,7 @@ class Main(discord.Client):
 
 
             if COMMAND == 'rps': # needs to be outside the arguments passed if condition because the bot can automatically provide one if no arguments are passed
-                BOT_ANSWER=random.choice(['rock', 'paper', 'scissors']) # works same way as 8ball, randomly chooses from list
+                BOT_ANSWER = random.choice(['rock', 'paper', 'scissors']) # works same way as 8ball, randomly chooses from list
                 if SENTENCE == '':
                     WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])] # if user provides no arguments it just randomly chooses for them
 
@@ -171,74 +171,74 @@ class Main(discord.Client):
                     await message.reply (
                         embed = discord.Embed (
                             title = 'it\'s a tie',
-                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                            color=EMBED_COLOR
+                            description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
                 elif (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors'): # pain
                     await message.reply (
                         embed = discord.Embed (
                             title = 'you win',
-                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                            color=EMBED_COLOR
+                            description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
                 elif (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock'): # pain II
                     await message.reply (
                         embed = discord.Embed (
-                            title= 'i win',
-                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                            color=EMBED_COLOR
+                            title = 'i win',
+                            description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
                 else:
                     await message.reply (
                         embed = discord.Embed (
-                            title='that wasn\'t an option so I automatically win :sunglasses:',
-                            description=f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                            color=EMBED_COLOR
+                            title = 'that wasn\'t an option so I automatically win :sunglasses:',
+                            description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
             
             elif COMMAND == 'github':
                 await message.reply (
-                    embed=discord.Embed (
-                        title='you can find my code on github here:',
-                        description='https://github.com/3vorp/Spunch-Bot',
-                        color=EMBED_COLOR
+                    embed = discord.Embed (
+                        title = 'you can find my code on github here:',
+                        description = 'https://github.com/3vorp/Spunch-Bot',
+                        color = EMBED_COLOR
                     )
                     .set_footer (
-                        text='fair warning that it\'s is a dumpster fire to read through',
-                        icon_url=EMBED_ICON
+                        text = 'fair warning that it\'s is a dumpster fire to read through',
+                        icon_url = EMBED_ICON
                     ),
-                    view=Delete_Button(),
-                    mention_author=False
+                    view = Delete_Button(),
+                    mention_author = False
                 )
             
             elif COMMAND == 'crimes':
                 await message.reply (
-                    embed=discord.Embed (
-                        title='officer i drop kicked that child in SELF DEFENSE',
-                        description='you gotta believe me',
-                        color=EMBED_COLOR
+                    embed = discord.Embed (
+                        title = 'officer i drop kicked that child in SELF DEFENSE',
+                        description = 'you gotta believe me',
+                        color = EMBED_COLOR
                     )
                     .set_footer (
-                        text='what do you mean gotta go fast isn\'t a medical condition',
-                        icon_url=EMBED_ICON
+                        text = 'what do you mean gotta go fast isn\'t a medical condition',
+                        icon_url = EMBED_ICON
                     ),
-                    view=Delete_Button(),
-                    mention_author=False
+                    view = Delete_Button(),
+                    mention_author = False
                 )
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
@@ -269,14 +269,14 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                         color = EMBED_COLOR
                     )
                     .set_footer (
-                        text=f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
-                        icon_url=EMBED_ICON
+                        text = f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
+                        icon_url = EMBED_ICON
                     )
                     .set_thumbnail (
-                        url=BIG_GIF
+                        url = BIG_GIF
                     ),
-                    view=Delete_Button(),
-                    mention_author=False
+                    view = Delete_Button(),
+                    mention_author = False
                 )
 
 
@@ -292,30 +292,30 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                     try:
                         await message.reply ( # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
                             f'```{wikipedia.page(SENTENCE).content[0:1900]}```',
-                            view=Delete_Button(),
-                            mention_author=False
+                            view = Delete_Button(),
+                            mention_author = False
                         )
 
                     except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # if there's no article with that name catches error and gives info
                         await message.reply (
                             embed = discord.Embed (
                                 title = 'insert helpful error name here',
-                                description='multiple/no wikipedia article found with that name',
+                                description = 'multiple/no wikipedia article found with that name',
                                 color = EMBED_COLOR
                             )
                             .set_footer (
-                                text='you\'re still an absolute clampongus though',
-                                icon_url=EMBED_ICON
+                                text = 'you\'re still an absolute clampongus though',
+                                icon_url = EMBED_ICON
                             ),
-                            view=Delete_Button(),
-                            mention_author=False
+                            view = Delete_Button(),
+                            mention_author = False
                         )
 
                 elif COMMAND == '8ball' or COMMAND == 'ball':
                     await message.reply (
                         embed = discord.Embed (
-                            title=SENTENCE,
-                            description=random.choice ([ # you can add as many options as you want to this list
+                            title = SENTENCE,
+                            description = random.choice ([ # you can add as many options as you want to this list
                                 'yes', 
                                 'no', 
                                 'maybe', 
@@ -325,10 +325,10 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                                 'never', 
                                 'never ask me that again'
                             ]),
-                            color=EMBED_COLOR
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
                 elif COMMAND == 'suggest' or COMMAND == 'feedback':
@@ -339,8 +339,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                             color = EMBED_COLOR
                         )
                         .set_footer (
-                            text='idk maybe react to this if you complete it or something',
-                            icon_url=EMBED_ICON
+                            text = 'idk maybe react to this if you complete it or something',
+                            icon_url = EMBED_ICON
                         )
                     )
 
@@ -351,11 +351,11 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                             color = EMBED_COLOR
                         )
                         .set_footer (
-                            text='in the meantime idk go touch grass',
-                            icon_url=EMBED_ICON
+                            text = 'in the meantime idk go touch grass',
+                            icon_url = EMBED_ICON
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
                 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
@@ -365,83 +365,83 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                             await write_database() # writes the DATABASE dictionary into the actual json file
                             await message.reply (
                                 embed = discord.Embed (
-                                    title='server prefix has been reset',
-                                    description=f'default prefix is {DEFAULT_PREFIX}',
-                                    color=EMBED_COLOR
+                                    title = 'server prefix has been reset',
+                                    description = f'default prefix is {DEFAULT_PREFIX}',
+                                    color = EMBED_COLOR
                                 ),
-                                view=Delete_Button(),
-                                mention_author=False
+                                view = Delete_Button(),
+                                mention_author = False
                             )
                         except KeyError:
                             await message.reply (
                                 embed = discord.Embed (
-                                    title='insert helpful error name here',
+                                    title = 'insert helpful error name here',
                                     description = 'there was no prefix set for this server',
-                                    color=EMBED_COLOR
+                                    color = EMBED_COLOR
                                 )
                                 .set_footer (
-                                text='you\'re still an absolute clampongus though',
-                                icon_url=EMBED_ICON
+                                text = 'you\'re still an absolute clampongus though',
+                                icon_url = EMBED_ICON
                                 ),
-                                view=Delete_Button(),
-                                mention_author=False
+                                view = Delete_Button(),
+                                mention_author = False
                             )
                     else:
                         DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE[0]}' # writes the prefix to the DATABASE dictionary variable using the guild id as a key
                         await write_database() # writes the DATABASE dictionary into the database.json file
                         await message.reply (
                             embed = discord.Embed (
-                                title=f'server prefix changed to {WORD_LIST[0]}',
-                                description=f'you can change it back using `{PREFIX}prefix reset`',
-                                color=EMBED_COLOR
+                                title = f'server prefix changed to {WORD_LIST[0]}',
+                                description = f'you can change it back using `{PREFIX}prefix reset`',
+                                color = EMBED_COLOR
                             ),
-                            view=Delete_Button(),
-                            mention_author=False
+                            view = Delete_Button(),
+                            mention_author = False
                         )
                 
                 elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
                     await message.reply (
                         embed = discord.Embed (
-                            title=f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
+                            title = f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
                             description = f'```{SENTENCE}```',
-                            color=EMBED_COLOR
+                            color = EMBED_COLOR
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
                 else:
                     await message.reply ( # generic error handling
                         embed = discord.Embed (
-                            title='insert helpful error name here',
-                            description=f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
-                            color=EMBED_COLOR
+                            title = 'insert helpful error name here',
+                            description = f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
+                            color = EMBED_COLOR
                         )
                         .set_footer (
-                            text='you\'re still an absolute clampongus though',
+                            text = 'you\'re still an absolute clampongus though',
                             icon_url = EMBED_ICON
                         ),
-                        view=Delete_Button(),
-                        mention_author=False
+                        view = Delete_Button(),
+                        mention_author = False
                     )
 
             else:
                 await message.reply ( # generic error handling 2
                     embed = discord.Embed (
-                        title='insert helpful error name here',
-                        description=f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
-                        color=EMBED_COLOR
+                        title = 'insert helpful error name here',
+                        description = f'too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command\n\n**use `{PREFIX}help` for a list of commands**',
+                        color = EMBED_COLOR
                     )
                     .set_footer (
-                        text='you\'re still an absolute clampongus though',
+                        text = 'you\'re still an absolute clampongus though',
                         icon_url = EMBED_ICON
                     ),
-                    view=Delete_Button(),
-                    mention_author=False
+                    view = Delete_Button(),
+                    mention_author = False
                 )
 
 intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
 intents.message_content = True
-client = Main(intents=intents)
+client = Main(intents = intents)
 
 client.run (TOKEN)
