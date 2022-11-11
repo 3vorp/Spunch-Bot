@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random, json, logging
+import discord, os, wikipedia, random, json
 from datetime import datetime # used for startup message
 from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
 load_dotenv()
@@ -254,6 +254,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
 — `{PREFIX}wikipedia`: returns wikipedia article
 — `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
+— `{PREFIX}prefix`, `{PREFIX}setprefix`: change prefix for server, add `reset` to reset prefix
 — `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
 — `{PREFIX}github`: show github listing
 — `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
@@ -358,24 +359,40 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                     )
                 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-                    if len(WORD_LIST[0]) == 1: # I know it's stupid but the way I search for prefixes requires it to only be one character
-                        DATABASE[f'prefix_{message.guild.id}'] = f'{WORD_LIST[0]}' # writes the prefix to the DATABASE dictionary variable
+                    if WORD_LIST[0] == 'reset':
+                        try:
+                            del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
+                            await write_database() # wries the DATABASE dictionbary into the actual json file
+                            await message.reply (
+                                embed = discord.Embed (
+                                    title='server prefix has been reset',
+                                    description=f'you can set it again using `{PREFIX}prefix <prefix>`',
+                                    color=EMBED_COLOR
+                                ),
+                                view=Delete_Button(),
+                                mention_author=False
+                            )
+                        except KeyError:
+                            await message.reply (
+                                embed = discord.Embed (
+                                    title='insert helpful error name here',
+                                    description = 'there was no prefix set for this server',
+                                    color=EMBED_COLOR
+                                )
+                                .set_footer (
+                                text='you\'re still an absolute clampongus though',
+                                icon_url=EMBED_ICON
+                                ),
+                                view=Delete_Button(),
+                                mention_author=False
+                            )
+                    else:
+                        DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE[0]}' # writes the prefix to the DATABASE dictionary variable
                         await write_database() # writes the DATABASE dictionary into the database.json file
                         await message.reply (
                             embed = discord.Embed (
                                 title=f'server prefix changed to {WORD_LIST[0]}',
-                                description='you can change it back using this command and the desired prefix',
-                                color=EMBED_COLOR
-                            ),
-                            view=Delete_Button(),
-                            mention_author=False
-                        )
-
-                    else: # catches in case you send too much stuff
-                        await message.reply (
-                            embed = discord.Embed (
-                                title='the prefix has to be exactly one character',
-                                description='i know it\'s stupid but there\'s some technical limitations that I hate just as much as you',
+                                description=f'you can change it back using `{PREFIX}prefix reset`',
                                 color=EMBED_COLOR
                             ),
                             view=Delete_Button(),
