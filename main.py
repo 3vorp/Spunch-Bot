@@ -51,7 +51,7 @@ class Main(discord.Client):
         await STARTUP_CHANNEL.send (
             embed = discord.Embed (
                 title = f'hello i\'m alive now',
-                description = f'```started at {" ".join(datetime.now().strftime("%c").split())}```', # the redundant .join() and .split() methods removes a really annoying double space
+                description = f'```started at {" ".join(datetime.datetime.now().strftime("%c").split())}```', # the redundant .join() and .split() methods removes a really annoying double space
                 color = EMBED_COLOR
             )
             .set_footer (
