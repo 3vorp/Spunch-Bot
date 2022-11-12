@@ -1,6 +1,6 @@
-import discord, os, wikipedia, random, json, datetime
-from dotenv import load_dotenv # this is so that I don't have the token directly in the file because yeah
-load_dotenv()
+import discord, os, wikipedia, random, json, datetime, dotenv
+
+dotenv.load_dotenv() # this is so that I don't have the token directly in the file because yeah
 
 DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
     open (
