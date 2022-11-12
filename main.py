@@ -22,7 +22,7 @@ TOKEN = os.getenv('TOKEN')
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
     with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding = 'utf-8') as db: # same thing as reading from the DB
-        json.dump( # allows me to write everything into the json file
+        json.dump ( # allows me to write everything into the json file
             DATABASE,
             db,
             ensure_ascii = False,
@@ -262,6 +262,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 **fun:**
 
 — `{PREFIX}say`: say stuff with bot
+— `{PREFIX}embed`: like ~say but better
+> order of arguments HAS to be `title, description, color (hex), footer`, in a comma separated list. you can omit any of these by providing a space in the comma separated list
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}crimes`: show all of my crimes
@@ -398,6 +400,37 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                             view = Delete_Button(),
                             mention_author = False
                         )
+                
+                elif COMMAND == 'embed':
+                    ARG_LIST = SENTENCE.split(',') # uses commas for arguments so you can have spaces in the embed
+
+                    TITLE = ARG_LIST[0].strip()
+                    try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
+                        DESCRIPTION = ARG_LIST[1].strip()
+                    except IndexError:
+                        DESCRIPTION = ''
+                    try:
+                        COLOR = ARG_LIST[2].strip().lstrip('#')
+                        if COLOR != '':
+                            COLOR = int(COLOR, base=16)
+                        else:
+                            raise IndexError
+                    except IndexError:
+                        COLOR = EMBED_COLOR
+                    try:
+                        FOOTER = ARG_LIST[3].strip()
+                    except IndexError:
+                        FOOTER = ''
+
+                    await message.delete()
+                    await message.channel.send ( # doesn't use reply so you can't see the original message
+                        embed = discord.Embed (
+                            title = TITLE,
+                            description = DESCRIPTION,
+                            color = COLOR
+                        )
+                        .set_footer(text = FOOTER)
+                    )
                 
                 elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
                     await message.reply (
