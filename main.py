@@ -264,6 +264,8 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}embed`: like ~say but better
 > order of arguments HAS to be `title, description, color (hex), footer`, in a comma separated list. you can omit any of these by providing a space in the comma separated list
+> 
+> **example: `{PREFIX}embed this is a title, description, , and footer; but no color`**
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}crimes`: show all of my crimes
