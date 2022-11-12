@@ -404,32 +404,32 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
                 elif COMMAND == 'embed':
                     ARG_LIST = SENTENCE.split(',') # uses commas for arguments so you can have spaces in the embed
 
-                    TITLE = ARG_LIST[0].strip()
+                    TITLE = ARG_LIST[0]
                     try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
-                        DESCRIPTION = ARG_LIST[1].strip()
-                    except IndexError:
+                        DESCRIPTION = ARG_LIST[1]
+                    except IndexError: # if an argument isn't provided it raises an IndexError exception, so it will set it to blank instead
                         DESCRIPTION = ''
                     try:
-                        COLOR = ARG_LIST[2].strip().lstrip('#')
-                        if COLOR != '':
-                            COLOR = int(COLOR, base=16)
-                        else:
+                        COLOR = ARG_LIST[2].strip().lstrip('#') # removes trailing whitespaces because discord.py is VERY picky with hex
+                        if COLOR != '': 
+                            COLOR = int(COLOR, base=16) # converts into hex number/base 16
+                        else: #if no color is provided it would error above rather than just setting it to blank, so we just trigger the except here instead
                             raise IndexError
                     except IndexError:
                         COLOR = EMBED_COLOR
                     try:
-                        FOOTER = ARG_LIST[3].strip()
+                        FOOTER = ARG_LIST[3]
                     except IndexError:
                         FOOTER = ''
 
                     await message.delete()
                     await message.channel.send ( # doesn't use reply so you can't see the original message
-                        embed = discord.Embed (
+                        embed = discord.Embed ( # uses all the variables generated in that abomination above to create an embed
                             title = TITLE,
                             description = DESCRIPTION,
                             color = COLOR
                         )
-                        .set_footer(text = FOOTER)
+                        .set_footer(text = FOOTER) # no image or thumbnail support yet because I'm too lazy to set up yet more try/excepts, maybe some day lol
                     )
                 
                 elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
