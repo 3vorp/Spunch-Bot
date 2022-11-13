@@ -9,7 +9,13 @@ use at your own risk lol
 requirements
 
 - have python installed (who would have guessed)
-- check the first line of the `main.py` file for specific libraries and modules to install via pip
+- the following libraries:
+    - discord.py (obviously)
+    - random (used for 8ball command and a few other things)
+    - wikipedia (used for wikipedia command)
+    - json (used for the database)
+    - datetime (used for startup message)
+    - dotenv (used for bot token)
 
 go make a discord app at https://discord.com/developers
 
