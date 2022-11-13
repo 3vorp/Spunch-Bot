@@ -274,7 +274,7 @@ class Main(discord.Client):
                 elif COMMAND == 'wikipedia':
                     try:
                         await message.reply ( # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
-                            f'```{wikipedia.page(SENTENCE).content[0:1900]}```',
+                            f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # doesn't use embed to save screen space
                             view = Delete_Button(),
                             mention_author = False
                         )
@@ -340,8 +340,9 @@ class Main(discord.Client):
                         view = Delete_Button(),
                         mention_author = False
                     )
-                    
+
                 elif COMMAND == 'help':
+                    flag = False
                     for i in help_strings.help_list: # iterates through the main command list
                         if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                             await message.reply (
@@ -360,6 +361,24 @@ class Main(discord.Client):
                                 view = Delete_Button(),
                                 mention_author = False
                             )
+
+                            flag = True
+                            break # otherwise it's just wasting resources lol
+
+                    if flag == False: # there's probably a better way to check if there were no matches but this works too
+                        await message.reply (
+                            embed = discord.Embed (
+                                title = 'insert helpful error name here',
+                                description = f'no command with that name was found, use {PREFIX}help for the full list',
+                                color = EMBED_COLOR
+                            )
+                            .set_footer (
+                            text = 'you\'re still an absolute clampongus though',
+                            icon_url = EMBED_ICON
+                            ),
+                            view = Delete_Button(),
+                            mention_author = False
+                        )
 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
                     if WORD_LIST[0] == 'reset':
