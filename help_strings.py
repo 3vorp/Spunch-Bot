@@ -15,7 +15,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}prefix`, `{PREFIX}setprefix`: change prefix for server, add `reset` to reset prefix
 — `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
 — `{PREFIX}github`: show github listing
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
+— `{PREFIX}help`, `{PREFIX}info`: if no command mentioned shows main help message, otherwise shows specific help for that command
 
 **fun:**
 
@@ -39,7 +39,6 @@ returns wikipedia article
 ```
 {PREFIX}wikipedia <wikipedia article>
 ```
-
 **EXAMPLE:**
 ```
 {PREFIX}wikipedia discordapp
@@ -82,7 +81,6 @@ add reset to reset the prefix (obviously)
 {PREFIX}prefix reset
 {PREFIX}setprefix reset
 ```
-
 **EXAMPLES:**
 ```
 {PREFIX}setprefix .
@@ -106,9 +104,37 @@ return word and character count of string
 ```
 **EXAMPLE:**
 ```
-{PREFIX}len this is a string of text
+{PREFIX}length this is a string of text
 ```
 '''
-], [('github',)
+
+], [('github',),
+
+'''
+show github listing
+
+**SYNTAX:**
+```
+{PREFIX}github
+```
+'''
+], [('help','info'),
+
+'''
+if no command mentioned, shows main help message
+
+otherwise, shows specific help for that command
+
+**SYNTAX:**
+```
+{PREFIX}help
+{PREFIX}help <command>
+```
+**EXAMPLE:**
+```
+{PREFIX}help wikipedia
+```
+'''
+
 ]
 ]
