@@ -3,8 +3,6 @@
 all = '''
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
-**For specific commands, run `{PREFIX}help <command>`
-
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
 **utility:**
@@ -22,7 +20,11 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}embed`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}nut`: sacrifice NUT to me''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
+— `{PREFIX}nut`: sacrifice NUT to me
+
+**specific info for a command can be found by running**
+```{PREFIX}help <command>```
+''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
 
 #using 2d lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
 
@@ -171,15 +173,17 @@ generates a custom embed
 ```
 **NOTES:**
 
-to omit a portion (e.g. you don't want a description), just replace that entry in the list with a space:
+to omit a portion (e.g. if you don't want to add a description), just replace that entry in the list with a space
+
+**keep the commas for ordering purposes, just leave the area between them blank**
 ```
 {PREFIX}embed title, ,#00ff00, no description will be loaded
 ```
-you can do this multiple times as well:
+you can do this multiple times in a row as well:
 ```
 {PREFIX}embed now it will just use the default yellow color,,, footer
 ```
-you can also omit stuff at the end completely, if you just want a title and description just do this:
+you can also omit stuff at the end completely if you don't want a footer and/or color
 ```
 {PREFIX}embed example title, no footer necessary
 ```
@@ -217,6 +221,7 @@ rock paper scissors against spunch bot
 ```
 **EXAMPLES:**
 ```
+{PREFIX}rps
 {PREFIX}rps rock
 {PREFIX}rps paper
 {PREFIX}rps scissors
@@ -226,5 +231,15 @@ rock paper scissors against spunch bot
 if you don't specify what you're playing spunch bot will decide for you randomly
 '''
 
+], [('nut'),
+
+'''
+sacrifice NUT to me, adds one to global counter
+
+**SYNTAX:**
+```
+{PREFIX}nut
+```
+'''
 ]
 ]
