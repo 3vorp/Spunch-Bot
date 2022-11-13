@@ -32,9 +32,6 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
             ensure_ascii = False,
             indent = 4
         )
-    return # idk if this is necessary but I don't want to mess things up because of the whole async await thing
-
-
 
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
@@ -118,8 +115,7 @@ class Main(discord.Client):
             )
         
         if 'hello there' == SENTENCE:
-            PROBABILITY = random.randint(0, 5) # special chance for easter egg
-            if PROBABILITY == 0:
+            if random.randint(0, 5) == 0: # special chance for easter egg
                 url = 'https://i.imgur.com/hAuUsnD.png'
             else:
                 url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
