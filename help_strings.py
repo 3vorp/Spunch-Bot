@@ -83,7 +83,7 @@ add reset to reset the prefix (obviously)
 ```
 **EXAMPLES:**
 ```
-{PREFIX}setprefix .
+{PREFIX}setprefix !
 {PREFIX}prefix reset
 ```
 
@@ -231,7 +231,7 @@ rock paper scissors against spunch bot
 if you don't specify what you're playing spunch bot will decide for you randomly
 '''
 
-], [('nut'),
+], [('nut',),
 
 '''
 sacrifice NUT to me, adds one to global counter
