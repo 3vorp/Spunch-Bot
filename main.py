@@ -249,7 +249,7 @@ class Main(discord.Client):
                 await message.reply (
                     embed = discord.Embed (
                         title = '**spunch bot**',
-                        description = eval(f'f"""{help_strings.all}"""'), # have to convert to f string because help_strings doesn't recognize PREFIX and DEVELOPER as variables
+                        description = eval(f'f"""{help_strings.all}"""'), # have to convert to f string using eval() because help_strings doesn't recognize PREFIX and DEVELOPER as variables
                         color = EMBED_COLOR
                     )
                     .set_footer (
@@ -350,9 +350,9 @@ class Main(discord.Client):
                     for i in help_strings.help_list: # iterates through the main command list
                         if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                             await message.reply (
-                                embed = discord.Embed (
-                                    title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # same reason for eval as the main help command, the [1] is because the second index is always the title
-                                    description = eval(f'f"""{i[1]}"""'), # the third index is always the description
+                                embed = discord.Embed ( # same reason for using eval() as in the main help command
+                                    title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # the first [0] is to get the first entry of the sub-list (the tuple with the aliases and title), the second is to get the first value
+                                    description = eval(f'f"""{i[1]}"""'), # the [1] is for the description, no second index is necessary as there's no tuple to sort through
                                     color = EMBED_COLOR
                                 )
                                 .set_footer (
