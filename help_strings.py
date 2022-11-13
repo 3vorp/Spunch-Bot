@@ -29,10 +29,10 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 # yes this should probably be a dictionary but it makes iterating through the loop a lot easier imo
 
 help_list = [ # I know this is hard to read but it's a lot better than having it all in one file so oh well
+
 # order of arguments: what should be in the command itself, title, description
     [
-        'wikipedia',
-        'help for {PREFIX}wikipedia',
+        ('wikipedia',), # even when there's no aliases it has to be in a tuple to be correctly parsed
         '''
 returns wikipedia article
 
@@ -51,8 +51,7 @@ if no/multiple wikipedia articles are found it will raise an error, you have to 
         '''
     ],
     [
-        ('feedback','suggest'),
-        'help for {PREFIX}feedback',
+        ('feedback','suggest'), # the first entry in the tuple is always the one displayed in the title
         '''
 suggest stuff to implement
 
@@ -72,7 +71,6 @@ there is currently no way to see if feedback has been accepted, but this is plan
     ],
     [
         ('prefix','setprefix'),
-        'help for {PREFIX}prefix',
         '''
 set prefix for current server
 
@@ -95,20 +93,26 @@ add reset to reset the prefix (obviously)
 **NOTES:**
 
 prefix can only be one character long due to how i wrote basically the entire bot
+
         '''
     ],
     [
         ('length','len'),
-        'help for {PREFIX}length',
         '''
 return word and character count of string
 
 **SYNTAX:**
+```
 {PREFIX}length <message>
 {PREFIX}len <message>
-
+```
 **EXAMPLE:**
+```
 {PREFIX}len this is a string of text
+```
         '''
+    ],
+    [
+        ('github',)
     ]
 ]

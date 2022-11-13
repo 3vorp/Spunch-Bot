@@ -351,8 +351,8 @@ class Main(discord.Client):
                         if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                             await message.reply (
                                 embed = discord.Embed (
-                                    title = eval(f'f"""{i[1]}"""'), # same reason for eval as the main help command, the [1] is because the second index is always the title
-                                    description = eval(f'f"""{i[2]}"""'), # the third index is always the description
+                                    title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # same reason for eval as the main help command, the [1] is because the second index is always the title
+                                    description = eval(f'f"""{i[1]}"""'), # the third index is always the description
                                     color = EMBED_COLOR
                                 )
                                 .set_footer (
