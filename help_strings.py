@@ -20,7 +20,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 **fun:**
 
 — `{PREFIX}say`: say stuff with bot
-— `{PREFIX}embed`: like ~say but better (use `{PREFIX}help embed` for the specific syntax required)
+— `{PREFIX}embed`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}crimes`: show all of my crimes
@@ -118,6 +118,7 @@ show github listing
 {PREFIX}github
 ```
 '''
+
 ], [('help','info'),
 
 '''
@@ -134,6 +135,54 @@ otherwise, shows specific help for that command
 ```
 {PREFIX}help wikipedia
 ```
+'''
+
+], # fun section
+
+[('say',),
+
+'''
+make the bot say stuff
+
+**SYNTAX:**
+```
+{PREFIX}say <message>
+```
+**EXAMPLE:**
+```
+{PREFIX}say sentience acquired
+```
+'''
+
+], [('embed',),
+
+'''
+like `{PREFIX}say`, but better
+
+generates a custom embed
+**SYNTAX:**
+```
+{PREFIX}embed <title>,<description>,<color>,<footer>
+```
+**EXAMPLE:**
+```
+{PREFIX}embed this is an example embed, epic description that **supports markdown**, #7289DA, epic small text
+```
+**NOTES:**
+
+to omit a portion (e.g. you don't want a description), just replace that entry in the list with a space:
+```
+{PREFIX}embed title, ,#00ff00, no description will be loaded
+```
+you can do this multiple times as well:
+```
+{PREFIX}embed now it will just use the default yellow color,,, footer
+```
+you can also omit stuff at the end completely, if you just want a title and description just do this:
+```
+{PREFIX}embed example title, no footer necessary
+```
+
 '''
 
 ]
