@@ -259,12 +259,15 @@ class Main(discord.Client):
                     mention_author = False
                 )
 
+            elif len(WORD_LIST) >= 1:
 
-            # every command that requires arguments goes here
 
 
-            elif len(WORD_LIST) >= 1: # deletes original message and sends the sentence back
-                if COMMAND == 'say':
+                # every command that requires arguments goes here
+
+
+
+                if COMMAND == 'say': # deletes original message and sends the sentence back
                     await message.delete()
                     await message.channel.send(SENTENCE)
 
