@@ -4,6 +4,8 @@ import config
 all='''
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
+**For specific commands, run `{PREFIX}help <command>`
+
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
 **utility:**
@@ -26,3 +28,52 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}crimes`: show all of my crimes
 — `{PREFIX}nut`: sacrifice NUT to me''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
+
+help_list = [ # I know this is hard to read but it's a lot better than having it all in one file so oh well
+# order of arguments: what should be in the command itself, title, description
+
+
+    [
+        'wikipedia',
+        'help for {PREFIX}wikipedia',
+        '''
+returns wikipedia article
+
+**SYNTAX:**
+```
+{PREFIX}wikipedia <wikipedia article>
+```
+
+**EXAMPLE:**
+```
+{PREFIX}wikipedia discordapp
+```
+**NOTES:**
+
+if no/multiple wikipedia articles are found it will raise an error, you have to be really specific for some reason idk blame the library I used
+        '''
+    ],
+
+
+
+    [
+        ('feedback','suggest'),
+        'help for {PREFIX}feedback',
+        '''
+suggest stuff to implement
+
+**SYNTAX:**
+```
+{PREFIX}feedback <suggestion(s)>
+{PREFIX}suggest <suggestion(s)>
+```
+**EXAMPLE:**
+```
+{PREFIX}feedback add actually decent errors
+```
+**NOTES:**
+
+there is currently no way to see if feedback has been accepted, but this is planned for the future
+        '''
+    ]
+]

@@ -340,7 +340,27 @@ class Main(discord.Client):
                         view = Delete_Button(),
                         mention_author = False
                     )
-                
+                    
+                elif COMMAND == 'help':
+                    for i in help_strings.help_list: # iterates through the main command list
+                        if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
+                            await message.reply (
+                                embed = discord.Embed (
+                                    title = eval(f'f"""{i[1]}"""'), # same reason for eval as the main help command, the [1] is because the second index is always the title
+                                    description = eval(f'f"""{i[2]}"""'), # the third index is always the description
+                                    color = EMBED_COLOR
+                                )
+                                .set_footer (
+                                    text = f'go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
+                                    icon_url = EMBED_ICON
+                                )
+                                .set_thumbnail (
+                                    url = BIG_GIF
+                                ),
+                                view = Delete_Button(),
+                                mention_author = False
+                            )
+
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
                     if WORD_LIST[0] == 'reset':
                         try:
