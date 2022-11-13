@@ -165,7 +165,7 @@ generates a custom embed
 
 **SYNTAX:**
 ```
-{PREFIX}embed <title>,<description>,<color>,<footer>
+{PREFIX}embed <title>, <description>, <color>, <footer>
 ```
 **EXAMPLE:**
 ```
