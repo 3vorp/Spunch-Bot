@@ -1,4 +1,3 @@
-import config
 # I know this should probably be a json file but this is way easier to deal with so cope harder lol
 
 all = '''
@@ -23,7 +22,6 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}embed`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}crimes`: show all of my crimes
 — `{PREFIX}nut`: sacrifice NUT to me''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
 
 #using 2d lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
@@ -128,8 +126,10 @@ otherwise, shows specific help for that command
 
 **SYNTAX:**
 ```
-{PREFIX}help
 {PREFIX}help <command>
+{PREFIX}info <command>
+{PREFIX}help
+{PREFIX}info
 ```
 **EXAMPLE:**
 ```
@@ -160,6 +160,7 @@ make the bot say stuff
 like `{PREFIX}say`, but better
 
 generates a custom embed
+
 **SYNTAX:**
 ```
 {PREFIX}embed <title>,<description>,<color>,<footer>
@@ -182,7 +183,47 @@ you can also omit stuff at the end completely, if you just want a title and desc
 ```
 {PREFIX}embed example title, no footer necessary
 ```
+'''
 
+], [('8ball','ball'),
+
+'''
+random answers for random questions
+
+
+**SYNTAX:**
+```
+{PREFIX}8ball <question>
+{PREFIX}ball <question>
+```
+**EXAMPLE:**
+```
+{PREFIX}8ball is anything real
+```
+**NOTES:**
+
+questions have to be yes/no formatted for the bot to make sense
+'''
+
+], [('rps',),
+
+'''
+rock paper scissors against spunch bot
+
+**SYNTAX:**
+```
+{PREFIX}rps <choice>
+{PREFIX}rps
+```
+**EXAMPLES:**
+```
+{PREFIX}rps rock
+{PREFIX}rps paper
+{PREFIX}rps scissors
+```
+**NOTES:**
+
+if you don't specify what you're playing spunch bot will decide for you randomly
 '''
 
 ]

@@ -229,21 +229,6 @@ class Main(discord.Client):
                     view = Delete_Button(),
                     mention_author = False
                 )
-            
-            elif COMMAND == 'crimes':
-                await message.reply (
-                    embed = discord.Embed (
-                        title = 'officer i drop kicked that child in SELF DEFENSE',
-                        description = 'you gotta believe me',
-                        color = EMBED_COLOR
-                    )
-                    .set_footer (
-                        text = 'what do you mean gotta go fast isn\'t a medical condition',
-                        icon_url = EMBED_ICON
-                    ),
-                    view = Delete_Button(),
-                    mention_author = False
-                )
 
             elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
                 await message.reply (
