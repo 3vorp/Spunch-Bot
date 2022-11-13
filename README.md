@@ -31,4 +31,6 @@ in your main working folder (the one that this file and the `main.py` file is co
 
 it just uses regular json formatting, read the example file for specifics
 
+also you can edit `config.py` to change some defaults like prefixes and colors
+
 from there just run the python file and enjoy

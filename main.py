@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random, json, datetime, dotenv
+import discord, os, wikipedia, random, json, datetime, dotenv, help_strings, config
 
 dotenv.load_dotenv() # this is so that I don't have the token directly in the file because yeah
 
@@ -10,13 +10,13 @@ DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
     .read()
 )
 
-DEFAULT_PREFIX = '~' # change this to change the default prefix if the server hasn't set one
-DEVELOPER = 'Evorp#5819' # idk why I included this here but who cares honestly
-EMBED_COLOR = 0xc3ba5c # this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex, idk why either
-EMBED_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.png' # frame 106 of the spongeboy gif, probably some better way to get the icon but this works too :P
-BIG_ICON = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.png'
-EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
-BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
+DEFAULT_PREFIX = config.DEFAULT_PREFIX
+DEVELOPER = config.DEVELOPER
+EMBED_COLOR = config.EMBED_COLOR
+EMBED_ICON = config.EMBED_ICON
+BIG_ICON = config.BIG_ICON
+EMBED_GIF = config.EMBED_GIF
+BIG_GIF = config.BIG_GIF
 
 TOKEN = os.getenv('TOKEN')
 
@@ -245,31 +245,7 @@ class Main(discord.Client):
                 await message.reply (
                     embed = discord.Embed (
                         title = '**spunch bot**',
-                        description = f'''
-an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
-
-__**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
-
-**utility:**
-
-— `{PREFIX}wikipedia`: returns wikipedia article
-— `{PREFIX}feedback`, `{PREFIX}suggest`: suggest stuff to implement
-— `{PREFIX}prefix`, `{PREFIX}setprefix`: change prefix for server, add `reset` to reset prefix
-— `{PREFIX}length`, `{PREFIX}len`: returns word and character count of string
-— `{PREFIX}github`: show github listing
-— `{PREFIX}help`, `{PREFIX}info`: shows this message, should be pretty obvious lol
-
-**fun:**
-
-— `{PREFIX}say`: say stuff with bot
-— `{PREFIX}embed`: like ~say but better
-> order of arguments HAS to be `title, description, color (hex), footer`, in a comma separated list. you can omit any of these by providing a space in the comma separated list
-> 
-> **example: `{PREFIX}embed this is a title, description, , and footer; but no color`**
-— `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
-— `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}crimes`: show all of my crimes
-— `{PREFIX}nut`: sacrifice NUT to me''', # praise f strings 2: electric boogaloo
+                        description = eval(f'f"""{help_strings.all}"""'), # have to convert to f string because help_strings doesn't recognize PREFIX and DEVELOPER as variables
                         color = EMBED_COLOR
                     )
                     .set_footer (
