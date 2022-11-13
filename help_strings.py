@@ -26,14 +26,13 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}crimes`: show all of my crimes
 — `{PREFIX}nut`: sacrifice NUT to me''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
 
-# yes this should probably be a dictionary but it makes iterating through the loop a lot easier imo
+#using 2d lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
 
 help_list = [ # I know this is hard to read but it's a lot better than having it all in one file so oh well
 
-# order of arguments: what should be in the command itself, title, description
-    [
-        ('wikipedia',), # even when there's no aliases it has to be in a tuple to be correctly parsed
-        '''
+[('wikipedia',), # even when there's no aliases it has to be in a tuple to be correctly parsed
+
+'''
 returns wikipedia article
 
 **SYNTAX:**
@@ -48,11 +47,11 @@ returns wikipedia article
 **NOTES:**
 
 if no/multiple wikipedia articles are found it will raise an error, you have to be really specific for some reason idk blame the library i used
-        '''
-    ],
-    [
-        ('feedback','suggest'), # the first entry in the tuple is always the one displayed in the title
-        '''
+'''
+
+], [('feedback','suggest'), # the first entry in the tuple is always the one displayed in the title
+
+'''
 suggest stuff to implement
 
 **SYNTAX:**
@@ -67,11 +66,11 @@ suggest stuff to implement
 **NOTES:**
 
 there is currently no way to see if feedback has been accepted, but this is planned for the future
-        '''
-    ],
-    [
-        ('prefix','setprefix'),
-        '''
+'''
+
+], [('prefix','setprefix'),
+
+'''
 set prefix for current server
 
 add reset to reset the prefix (obviously)
@@ -93,12 +92,11 @@ add reset to reset the prefix (obviously)
 **NOTES:**
 
 prefix can only be one character long due to how i wrote basically the entire bot
+'''
 
-        '''
-    ],
-    [
-        ('length','len'),
-        '''
+], [('length','len'),
+
+'''
 return word and character count of string
 
 **SYNTAX:**
@@ -110,9 +108,7 @@ return word and character count of string
 ```
 {PREFIX}len this is a string of text
 ```
-        '''
-    ],
-    [
-        ('github',)
-    ]
+'''
+], [('github',)
+]
 ]
