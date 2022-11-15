@@ -11,7 +11,7 @@ try:
         .read()
     )
 except: # gives error if you don't add a database
-    print('\033[91m\033[1mERROR: check the README.md more closely:\n\nTL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file') # that weird stuff at the beginning handles the color
+    print('\033[91m\033[1mERROR: check the README.md more closely:\n\nTL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file\n\nThe bot will mostly work without a database, however commands such as prefix and nut will not.') # that weird stuff at the beginning handles the color
 
 DEFAULT_PREFIX = config.DEFAULT_PREFIX
 DEVELOPER = config.DEVELOPER
