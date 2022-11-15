@@ -12,7 +12,6 @@ try:
     )
 except: # gives error if you don't add a database
     print('\033[91m\033[1mERROR: check the README.md more closely:\n\nTL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file') # that weird stuff at the beginning handles the color
-    exit()
 
 DEFAULT_PREFIX = config.DEFAULT_PREFIX
 DEVELOPER = config.DEVELOPER
