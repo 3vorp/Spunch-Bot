@@ -129,13 +129,13 @@ otherwise, shows specific help for that command
 **SYNTAX:**
 ```
 {PREFIX}help <command>
-{PREFIX}info <command>
+{PREFIX}info <all>
 {PREFIX}help
-{PREFIX}info
 ```
 **EXAMPLE:**
 ```
-{PREFIX}help wikipedia
+{PREFIX}info wikipedia
+{PREFIX}help all
 ```
 '''
 
