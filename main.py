@@ -226,7 +226,7 @@ class Main(discord.Client):
                     mention_author = False
                 )
 
-            elif (COMMAND == 'help' or COMMAND == 'info') and len(WORD_LIST) == 0:
+            elif ((COMMAND == 'help' or COMMAND == 'info') and (len(WORD_LIST) == 0 or WORD_LIST[0] == 'all')):
                 await message.reply (
                     embed = discord.Embed (
                         title = '**spunch bot**',
@@ -326,7 +326,7 @@ class Main(discord.Client):
                         mention_author = False
                     )
 
-                elif COMMAND == 'help':
+                elif COMMAND == 'help' or COMMAND == 'info':
                     flag = False
                     for i in help_strings.help_list: # iterates through the main command list
                         if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
