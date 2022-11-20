@@ -365,14 +365,14 @@ class Main(discord.Client):
                         )
 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-                    if WORD_LIST[0] == 'reset' or WORD_LIST[0] == DEFAULT_PREFIX: # if you set the prefix back to the default one, it would otherwise just take up space in the json for no real reason
+                    if WORD_LIST[0] == 'reset' or SENTENCE[0] == DEFAULT_PREFIX: # if you set the prefix back to the default one, it would otherwise just take up space in the json for no real reason
                         try:
                             del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                             await write_database() # writes the DATABASE dictionary into the actual json file
                             await message.reply (
                                 embed = discord.Embed (
                                     title = 'server prefix has been reset',
-                                    description = f'default prefix is {DEFAULT_PREFIX}',
+                                    description = f'default prefix is `{DEFAULT_PREFIX}`',
                                     color = EMBED_COLOR
                                 ),
                                 view = Delete_Button(),
@@ -386,8 +386,8 @@ class Main(discord.Client):
                                     color = EMBED_COLOR
                                 )
                                 .set_footer (
-                                text = 'you\'re still an absolute clampongus though',
-                                icon_url = EMBED_ICON
+                                    text = 'you\'re still an absolute clampongus though',
+                                    icon_url = EMBED_ICON
                                 ),
                                 view = Delete_Button(),
                                 mention_author = False
@@ -397,9 +397,13 @@ class Main(discord.Client):
                         await write_database() # writes the DATABASE dictionary into the database.json file
                         await message.reply (
                             embed = discord.Embed (
-                                title = f'server prefix changed to {WORD_LIST[0]}',
-                                description = f'you can change it back using `{WORD_LIST[0]}prefix reset`',
+                                title = f'server prefix changed to {SENTENCE[0]}',
+                                description = f'you can change it back using `{SENTENCE[0]}prefix reset`',
                                 color = EMBED_COLOR
+                            )
+                            .set_footer (
+                                text = 'if you entered multiple characters only the first one will be used, because of how the entire bot works',
+                                icon_url = EMBED_ICON
                             ),
                             view = Delete_Button(),
                             mention_author = False
