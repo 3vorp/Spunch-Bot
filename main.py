@@ -365,7 +365,7 @@ class Main(discord.Client):
                         )
 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-                    if WORD_LIST[0] == 'reset':
+                    if WORD_LIST[0] == 'reset' or WORD_LIST[0] == DEFAULT_PREFIX: # if you set the prefix back to the default one, it would otherwise just take up space in the json for no real reason
                         try:
                             del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                             await write_database() # writes the DATABASE dictionary into the actual json file
@@ -398,7 +398,7 @@ class Main(discord.Client):
                         await message.reply (
                             embed = discord.Embed (
                                 title = f'server prefix changed to {WORD_LIST[0]}',
-                                description = f'you can change it back using `{PREFIX}prefix reset`',
+                                description = f'you can change it back using `{WORD_LIST[0]}prefix reset`',
                                 color = EMBED_COLOR
                             ),
                             view = Delete_Button(),
