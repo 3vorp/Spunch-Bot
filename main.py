@@ -97,9 +97,7 @@ class Main(discord.Client):
                 ),
                 view = Delete_Button(),
                 mention_author = False
-            )
-
-            await message.channel.send ('smh my head ripping off compli:b:ot very cring') # I basically stole the joke from CompliBot/Faithful Bot so the bot calls you out on it lol
+            ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         
         if 'spongeboy' == SENTENCE:
             await message.reply (
