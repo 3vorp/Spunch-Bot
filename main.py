@@ -14,7 +14,6 @@ try:
 except: # gives error if you don't add a database
     print('\033[91m\033[1mERROR: check the README.md more closely:\n\nTL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file\n\nThe bot will mostly work without a database, however commands such as prefix and nut will not.') # that weird stuff at the beginning handles the color
 
-DEFAULT_PREFIX = config.DEFAULT_PREFIX
 DEVELOPER = config.DEVELOPER
 EMBED_COLOR = config.EMBED_COLOR
 EMBED_ICON = config.EMBED_ICON
@@ -24,6 +23,11 @@ BIG_GIF = config.BIG_GIF
 
 TOKEN = os.getenv('TOKEN')
 
+intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
+intents.message_content = True
+bot = commands.Bot(command_prefix = config.DEFAULT_PREFIX, intents = intents)
+bot.remove_command("help")
+
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
     with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding = 'utf-8') as db: # same thing as reading from the DB
         json.dump ( # allows me to write everything into the json file
@@ -32,6 +36,8 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
             ensure_ascii = False,
             indent = 4
         )
+
+
 
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
@@ -48,7 +54,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
-        STARTUP_CHANNEL = client.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
+        STARTUP_CHANNEL = bot.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
         await STARTUP_CHANNEL.send (
             embed = discord.Embed (
                 title = f'hello i\'m alive now',
@@ -56,14 +62,14 @@ class Main(discord.Client):
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = f'Online as {client.user}',
+                text = f'Online as {bot.user}',
                 icon_url = EMBED_ICON
             )
         )
-        await client.change_presence(activity = discord.Game('spongeboy gif on repeat')) # discord activity
+        await bot.change_presence(activity = discord.Game('spongeboy gif on repeat')) # discord activity
 
     async def on_message(self, message):
-        if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
+        if message.author == bot.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
 
         SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
@@ -138,9 +144,13 @@ class Main(discord.Client):
                 view = Delete_Button(),
                 mention_author = False
             )
+try:
+    @bot.command()
+    async def help(ctx):
+        await ctx.reply("test")
+except (discord.ext.command.errors.CommandNotFound):
+    @bot.event()
+    async def error(payload):
+        await payload.reply("no command exists")
 
-intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
-intents.message_content = True
-client = Main(intents = intents)
-
-client.run(TOKEN)
+bot.run(TOKEN)
