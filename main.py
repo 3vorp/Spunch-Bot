@@ -66,12 +66,30 @@ class Main(discord.Client):
             return
 
         SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
+        ANNOUNCEMENT_CHANNEL = 1038693661824790598
+
         try: 
             PREFIX = DATABASE[f'prefix_{message.guild.id}']
         except KeyError: # all of this code essentially just checks if a server prefix already exists, if it does then it uses that, if it doesn't it set it to the DEFAULT_PREFIX
             PREFIX = DEFAULT_PREFIX
-        
+
         SENTENCE = str(message.content).lower() # the .lower() is just used to remove all case sensitivity
+
+        if message.channel.id == ANNOUNCEMENT_CHANNEL:
+            for guild in client.guilds:
+                try:
+                    channel = client.get_channel(DATABASE[f'announcement_{message.guild.id}'])
+                except KeyError: # basically the same code as the prefix stuff, just now the value for the keys are channel ids
+                    channel = guild.text_channels[0]
+
+                await channel.send (
+                    embed = discord.Embed (
+                        title = f'global announcement from {DEVELOPER}',
+                        description = message.content,
+                        color = EMBED_COLOR
+                    ),
+                    view = Delete_Button()
+                )
 
 
         # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
@@ -406,7 +424,7 @@ class Main(discord.Client):
                             view = Delete_Button(),
                             mention_author = False
                         )
-                
+
                 elif COMMAND == 'embed':
                     ARG_LIST = SENTENCE.split(',') # uses commas for arguments so you can have spaces in the embed
 
