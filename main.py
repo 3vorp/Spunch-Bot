@@ -47,7 +47,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 
 class Main(discord.Client):
     async def on_ready(self): # starts the bot
-        STARTUP_CHANNEL = client.get_channel(1034609478005436436) # hardcoded channel ids for a private server, change these if you fork this
+        STARTUP_CHANNEL = client.get_channel(config.STARTUP_CHANNEL) # hardcoded channel ids for a private server, change these if you fork this
         await STARTUP_CHANNEL.send (
             embed = discord.Embed (
                 title = f'hello i\'m alive now',
@@ -65,8 +65,8 @@ class Main(discord.Client):
         if message.author == client.user or message.content == '': # makes sure the bot can't reply to itself and cause an infinite loop
             return
 
-        SUGGEST_CHANNEL = client.get_channel(1035020903953743942) # same as STARTUP_CHANNEL
-        ANNOUNCEMENT_CHANNEL = 1038693661824790598
+        SUGGEST_CHANNEL = client.get_channel(config.SUGGEST_CHANNEL) # same as STARTUP_CHANNEL
+        ANNOUNCEMENT_CHANNEL = config.ANNOUNCEMENT_CHANNEL
 
         try: 
             PREFIX = DATABASE[f'prefix_{message.guild.id}']
