@@ -35,7 +35,7 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
         super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
-        
+
     @discord.ui.button ( # creates a red button object thingy, edit this to edit all delete buttons
         label = 'delete',
         style = discord.ButtonStyle.red
@@ -84,12 +84,22 @@ class Main(discord.Client):
 
                 await channel.send (
                     embed = discord.Embed (
-                        title = f'global announcement from {DEVELOPER}',
+                        title = f'global announcement from **{message.author}**:',
                         description = message.content,
                         color = EMBED_COLOR
                     ),
                     view = Delete_Button()
                 )
+
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'message pushed to all servers',
+                    description = f'```message.contents```',
+                    color = EMBED_COLOR
+                ),
+                view = Delete_Button(),
+                mention_author = False
+            )
 
 
         # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
@@ -128,7 +138,7 @@ class Main(discord.Client):
                 view = Delete_Button(),
                 mention_author = False
             )
-        
+
         if 'hello there' == SENTENCE:
             if random.randint(0, 5) == 0: # special chance for easter egg
                 url = 'https://i.imgur.com/hAuUsnD.png'
@@ -145,7 +155,7 @@ class Main(discord.Client):
                 view = Delete_Button(),
                 mention_author = False
             )
-        
+
         if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
             DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
             await write_database()
@@ -163,6 +173,7 @@ class Main(discord.Client):
                 view = Delete_Button(),
                 mention_author = False
             )
+
 
 
         elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
@@ -225,7 +236,7 @@ class Main(discord.Client):
                         view = Delete_Button(),
                         mention_author = False
                     )
-            
+
             elif COMMAND == 'github':
                 await message.reply (
                     embed = discord.Embed (
@@ -433,6 +444,7 @@ class Main(discord.Client):
                         DESCRIPTION = ARG_LIST[1]
                     except IndexError: # if an argument isn't provided it raises an IndexError exception, so it will set it to blank instead
                         DESCRIPTION = ''
+
                     try:
                         COLOR = ARG_LIST[2].strip().lstrip('#') # removes trailing whitespaces because discord.py is VERY picky with hex
                         if COLOR != '': 
@@ -441,6 +453,7 @@ class Main(discord.Client):
                             raise IndexError
                     except IndexError:
                         COLOR = EMBED_COLOR
+
                     try:
                         FOOTER = ARG_LIST[3]
                     except IndexError:
