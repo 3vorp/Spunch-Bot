@@ -89,7 +89,7 @@ add reset to reset the prefix (obviously)
 
 **NOTES:**
 
-prefix can only be one character long due to how i wrote basically the entire bot
+currently you can only have one prefix per server, so no command aliases for now
 '''
 
 ], [('length','len'),

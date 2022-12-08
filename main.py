@@ -10,8 +10,17 @@ try:
         )
         .read()
     )
-except: # gives error if you don't add a database
-    print('\033[91m\033[1mERROR: check the README.md more closely:\n\nTL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file\n\nThe bot will mostly work without a database, however commands such as prefix and nut will not.') # that weird stuff at the beginning handles the color
+except: # gives warning if you don't add a database
+    print ( # that stuff at the beginning handles the yellow error color
+'''
+\033[91m\033[1m
+IMPORTANT WARNING: check the README.md more closely:
+
+TL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file
+
+The bot will mostly work without a database, however commands such as `prefix` and `nut` will not.
+'''
+)
 
 DEFAULT_PREFIX = config.DEFAULT_PREFIX
 DEVELOPER = config.DEVELOPER
@@ -105,7 +114,7 @@ class Main(discord.Client):
         # everything that doesn't need a prefix goes here (mostly the "look for these words and reply to it" messages)
 
 
-        if 'baller' == SENTENCE:
+        if SENTENCE == 'baller':
             await message.reply (
                 'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
                 view = Delete_Button(),
@@ -127,7 +136,7 @@ class Main(discord.Client):
                 mention_author = False
             ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         
-        if 'spongeboy' == SENTENCE:
+        if SENTENCE == 'spongeboy':
             await message.reply (
                 embed = discord.Embed (
                     color = EMBED_COLOR
@@ -139,7 +148,7 @@ class Main(discord.Client):
                 mention_author = False
             )
 
-        if 'hello there' == SENTENCE:
+        if SENTENCE == 'hello there':
             if random.randint(0, 5) == 0: # special chance for easter egg
                 url = 'https://i.imgur.com/hAuUsnD.png'
             else:
@@ -156,7 +165,7 @@ class Main(discord.Client):
                 mention_author = False
             )
 
-        if 'nut' == SENTENCE or f'{PREFIX}nut' == SENTENCE:
+        if SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
             DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
             await write_database()
             
@@ -176,8 +185,8 @@ class Main(discord.Client):
 
 
 
-        elif message.content[0] == PREFIX and message.content[1] != PREFIX: # otherwise it picks up strikethrough which is pain
-            WORD_LIST = message.content[1:].lower().split() # removes the prefix and any uppercase, splits contents into list
+        elif message.content.startswith(PREFIX): # otherwise it picks up strikethrough which is pain
+            WORD_LIST = message.content[len(PREFIX):].lower().split() # removes the prefix and any uppercase, splits contents into list
             COMMAND = WORD_LIST[0] # gets the command portion
             WORD_LIST.pop(0) # removes command from the actual WORD_LIST
             SENTENCE = message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
@@ -392,7 +401,7 @@ class Main(discord.Client):
                         )
 
                 elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-                    if WORD_LIST[0] == 'reset' or SENTENCE[0] == DEFAULT_PREFIX: # if you set the prefix back to the default one, it would otherwise just take up space in the json for no real reason
+                    if WORD_LIST[0] == 'reset' or WORD_LIST[0] == DEFAULT_PREFIX: # if you set the prefix back to the default one, it would otherwise just take up space in the json for no real reason
                         try:
                             del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                             await write_database() # writes the DATABASE dictionary into the actual json file
@@ -420,16 +429,16 @@ class Main(discord.Client):
                                 mention_author = False
                             )
                     else:
-                        DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE[0]}' # writes the prefix to the DATABASE dictionary variable using the guild id as a key
+                        DATABASE[f'prefix_{message.guild.id}'] = f'{WORD_LIST[0]}' # writes the prefix to the DATABASE dictionary variable using the guild id as a key
                         await write_database() # writes the DATABASE dictionary into the database.json file
                         await message.reply (
                             embed = discord.Embed (
-                                title = f'server prefix changed to {SENTENCE[0]}',
-                                description = f'you can change it back using `{SENTENCE[0]}prefix reset`',
+                                title = f'server prefix changed to {WORD_LIST[0]}',
+                                description = f'you can change it back using `{WORD_LIST[0]}prefix reset`',
                                 color = EMBED_COLOR
                             )
                             .set_footer (
-                                text = 'if you entered multiple characters only the first one will be used, because of how the entire bot works',
+                                text = 'this took me a long time to add so you better appreciate it',
                                 icon_url = EMBED_ICON
                             ),
                             view = Delete_Button(),
