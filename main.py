@@ -185,11 +185,11 @@ class Main(discord.Client):
 
 
 
-        elif message.content.startswith(PREFIX): # otherwise it picks up strikethrough which is pain
+        elif message.content.startswith(PREFIX): # this way you can have prefixes of any length
             WORD_LIST = message.content[len(PREFIX):].lower().split() # removes the prefix and any uppercase, splits contents into list
-            COMMAND = WORD_LIST[0] # gets the command portion
-            WORD_LIST.pop(0) # removes command from the actual WORD_LIST
-            SENTENCE = message.content.partition(' ')[2] # praise stackoverflow, I wanted to keep uppercase but just remove the first word
+            COMMAND = WORD_LIST[0] # gets the command portion so I don't have to constantly use WORD_LIST[0] to refer to the command itself
+            WORD_LIST.pop(0) # removes command from the actual WORD_LIST, because COMMAND already exists
+            SENTENCE = message.content.partition(' ')[2] # praise stackoverflow, this is basically just `message.content` without the first word (and keeps whitespace)
 
             # use WORD_LIST for list (lowercase), use SENTENCE for string (exactly as user sent it), use COMMAND for command (literally just the first word)
 
