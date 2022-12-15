@@ -1,5 +1,15 @@
 import discord, os, wikipedia, random, json, datetime, dotenv, help_strings, config
+intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
+intents.message_content = True
+client = discord.Client(intents = intents)
+
 dotenv.load_dotenv() # this is so that I don't have the token directly in the file because yeah
+
+
+
+### DATABASE ###
+
+
 
 try:
     DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
@@ -25,6 +35,12 @@ The bot will mostly work without a database, however commands such as `prefix` a
 '''
 )
 
+
+
+### CONST VARIABLES ###
+
+
+
 DEFAULT_PREFIX = config.DEFAULT_PREFIX
 DEVELOPER = config.DEVELOPER
 EMBED_COLOR = config.EMBED_COLOR
@@ -33,7 +49,17 @@ BIG_ICON = config.BIG_ICON
 EMBED_GIF = config.EMBED_GIF
 BIG_GIF = config.BIG_GIF
 
+SUGGEST_CHANNEL = config.SUGGEST_CHANNEL
+STARTUP_CHANNEL = config.STARTUP_CHANNEL
+ANNOUNCEMENT_CHANNEL = config.ANNOUNCEMENT_CHANNEL
+
 TOKEN = os.getenv('TOKEN')
+
+
+
+### USEFUL TOOLS ###
+
+
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
     with open (
@@ -50,8 +76,6 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
             indent = 4
         )
 
-
-
 class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
     def __init__(self):
         super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
@@ -65,14 +89,13 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 
 
 
-intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
-intents.message_content = True
-client = discord.Client(intents = intents)
+### ACTUAL CODE ###
+
+
 
 @client.event
-async def on_ready(): # starts the bot
-    STARTUP_CHANNEL = client.get_channel(config.STARTUP_CHANNEL)
-    await STARTUP_CHANNEL.send (
+async def on_ready():
+    await client.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
             title = f'hello i\'m alive now',
             description = f'''```started at {
@@ -80,9 +103,9 @@ async def on_ready(): # starts the bot
                     datetime.datetime.now().strftime('%c')
                     .split()
                 )
-            }```''', # gets and formats current timestamp
+            }```''',
             color = EMBED_COLOR
-        )
+        ) # redundant .join() and .split() methods to remove an annoying double space
         .set_footer (
             text = f'Online as {client.user}',
             icon_url = EMBED_ICON
@@ -102,8 +125,6 @@ async def on_message(message):
     except KeyError: #if there's no server prefix sets it to default prefix
         PREFIX = DEFAULT_PREFIX
 
-    SUGGEST_CHANNEL = client.get_channel(config.SUGGEST_CHANNEL) # same as STARTUP_CHANNEL
-    ANNOUNCEMENT_CHANNEL = config.ANNOUNCEMENT_CHANNEL
     GENERIC_ERROR = f'''
 too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command
 
@@ -140,26 +161,32 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         )
 
 
-    # everything that doesn't need a prefix goes here (mostly the "look for these words and reply/react to it" messages)
+
+### GENERAL MESSAGES (mostly the "look for these words and reply/react to it" messages) ###
+
 
 
     if SENTENCE == 'f':
         await message.add_reaction('🇫')
+        return # you have to use return on basically all commands just to stop canoodling
 
-    if SENTENCE == 'monke':
+    elif SENTENCE == 'monke':
         await message.add_reaction('🎷')
         await message.add_reaction('🐒')
+        return
     
-    if 'forgor' in SENTENCE:
+    elif 'forgor' in SENTENCE:
         await message.add_reaction('💀')
+        return
 
 
-    if SENTENCE == 'baller':
+    elif SENTENCE == 'baller':
         await message.reply (
             'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
             view = Delete_Button(),
             mention_author = False
         )
+        return
 
     elif SENTENCE == 'spongeboy':
         await message.reply (
@@ -172,6 +199,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             view = Delete_Button(),
             mention_author = False
         )
+        return
 
     elif SENTENCE == 'hello there':
         if random.randint(0, 5) == 0: # special chance for easter egg
@@ -189,8 +217,9 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             view = Delete_Button(),
             mention_author = False
         )
+        return
 
-    if 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
+    elif 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
         await message.reply (
             embed = discord.Embed (
                 title = 'mhhh',
@@ -204,8 +233,9 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             view = Delete_Button(),
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
+        return
 
-    if SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
+    elif SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
         DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
         await write_database()
         
@@ -222,11 +252,15 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             view = Delete_Button(),
             mention_author = False
         )
-
-
-
-    if message.content.startswith(PREFIX) == False: # saves me useless indentation and is a lot more convenient
         return
+
+
+
+### COMMAND HANDLER ###
+
+
+
+    if message.content.startswith(PREFIX) == False: return # saves me useless indentation and is a lot more convenient
 
     WORD_LIST = message.content[len(PREFIX):].lower().split() # general argument list, all lowercase
     COMMAND = WORD_LIST[0] # gets the command itself for convenience
@@ -413,7 +447,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         return
 
     elif COMMAND == 'suggest' or COMMAND == 'feedback':
-        await SUGGEST_CHANNEL.send ( # sends to hardcoded suggestion channel
+        await client.get(SUGGEST_CHANNEL).send ( # sends to hardcoded suggestion channel
             embed = discord.Embed (
                 title = f'feedback sent by **{message.author}**:',
                 description = f'sent in {message.channel.mention}: ```{SENTENCE}```',
@@ -486,7 +520,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         return
 
     elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # checks for default prefix so there's no useless entries in the json
+        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # if trying to set back to default prefix it just outright removes
             try:
                 del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                 await write_database() # writes the DATABASE dictionary into the actual json file
@@ -516,7 +550,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
                 )
 
         else:
-            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # writes the prefix to the DATABASE dictionary variable using the guild id as a key
+            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # uses guild id as key to write prefix to DATABASE dictionary
             await write_database() # writes the DATABASE dictionary into the database.json file
             await message.reply (
                 embed = discord.Embed (
@@ -546,7 +580,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             COLOR = ARG_LIST[2].strip().lstrip('#') # removes trailing whitespaces because discord.py is VERY picky with hex
             if COLOR != '': 
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
-            else: #if no color is provided it would error above rather than just setting it to blank, so we just trigger the except here instead
+            else: # trigger the except if no color is provided
                 raise IndexError
         except IndexError:
             COLOR = EMBED_COLOR
@@ -563,7 +597,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
                 description = DESCRIPTION,
                 color = COLOR
             )
-            .set_footer(text = FOOTER) # no image or thumbnail support yet because I'm too lazy to set up yet more try/excepts, maybe some day lol
+            .set_footer(text = FOOTER) # no image or thumbnail support for now because I'm lazy, maybe some day lol
         )
         return
     
