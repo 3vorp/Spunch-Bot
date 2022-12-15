@@ -182,7 +182,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
     elif SENTENCE == 'baller':
         await message.reply (
-            'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
+            'https://bit.ly/3UY1D0M', # original url was like 130 characters
             view = Delete_Button(),
             mention_author = False
         )
@@ -236,9 +236,9 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         return
 
     elif SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
-        DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
-        await write_database()
-        
+        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1 # adds one to the total nut count
+        await write_database() # made a shortcut because it saves a lot of copy+pasting
+
         await message.reply (
             embed = discord.Embed (
                 title = 'you have sacrificed NUT',
@@ -273,15 +273,15 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
 
 
-    # everything that needs a prefix and doesn't require arguments goes here
+### COMMANDS WITHOUT ARGUMENTS ###
 
 
 
     if COMMAND == 'rps':
         BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
-        if SENTENCE == '':
-            WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])] # gives random user answer if user doesn't pick anything
+        if SENTENCE == '': # if user provides no choice bot chooses for them
+            WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])]
 
         if BOT_ANSWER == WORD_LIST[0]:
             await message.reply (
@@ -356,10 +356,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         await message.reply (
             embed = discord.Embed (
                 title = '**spunch bot**',
-
-                # converts to f string using eval() because help_strings.py can't pass variables
-                description = eval(f'f"""{help_strings.all}"""'),
-
+                description = eval(f'f"""{help_strings.all}"""'), # source file can't pass message-specific variables
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -392,7 +389,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
 
 
-    # every command that requires arguments goes here
+### COMMANDS WITH ARGUMENTS ###
 
 
 
@@ -403,8 +400,8 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
     elif COMMAND == 'wikipedia':
         try:
-            await message.reply ( # this atrocity takes the input, finds a wikipedia article, and trims it to 1900 characters
-                f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # doesn't use embed to save screen space
+            await message.reply ( # doesn't use embed to save screen space
+                f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # trims to 1900 characters because discord
                 view = Delete_Button(),
                 mention_author = False
             )
@@ -480,13 +477,8 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                 await message.reply (
                     embed = discord.Embed ( # same reason for using eval() as in the main help command
-
-                        # first index gets a tuple of aliases, second one picks the first automatically
-                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'),
-
-                        # the [1] is for the description, no second index is necessary as there's no tuple to sort through
-                        description = eval(f'f"""{i[1]}"""'),
-
+                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # gets first value of first index
+                        description = eval(f'f"""{i[1]}"""'), # [1] is for getting description
                         color = EMBED_COLOR
                     )
                     .set_footer (
@@ -520,7 +512,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         return
 
     elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # if trying to set back to default prefix it just outright removes
+        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # checks if changing to default prefix to save space
             try:
                 del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                 await write_database() # writes the DATABASE dictionary into the actual json file
@@ -550,7 +542,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
                 )
 
         else:
-            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # uses guild id as key to write prefix to DATABASE dictionary
+            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # uses guild id as key for easy management
             await write_database() # writes the DATABASE dictionary into the database.json file
             await message.reply (
                 embed = discord.Embed (
@@ -573,11 +565,11 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         TITLE = ARG_LIST[0]
         try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
             DESCRIPTION = ARG_LIST[1]
-        except IndexError: # if an argument isn't provided it raises an IndexError exception, so it will set it to blank instead
+        except IndexError: # if any argument isn't provided an IndexError is raised, so it just sets it to blank
             DESCRIPTION = ''
 
         try:
-            COLOR = ARG_LIST[2].strip().lstrip('#') # removes trailing whitespaces because discord.py is VERY picky with hex
+            COLOR = ARG_LIST[2].strip().lstrip('#') # formatting because discord.py is VERY picky with hex
             if COLOR != '': 
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
             else: # trigger the except if no color is provided
