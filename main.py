@@ -4,7 +4,10 @@ dotenv.load_dotenv() # this is so that I don't have the token directly in the fi
 try:
     DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
         open (
-            os.path.join (os.path.dirname(__file__), 'database.json'), # gets absolute file path from the relative file path
+            os.path.join ( # gets absolute file path from the relative file path
+                os.path.dirname(__file__),
+                'database.json'
+            ),
             'r' # in reading mode
         )
         .read()
@@ -33,7 +36,13 @@ BIG_GIF = config.BIG_GIF
 TOKEN = os.getenv('TOKEN')
 
 async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
-    with open (os.path.join(os.path.dirname (__file__), 'database.json'), 'w', encoding = 'utf-8') as db: # same thing as reading from the DB
+    with open (
+        os.path.join (
+            os.path.dirname (__file__),
+            'database.json'
+        ), 
+        'w', encoding = 'utf-8'
+    ) as db: # same thing as reading from the DB
         json.dump ( # allows me to write everything into the json file
             DATABASE,
             db,
@@ -62,11 +71,16 @@ client = discord.Client(intents = intents)
 
 @client.event
 async def on_ready(): # starts the bot
-    STARTUP_CHANNEL = client.get_channel(config.STARTUP_CHANNEL) # hardcoded channel ids for a private server, change these if you fork this
+    STARTUP_CHANNEL = client.get_channel(config.STARTUP_CHANNEL)
     await STARTUP_CHANNEL.send (
         embed = discord.Embed (
             title = f'hello i\'m alive now',
-            description = f'```started at {" ".join(datetime.datetime.now().strftime("%c").split())}```', # gets and formats current timestamp
+            description = f'''```started at {
+                ' '.join (
+                    datetime.datetime.now().strftime('%c')
+                    .split()
+                )
+            }```''', # gets and formats current timestamp
             color = EMBED_COLOR
         )
         .set_footer (
@@ -80,7 +94,7 @@ async def on_ready(): # starts the bot
 
 @client.event
 async def on_message(message):
-    if message.author == client.user or message.content == '': return # makes sure the bot can't reply to itself and cause an infinite loop
+    if message.author == client.user or message.content == '': return # prevents infinite loops
 
     try: # checks if a server prefix already exists, and sets that as the prefix if it exists
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
@@ -101,7 +115,8 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
         for guild in client.guilds:
             try:
-                channel = client.get_channel(DATABASE[f'announcement_{message.guild.id}'])
+                channel = client.get_channel(int(DATABASE[f'announcement_{message.guild.id}']))
+
             except KeyError: # basically the same code as the prefix stuff, just now the value for the keys are channel ids
                 channel = guild.text_channels[0]
 
@@ -128,7 +143,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
     # everything that doesn't need a prefix goes here (mostly the "look for these words and reply/react to it" messages)
 
 
-    if SENTENCE == "f":
+    if SENTENCE == 'f':
         await message.add_reaction('🇫')
 
     if SENTENCE == 'monke':
@@ -138,9 +153,39 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
     if 'forgor' in SENTENCE:
         await message.add_reaction('💀')
 
+
     if SENTENCE == 'baller':
         await message.reply (
             'https://cdn.discordapp.com/attachments/697947500987809846/1033358086095765504/e923830c4dbe2942417df30bf5530238.mp4',
+            view = Delete_Button(),
+            mention_author = False
+        )
+
+    elif SENTENCE == 'spongeboy':
+        await message.reply (
+            embed = discord.Embed (
+                color = EMBED_COLOR
+            )
+            .set_image (
+                url = BIG_GIF
+            ),
+            view = Delete_Button(),
+            mention_author = False
+        )
+
+    elif SENTENCE == 'hello there':
+        if random.randint(0, 5) == 0: # special chance for easter egg
+            url = 'https://i.imgur.com/hAuUsnD.png'
+        else:
+            url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
+
+        await message.reply (
+            embed = discord.Embed (
+                color = EMBED_COLOR
+            )
+            .set_image (
+                url = url
+            ),
             view = Delete_Button(),
             mention_author = False
         )
@@ -159,35 +204,6 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
             view = Delete_Button(),
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
-    
-    if SENTENCE == 'spongeboy':
-        await message.reply (
-            embed = discord.Embed (
-                color = EMBED_COLOR
-            )
-            .set_image (
-                url = BIG_GIF
-            ),
-            view = Delete_Button(),
-            mention_author = False
-        )
-
-    if SENTENCE == 'hello there':
-        if random.randint(0, 5) == 0: # special chance for easter egg
-            url = 'https://i.imgur.com/hAuUsnD.png'
-        else:
-            url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
-
-        await message.reply (
-            embed = discord.Embed (
-                color = EMBED_COLOR
-            )
-            .set_image (
-                url = url
-            ),
-            view = Delete_Button(),
-            mention_author = False
-        )
 
     if SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
         DATABASE['nut_count'] = str(int(DATABASE['nut_count']) + 1) # adds one to the total nut count, type conversions yes yes
@@ -210,10 +226,10 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
 
     elif message.content.startswith(PREFIX): # this way you can have prefixes of any length
-        WORD_LIST = message.content[len(PREFIX):].lower().split() # removes the prefix and any uppercase, splits contents into list
-        COMMAND = WORD_LIST[0] # gets the command portion so I don't have to constantly use WORD_LIST[0] to refer to the command itself
+        WORD_LIST = message.content[len(PREFIX):].lower().split() # general argument list, all lowercase
+        COMMAND = WORD_LIST[0] # gets the command itself for convenience
         WORD_LIST.pop(0) # removes command from the actual WORD_LIST, because COMMAND already exists
-        SENTENCE = message.content.partition(' ')[2] # removes first word, keeps everything else the same (praise stackoverflow lol)
+        SENTENCE = message.content.partition(' ')[2] # removes first word only (praise stackoverflow lol)
 
         # use WORD_LIST for list (lowercase)
         # use SENTENCE for string (exactly as user sent it)
@@ -227,6 +243,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
 
         if COMMAND == 'rps':
             BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
+
             if SENTENCE == '':
                 WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])] # gives random user answer if user doesn't pick anything
 
@@ -454,7 +471,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
                 await message.reply (
                     embed = discord.Embed (
                         title = 'insert helpful error name here',
-                        description = f'no command with that name was found, use {PREFIX}help for the full list',
+                        description = f'no command with that name was found, use `{PREFIX}help` for the full list',
                         color = EMBED_COLOR
                     )
                     .set_footer (
@@ -480,6 +497,7 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
                         view = Delete_Button(),
                         mention_author = False
                     )
+
                 except KeyError:
                     await message.reply (
                         embed = discord.Embed (
@@ -550,8 +568,25 @@ too lazy to implement proper errors but you probably sent too much stuff, not en
         elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
             await message.reply (
                 embed = discord.Embed (
-                    title = f'Your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
+                    title = f'your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
                     description = f'```{SENTENCE}```',
+                    color = EMBED_COLOR
+                ),
+                view = Delete_Button(),
+                mention_author = False
+            )
+            return
+
+        elif COMMAND == 'mock':
+            mocked_word = list(SENTENCE.lower()) # separate to WORD_LIST because it's a list of characters not words
+            for i in range(len(mocked_word)):
+                if i % 2 == 0:
+                    mocked_word[i] = mocked_word[i].upper()
+
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'imagine mocking other users over the internet couldn\'t be me',
+                    description = f'```{"".join(mocked_word)}```',
                     color = EMBED_COLOR
                 ),
                 view = Delete_Button(),

@@ -19,6 +19,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}embed`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
+— `{PREFIX}mock`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}nut`: sacrifice NUT to me
 
@@ -207,6 +208,22 @@ random answers for random questions
 **NOTES:**
 
 questions have to be yes/no formatted for the bot to make sense
+'''
+
+], [('mock',),
+
+'''
+MoCk a sTrInG Of tExT To lOoK LiKe tHiS
+
+**SYNTAX:**
+```
+{PREFIX}mock <message>
+```
+
+**EXAMPLE:**
+```
+{PREFIX}mock My name is Walter Hartwell White. I live at 308 Negra Arroyo Lane, Albuquerque, New Mexico 87104. 
+```
 '''
 
 ], [('rps',),
