@@ -270,3 +270,11 @@ too lazy to implement proper errors but you probably:
 
 **use `{PREFIX}help` for a list of commands**
 '''
+
+database_error = '''\033[91m\033[1m
+IMPORTANT WARNING: check the README.md more closely:
+
+TL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file
+
+The bot will mostly work without a database, however commands such as `prefix` and `nut` will result in a LOT of errors.
+'''

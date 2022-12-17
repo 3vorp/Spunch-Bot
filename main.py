@@ -23,17 +23,9 @@ try:
         .read()
     )
 
-except: # gives warning if you don't add a database
-    print ( # that stuff at the beginning handles the yellow error color
-'''
-\033[91m\033[1m
-IMPORTANT WARNING: check the README.md more closely:
-
-TL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file
-
-The bot will mostly work without a database, however commands such as `prefix` and `nut` will not.
-'''
-)
+except FileNotFoundError:
+    print (help_strings.database_error)
+    DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
 
 
 
@@ -113,7 +105,7 @@ async def on_ready():
     )
     await client.change_presence (
         activity = discord.Game (
-            name = 'spongeboy gif on repeat' # sends "playing spongeboy gif on repeat"
+            name = 'spongeboy gif on repeat' # sets presence to "playing spongeboy gif on repeat"
         )
     )
 
