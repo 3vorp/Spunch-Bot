@@ -89,7 +89,7 @@ class Delete_Button(discord.ui.View): # this took me so long to implement please
 
 
 
-### ACTUAL CODE ###
+### STARTUP MESSAGE / PRESENCE ###
 
 
 
@@ -123,31 +123,19 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user or message.content == '': return # prevents infinite loops
 
+
+### PREFIX / ANNOUNCEMENT SHENANIGANS ###
+
+
     try: # checks if a server prefix already exists, and sets that as the prefix if it exists
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
     except KeyError: #if there's no server prefix sets it to default prefix
         PREFIX = DEFAULT_PREFIX
 
-    GENERIC_ERROR = f'''
-too lazy to implement proper errors but you probably:
-
-— sent too much stuff
-— didn't send enough stuff
-— sent something that wasn't a command
-
-**use `{PREFIX}help` for a list of commands**
-'''
-
-    SENTENCE = message.content.lower() # the .lower() is just used to remove all case sensitivity
-
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
         for guild in client.guilds:
-            try:
-                channel = client.get_channel(int(DATABASE[f'announcement_{message.guild.id}']))
-
-            except KeyError: # basically the same code as the prefix stuff, just now the value for the keys are channel ids
-                channel = guild.text_channels[0]
+            channel = guild.text_channels[0] # custom channels coming soon™
 
             await channel.send (
                 embed = discord.Embed (
@@ -168,6 +156,8 @@ too lazy to implement proper errors but you probably:
             mention_author = False
         )
 
+    SENTENCE = message.content.lower() # the .lower() is just used to remove all case sensitivity
+
 
 
 ### GENERAL MESSAGES (mostly the "look for these words and reply/react to it" messages) ###
@@ -186,7 +176,6 @@ too lazy to implement proper errors but you probably:
     elif 'forgor' in SENTENCE:
         await message.add_reaction('💀')
         return
-
 
     elif SENTENCE == 'baller':
         await message.reply (
@@ -227,7 +216,7 @@ too lazy to implement proper errors but you probably:
         )
         return
 
-    elif 'mhhh' in SENTENCE: # can't use elif because it's checking if it's contained within any of the message contents
+    elif 'mhhh' in SENTENCE:
         await message.reply (
             embed = discord.Embed (
                 title = 'mhhh',
@@ -262,13 +251,11 @@ too lazy to implement proper errors but you probably:
         )
         return
 
-
-
 ### COMMAND HANDLER ###
 
 
 
-    if message.content.startswith(PREFIX) == False: return # saves me useless indentation and is a lot more convenient
+    if message.content.startswith(PREFIX) == False: return # saves me useless indentation
 
     WORD_LIST = message.content[len(PREFIX):].lower().split() # general argument list, all lowercase
     COMMAND = WORD_LIST[0] # gets the command itself for convenience
@@ -383,7 +370,7 @@ too lazy to implement proper errors but you probably:
         await message.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = GENERIC_ERROR,
+                description = eval(f'f"""{help_strings.generic_error}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -634,7 +621,7 @@ too lazy to implement proper errors but you probably:
         await message.reply ( # generic error handling
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = GENERIC_ERROR,
+                description = eval(f'f"""{help_strings.generic_error}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (

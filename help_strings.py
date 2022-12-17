@@ -260,3 +260,13 @@ sacrifice NUT to me, adds one to global counter
 '''
 ]
 ]
+
+generic_error = '''
+too lazy to implement proper errors but you probably:
+
+— sent too much stuff
+— didn't send enough stuff
+— sent something that wasn't a command
+
+**use `{PREFIX}help` for a list of commands**
+'''
