@@ -111,7 +111,11 @@ async def on_ready():
             icon_url = EMBED_ICON
         )
     )
-    await client.change_presence(activity = discord.Game('spongeboy gif on repeat')) # discord activity
+    await client.change_presence (
+        activity = discord.Game (
+            name = 'spongeboy gif on repeat' # sends "playing spongeboy gif on repeat"
+        )
+    )
 
 
 
@@ -126,7 +130,11 @@ async def on_message(message):
         PREFIX = DEFAULT_PREFIX
 
     GENERIC_ERROR = f'''
-too lazy to implement proper errors but you probably sent too much stuff, not enough stuff, or something that\'s not a command
+too lazy to implement proper errors but you probably:
+
+— sent too much stuff
+— didn't send enough stuff
+— sent something that wasn't a command
 
 **use `{PREFIX}help` for a list of commands**
 '''
