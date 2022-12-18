@@ -58,7 +58,7 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
         os.path.join (
             os.path.dirname (__file__),
             'database.json'
-        ), 
+        ),
         'w', encoding = 'utf-8'
     ) as db: # same thing as reading from the DB
         json.dump ( # allows me to write everything into the json file
@@ -164,7 +164,7 @@ async def on_message(message):
         await message.add_reaction('🎷')
         await message.add_reaction('🐒')
         return
-    
+
     elif 'forgor' in SENTENCE:
         await message.add_reaction('💀')
         return
@@ -300,7 +300,7 @@ async def on_message(message):
             (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or
             (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or
             (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock')
-        ): 
+        ):
             await message.reply (
                 embed = discord.Embed (
                     title = 'i win',
@@ -414,13 +414,13 @@ async def on_message(message):
             embed = discord.Embed (
                 title = SENTENCE,
                 description = random.choice ([ # you can add as many options as you want to this list
-                    'yes', 
-                    'no', 
-                    'maybe', 
-                    'idk', 
-                    'ask later', 
-                    'definitely', 
-                    'never', 
+                    'yes',
+                    'no',
+                    'maybe',
+                    'idk',
+                    'ask later',
+                    'definitely',
+                    'never',
                     'never ask me that again'
                 ]),
                 color = EMBED_COLOR
@@ -557,7 +557,7 @@ async def on_message(message):
 
         try:
             COLOR = ARG_LIST[2].strip().lstrip('#') # formatting because discord.py is VERY picky with hex
-            if COLOR != '': 
+            if COLOR != '':
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
             else: # trigger the except if no color is provided
                 raise IndexError
@@ -579,7 +579,7 @@ async def on_message(message):
             .set_footer(text = FOOTER) # no image or thumbnail support for now because I'm lazy, maybe some day lol
         )
         return
-    
+
     elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
         await message.reply (
             embed = discord.Embed (
