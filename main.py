@@ -24,7 +24,7 @@ try:
     )
 
 except FileNotFoundError:
-    print (help_strings.database_error)
+    print (help_strings.database_error) # no eval() necessary because it's not an f string
     DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
 
 
