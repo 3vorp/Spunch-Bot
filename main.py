@@ -563,6 +563,7 @@ async def on_message(message):
         TITLE = ARG_LIST[0]
         try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
             DESCRIPTION = ARG_LIST[1]
+
         except IndexError: # if any argument isn't provided an IndexError is raised, so it just sets it to blank
             DESCRIPTION = ''
 
@@ -570,13 +571,16 @@ async def on_message(message):
             COLOR = ARG_LIST[2].strip().lstrip('#') # formatting because discord.py is VERY picky with hex
             if COLOR != '':
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
+
             else: # trigger the except if no color is provided
                 raise IndexError
+
         except IndexError:
             COLOR = EMBED_COLOR
 
         try:
             FOOTER = ARG_LIST[3]
+
         except IndexError:
             FOOTER = ''
 
