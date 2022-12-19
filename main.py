@@ -1,5 +1,5 @@
 import discord, os, wikipedia, random, json, datetime, dotenv, help_strings, config
-intents = discord.Intents.default() # I have no idea what any of this does but it looks important so I'm not touching it
+intents = discord.Intents.default() # idk what this does but it looks important so I'm not touching it
 intents.message_content = True
 client = discord.Client(intents = intents)
 
@@ -53,7 +53,7 @@ TOKEN = os.getenv('TOKEN')
 
 
 
-async def write_database(): # I'd be copy and pasting this constantly so this saves me a LOT of time
+async def write_database(): # saves a LOT of copy paste
     with open (
         os.path.join (
             os.path.dirname (__file__),
@@ -68,16 +68,21 @@ async def write_database(): # I'd be copy and pasting this constantly so this sa
             indent = 4
         )
 
-class Delete_Button(discord.ui.View): # this took me so long to implement please kill me
+class Delete_Button(discord.ui.View): # this took way too long to implement
     def __init__(self):
-        super().__init__() # inheritance stuff yes yes I definitely remember stuff from OOP
+        super().__init__() # inheritance yes yes
 
-    @discord.ui.button ( # creates a red button object thingy, edit this to edit all delete buttons
+    @discord.ui.button ( # creates the actual button object
         label = 'delete',
         style = discord.ButtonStyle.red
     )
-    async def button_clicked(self, interaction:discord.Interaction, button:discord.ui.Button):
-        await interaction.message.delete() # whenever the button is clicked it calls this function
+
+    async def button_clicked (
+        self,
+        interaction:discord.Interaction,
+        button:discord.ui.Button
+    ):
+        await interaction.message.delete()
 
 
 
@@ -97,15 +102,15 @@ async def on_ready():
                 )
             }```''',
             color = EMBED_COLOR
-        ) # redundant .join() and .split() methods to remove an annoying double space
+        ) # removes an annoying double space with redundant .join() and .split()
         .set_footer (
             text = f'Online as {client.user}',
             icon_url = EMBED_ICON
         )
     )
     await client.change_presence (
-        activity = discord.Game (
-            name = 'spongeboy gif on repeat' # sets presence to "playing spongeboy gif on repeat"
+        activity = discord.Game ( # "playing spongeboy gif on repeat"
+            name = 'spongeboy gif on repeat'
         )
     )
 
@@ -113,16 +118,16 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user or message.content == '': return # prevents infinite loops
+    if message.author == client.user or message.content == '': return
 
 
 ### PREFIX / ANNOUNCEMENT SHENANIGANS ###
 
 
-    try: # checks if a server prefix already exists, and sets that as the prefix if it exists
+    try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
-    except KeyError: #if there's no server prefix sets it to default prefix
+    except KeyError:
         PREFIX = DEFAULT_PREFIX
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
@@ -148,11 +153,11 @@ async def on_message(message):
             mention_author = False
         )
 
-    SENTENCE = message.content.lower() # the .lower() is just used to remove all case sensitivity
+    SENTENCE = message.content.lower() # removes case sensitivity
 
 
 
-### GENERAL MESSAGES (mostly the "look for these words and reply/react to it" messages) ###
+### GENERAL/JOKE RESPONSES ###
 
 
 
@@ -193,6 +198,7 @@ async def on_message(message):
     elif SENTENCE == 'hello there':
         if random.randint(0, 5) == 0: # special chance for easter egg
             url = 'https://i.imgur.com/hAuUsnD.png'
+
         else:
             url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
 
@@ -225,8 +231,8 @@ async def on_message(message):
         return
 
     elif SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
-        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1 # adds one to the total nut count
-        await write_database() # made a shortcut because it saves a lot of copy+pasting
+        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+        await write_database() # adds one to global nut count and writes it
 
         await message.reply (
             embed = discord.Embed (
@@ -243,16 +249,18 @@ async def on_message(message):
         )
         return
 
+
+
 ### COMMAND HANDLER ###
 
 
 
-    if message.content.startswith(PREFIX) == False: return # saves me useless indentation
+    if message.content.startswith(PREFIX) == False: return # saves on indentation
 
-    WORD_LIST = message.content[len(PREFIX):].lower().split() # general argument list, all lowercase
-    COMMAND = WORD_LIST[0] # gets the command itself for convenience
-    WORD_LIST.pop(0) # removes command from the actual WORD_LIST, because COMMAND already exists
-    SENTENCE = message.content.partition(' ')[2] # removes first word only (praise stackoverflow lol)
+    WORD_LIST = message.content[len(PREFIX):].lower().split()
+    COMMAND = WORD_LIST[0]
+    WORD_LIST.pop(0) # removes command because COMMAND exists now
+    SENTENCE = message.content.partition(' ')[2] # praise stackoverflow
 
     # use WORD_LIST for list (lowercase)
     # use SENTENCE for string (exactly as user sent it)
@@ -339,7 +347,10 @@ async def on_message(message):
         )
         return
 
-    elif ((COMMAND == 'help' or COMMAND == 'info') and (len(WORD_LIST) == 0 or WORD_LIST[0] == 'all')):
+    elif (
+        (COMMAND == 'help' or COMMAND == 'info') and
+        (len(WORD_LIST) == 0 or WORD_LIST[0] == 'all')
+    ):
         await message.reply (
             embed = discord.Embed (
                 title = '**spunch bot**',
@@ -347,7 +358,7 @@ async def on_message(message):
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = f'that\'s all for now, go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
+                text = eval(f'f"""{help_strings.footer}"""'),
                 icon_url = EMBED_ICON
             )
             .set_thumbnail (
@@ -388,12 +399,12 @@ async def on_message(message):
     elif COMMAND == 'wikipedia':
         try:
             await message.reply ( # doesn't use embed to save screen space
-                f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # trims to 1900 characters because discord
+                f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # trims for character limit
                 view = Delete_Button(),
                 mention_author = False
             )
 
-        except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError): # basic error handling
+        except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError):
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
@@ -469,7 +480,7 @@ async def on_message(message):
                         color = EMBED_COLOR
                     )
                     .set_footer (
-                        text = f'go suggest stuff using {PREFIX}feedback if you want me to add stuff ig',
+                        text = eval(f'f"""{help_strings.footer}"""'),
                         icon_url = EMBED_ICON
                     )
                     .set_thumbnail (

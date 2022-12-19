@@ -27,7 +27,15 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 ```{PREFIX}help <command>```
 ''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
 
+footer = '''
+go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
+'''
+
+
+
 #using 2d lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
+
+
 
 help_list = [ # I know this is hard to read but it's a lot better than having it all in one file so oh well
 
@@ -222,7 +230,7 @@ MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 
 **EXAMPLE:**
 ```
-{PREFIX}mock My name is Walter Hartwell White. I live at 308 Negra Arroyo Lane, Albuquerque, New Mexico 87104. 
+{PREFIX}mock My name is Walter Hartwell White. I live at 308 Negra Arroyo Lane, Albuquerque, New Mexico 87104.
 ```
 '''
 
@@ -260,6 +268,8 @@ sacrifice NUT to me, adds one to global counter
 '''
 ]
 ]
+
+# decided to put error messages here as well since they technically help you lol
 
 generic_error = '''
 too lazy to implement proper errors but you probably:
