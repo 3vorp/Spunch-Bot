@@ -1,8 +1,12 @@
-## **spunch bot** 
+# **spunch bot** 
 
-an atrocity made in discord.py by `Evorp#5819` because I was bored idk
+## an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
-use at your own risk lol
+the version of the bot I develop is not public mostly because it's a huge hazard — there's a ton of security vulnerablities I can't be bothered to fix
+
+as a result it's mostly intended to be forked and run on your own, which is why it's on github in the first place
+
+anyways bearing that in mind use this at your own risk lol
 
 ## installation and forking and all that stuff
 
