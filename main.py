@@ -96,6 +96,23 @@ async def on_ready():
 
 
 
+### DELETE BUTTON / REACTION ###
+
+
+
+@client.event # initially had this set up as a button but it only worked on most recent message
+async def on_raw_reaction_add(payload): # handles all reacted messages rather than cached ones
+    message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+    reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
+    user = payload.member # compromise for being able to handle all messages is working with raw events :pain:
+
+    if user == client.user: return # detects own reaction and deletes all bot messages otherwise lol
+
+    if reaction.emoji == '🗑️' and message.author == client.user: # only deletes bot messages to prevent abuse
+        await message.delete()
+
+
+
 @client.event
 async def on_message(message):
     if message.author == client.user: # saves a lot of code by applying to every bot message
@@ -105,7 +122,9 @@ async def on_message(message):
     if message.content == '': return # no point parsing blank messages
 
 
+
 ### PREFIX / ANNOUNCEMENT SHENANIGANS ###
+
 
 
     try: # assigns server prefix if one exists, if not use default prefix
@@ -599,21 +618,5 @@ async def on_message(message):
             mention_author = False
         )
         return
-
-
-
-### REACTIONS ###
-
-
-@client.event # initially had this set up as a button but it only worked on most recent message
-async def on_raw_reaction_add(payload): # handles all reacted messages rather than cached ones
-    message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
-    reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
-    user = payload.member # compromise for being able to handle all messages is working with raw events
-
-    if user == client.user: return
-
-    if reaction.emoji == '🗑️' and message.author == client.user: # only deletes bot messages to prevent abuse
-        await message.delete()
 
 client.run(TOKEN)
