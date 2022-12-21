@@ -142,8 +142,7 @@ async def on_message(message):
                     title = f'global announcement from **{message.author}**:',
                     description = message.content,
                     color = EMBED_COLOR
-                ),
-
+                )
             )
 
         await message.reply (
