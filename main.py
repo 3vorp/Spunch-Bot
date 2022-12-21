@@ -13,18 +13,15 @@ dotenv.load_dotenv() # this is so that I don't have the token directly in the fi
 
 try:
     DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
-        open (
-            os.path.join ( # gets absolute file path from the relative file path
-                os.path.dirname(__file__),
-                'database.json'
-            ),
-            'r' # in reading mode
+        open(os.path.join
+            (os.path.dirname(__file__),'database.json'),
+            'r'
         )
         .read()
     )
 
 except FileNotFoundError:
-    print (help_strings.database_error) # no eval() necessary because it's not an f string
+    print(help_strings.database_error) # no eval() necessary because it's not an f string
     DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
 
 
@@ -50,13 +47,11 @@ TOKEN = os.getenv('TOKEN')
 
 
 async def write_database(): # saves a LOT of copy paste
-    with open (
-        os.path.join (
-            os.path.dirname (__file__),
-            'database.json'
-        ),
-        'w', encoding = 'utf-8'
-    ) as db: # same thing as reading from the DB
+    with open (os.path.join
+        (os.path.dirname (__file__), 'database.json'),
+        'w',
+        encoding = 'utf-8'
+    ) as db:
         json.dump ( # allows me to write everything into the json file
             DATABASE,
             db,
