@@ -49,10 +49,6 @@ TOKEN = os.getenv('TOKEN')
 
 
 
-### USEFUL TOOLS ###
-
-
-
 async def write_database(): # saves a LOT of copy paste
     with open (
         os.path.join (
@@ -67,22 +63,6 @@ async def write_database(): # saves a LOT of copy paste
             ensure_ascii = False,
             indent = 4
         )
-
-class Delete_Button(discord.ui.View): # this took way too long to implement
-    def __init__(self):
-        super().__init__() # inheritance yes yes
-
-    @discord.ui.button ( # creates the actual button object
-        label = 'delete',
-        style = discord.ButtonStyle.red
-    )
-
-    async def button_clicked (
-        self,
-        interaction:discord.Interaction,
-        button:discord.ui.Button
-    ):
-        await interaction.message.delete()
 
 
 
@@ -118,7 +98,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user or message.content == '': return
+    if message.author == client.user: # saves a lot of code by applying to every bot message
+        await message.add_reaction('🗑️')
+        return # nothing else uses bot messages so this stops infinite loops
+
+    if message.content == '': return # no point parsing blank messages
 
 
 ### PREFIX / ANNOUNCEMENT SHENANIGANS ###
@@ -140,7 +124,7 @@ async def on_message(message):
                     description = message.content,
                     color = EMBED_COLOR
                 ),
-                view = Delete_Button()
+
             )
 
         await message.reply (
@@ -149,7 +133,6 @@ async def on_message(message):
                 description = f'```{message.content}```',
                 color = EMBED_COLOR
             ),
-            view = Delete_Button(),
             mention_author = False
         )
 
@@ -177,7 +160,7 @@ async def on_message(message):
     elif SENTENCE == 'baller':
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
-            view = Delete_Button(),
+
             mention_author = False
         )
         return
@@ -190,7 +173,6 @@ async def on_message(message):
             .set_image (
                 url = BIG_GIF
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -209,7 +191,6 @@ async def on_message(message):
             .set_image (
                 url = url
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -225,7 +206,6 @@ async def on_message(message):
                 text = 'Swahili → English',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         return
@@ -244,7 +224,6 @@ async def on_message(message):
                 text = f'total nuts collected: {DATABASE["nut_count"]}',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -285,7 +264,6 @@ async def on_message(message):
                     description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
                     color = EMBED_COLOR
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
 
@@ -300,7 +278,6 @@ async def on_message(message):
                     description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
                     color = EMBED_COLOR
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
 
@@ -315,7 +292,6 @@ async def on_message(message):
                     description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
                     color = EMBED_COLOR
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
 
@@ -326,7 +302,6 @@ async def on_message(message):
                     description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
                     color = EMBED_COLOR
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
         return
@@ -342,7 +317,6 @@ async def on_message(message):
                 text = 'fair warning that it\'s is a dumpster fire to read through',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -364,7 +338,6 @@ async def on_message(message):
             .set_thumbnail (
                 url = BIG_GIF
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -380,7 +353,6 @@ async def on_message(message):
                 text = 'you\'re still an absolute clampongus though',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -400,7 +372,6 @@ async def on_message(message):
         try:
             await message.reply ( # doesn't use embed to save screen space
                 f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # trims for character limit
-                view = Delete_Button(),
                 mention_author = False
             )
 
@@ -415,7 +386,6 @@ async def on_message(message):
                     text = 'you\'re still an absolute clampongus though',
                     icon_url = EMBED_ICON
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
         return
@@ -436,7 +406,6 @@ async def on_message(message):
                 ]),
                 color = EMBED_COLOR
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -464,7 +433,6 @@ async def on_message(message):
                 text = 'in the meantime idk go touch grass',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -486,7 +454,6 @@ async def on_message(message):
                     .set_thumbnail (
                         url = BIG_GIF
                     ),
-                    view = Delete_Button(),
                     mention_author = False
                 )
 
@@ -504,7 +471,6 @@ async def on_message(message):
                 text = 'you\'re still an absolute clampongus though',
                 icon_url = EMBED_ICON
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
         return
@@ -520,7 +486,6 @@ async def on_message(message):
                         description = f'default prefix is `{DEFAULT_PREFIX}`',
                         color = EMBED_COLOR
                     ),
-                    view = Delete_Button(),
                     mention_author = False
                 )
 
@@ -535,7 +500,6 @@ async def on_message(message):
                         text = 'you\'re still an absolute clampongus though',
                         icon_url = EMBED_ICON
                     ),
-                    view = Delete_Button(),
                     mention_author = False
                 )
 
@@ -552,7 +516,6 @@ async def on_message(message):
                     text = 'this took me a long time to add so you better appreciate it',
                     icon_url = EMBED_ICON
                 ),
-                view = Delete_Button(),
                 mention_author = False
             )
         return
@@ -602,7 +565,6 @@ async def on_message(message):
                 description = f'```{SENTENCE}```',
                 color = EMBED_COLOR
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -619,7 +581,6 @@ async def on_message(message):
                 description = f'```{"".join(mocked_word)}```',
                 color = EMBED_COLOR
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
@@ -635,9 +596,24 @@ async def on_message(message):
                 text = 'you\'re still an absolute clampongus though',
                 icon_url = EMBED_ICON
             ),
-            view = Delete_Button(),
             mention_author = False
         )
         return
+
+
+
+### REACTIONS ###
+
+
+@client.event # initially had this set up as a button but it only worked on most recent message
+async def on_raw_reaction_add(payload): # handles all reacted messages rather than cached ones
+    message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+    reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
+    user = payload.member # compromise for being able to handle all messages is working with raw events
+
+    if user == client.user: return
+
+    if reaction.emoji == '🗑️' and message.author == client.user: # only deletes bot messages to prevent abuse
+        await message.delete()
 
 client.run(TOKEN)
