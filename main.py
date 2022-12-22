@@ -5,6 +5,8 @@ intents = discord.Intents.default() # idk what this does but it looks important 
 intents.message_content = True
 client = discord.Client(intents = intents)
 
+deletable = True # global variable for whether to add delete reaction or not
+
 
 
 ### DATABASE ###
@@ -47,6 +49,8 @@ async def write_database(): # saves a LOT of copy paste
 
 @client.event
 async def on_ready():
+    global deletable
+    deletable = False
     await client.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
             title = f'hello i\'m alive now',
@@ -90,9 +94,13 @@ async def on_raw_reaction_add(payload): # handles all reacted messages rather th
 
 @client.event
 async def on_message(message):
-    if message.author == client.user: # saves a lot of code by applying to every bot message
+    global deletable
+    if message.author == client.user and deletable == True: # saves a lot of code by applying to every bot message
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
+
+    else:
+        deletable = True
 
     if message.content == '': return # no point parsing blank messages
 
@@ -357,6 +365,7 @@ async def on_message(message):
 
 
     if COMMAND == 'say': # deletes original message and sends the sentence back
+        deletable = False
         await message.delete()
         await message.channel.send(SENTENCE)
         return
@@ -404,7 +413,8 @@ async def on_message(message):
         return
 
     elif COMMAND == 'suggest' or COMMAND == 'feedback':
-        await client.get(SUGGEST_CHANNEL).send ( # sends to hardcoded suggestion channel
+        deletable = False
+        await client.get_channel(SUGGEST_CHANNEL).send ( # sends to hardcoded suggestion channel
             embed = discord.Embed (
                 title = f'feedback sent by **{message.author}**:',
                 description = f'sent in {message.channel.mention}: ```{SENTENCE}```',
@@ -416,6 +426,7 @@ async def on_message(message):
             )
         )
 
+        deletable = True
         await message.reply ( # sends confirmation message to user
             embed = discord.Embed (
                 title = f'your feedback has been sent to {DEVELOPER}:',
