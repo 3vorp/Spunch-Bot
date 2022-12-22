@@ -106,15 +106,9 @@ async def on_message(message):
 
 
 
-### PREFIX / ANNOUNCEMENT SHENANIGANS ###
+### GLOBAL ANNOUNCEMENTS ###
 
 
-
-    try: # assigns server prefix if one exists, if not use default prefix
-        PREFIX = DATABASE[f'prefix_{message.guild.id}']
-
-    except KeyError:
-        PREFIX = DEFAULT_PREFIX
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
         for guild in client.guilds:
@@ -211,29 +205,16 @@ async def on_message(message):
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         return
 
-    elif SENTENCE == 'nut' or SENTENCE == f'{PREFIX}nut':
-        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
-        await write_database() # adds one to global nut count and writes it
-
-        await message.reply (
-            embed = discord.Embed (
-                title = 'you have sacrificed NUT',
-                description = 'this will make a fine addition to my collection',
-                color = EMBED_COLOR
-            )
-            .set_footer (
-                text = f'total nuts collected: {DATABASE["nut_count"]}',
-                icon_url = EMBED_ICON
-            ),
-            mention_author = False
-        )
-        return
-
 
 
 ### COMMAND HANDLER ###
 
 
+    try: # assigns server prefix if one exists, if not use default prefix
+        PREFIX = DATABASE[f'prefix_{message.guild.id}']
+
+    except KeyError:
+        PREFIX = DEFAULT_PREFIX
 
     if message.content.startswith(PREFIX) == False: return # saves on indentation
 
@@ -251,8 +232,25 @@ async def on_message(message):
 ### COMMANDS WITHOUT ARGUMENTS ###
 
 
+    if COMMAND == 'nut':
+        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+        await write_database() # adds one to global nut count and writes it
 
-    if COMMAND == 'rps':
+        await message.reply (
+            embed = discord.Embed (
+                title = 'you have sacrificed NUT',
+                description = 'this will make a fine addition to my collection',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = f'total nuts collected: {DATABASE["nut_count"]}',
+                icon_url = EMBED_ICON
+            ),
+            mention_author = False
+        )
+        return
+
+    elif COMMAND == 'rps':
         BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
         if SENTENCE == '': # if user provides no choice bot chooses for them
