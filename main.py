@@ -1,9 +1,9 @@
-import discord, os, wikipedia, random, json, datetime, dotenv, help_strings, config
+import discord, os, wikipedia, random, json, datetime, dotenv
+from config import *
+from help_strings import *
 intents = discord.Intents.default() # idk what this does but it looks important so I'm not touching it
 intents.message_content = True
 client = discord.Client(intents = intents)
-
-dotenv.load_dotenv() # this is so that I don't have the token directly in the file because yeah
 
 
 
@@ -21,28 +21,8 @@ try:
     )
 
 except FileNotFoundError:
-    print(help_strings.database_error) # no eval() necessary because it's not an f string
+    print(database_error) # no eval() necessary because it's not an f string
     DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
-
-
-
-### CONST VARIABLES ###
-
-
-
-DEFAULT_PREFIX = config.DEFAULT_PREFIX
-DEVELOPER = config.DEVELOPER
-EMBED_COLOR = config.EMBED_COLOR
-EMBED_ICON = config.EMBED_ICON
-BIG_ICON = config.BIG_ICON
-EMBED_GIF = config.EMBED_GIF
-BIG_GIF = config.BIG_GIF
-
-SUGGEST_CHANNEL = config.SUGGEST_CHANNEL
-STARTUP_CHANNEL = config.STARTUP_CHANNEL
-ANNOUNCEMENT_CHANNEL = config.ANNOUNCEMENT_CHANNEL
-
-TOKEN = os.getenv('TOKEN')
 
 
 
@@ -341,11 +321,11 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = '**spunch bot**',
-                description = eval(f'f"""{help_strings.all}"""'), # source file can't pass message-specific variables
+                description = eval(f'f"""{all}"""'), # source file can't pass message-specific variables
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = eval(f'f"""{help_strings.footer}"""'),
+                text = eval(f'f"""{footer}"""'),
                 icon_url = EMBED_ICON
             )
             .set_thumbnail (
@@ -359,7 +339,7 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = eval(f'f"""{help_strings.generic_error}"""'),
+                description = eval(f'f"""{generic_error}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -452,7 +432,7 @@ async def on_message(message):
 
     elif COMMAND == 'help' or COMMAND == 'info':
         flag = False
-        for i in help_strings.help_list: # iterates through the main command list
+        for i in help_list: # iterates through the main command list
             if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                 await message.reply (
                     embed = discord.Embed ( # same reason for using eval() as in the main help command
@@ -461,7 +441,7 @@ async def on_message(message):
                         color = EMBED_COLOR
                     )
                     .set_footer (
-                        text = eval(f'f"""{help_strings.footer}"""'),
+                        text = eval(f'f"""{footer}"""'),
                         icon_url = EMBED_ICON
                     )
                     .set_thumbnail (
@@ -602,7 +582,7 @@ async def on_message(message):
         await message.reply ( # generic error handling
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = eval(f'f"""{help_strings.generic_error}"""'),
+                description = eval(f'f"""{generic_error}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -613,4 +593,5 @@ async def on_message(message):
         )
         return
 
-client.run(TOKEN)
+dotenv.load_dotenv() # stops token from being in public files
+client.run(os.getenv('TOKEN')) # the actual execution command
