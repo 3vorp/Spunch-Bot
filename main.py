@@ -1,9 +1,9 @@
 import discord, os, wikipedia, random, json, datetime, dotenv
 from config import *
 from help_strings import *
-intents = discord.Intents.default() # idk what this does but it looks important so I'm not touching it
-intents.message_content = True
-client = discord.Client(intents = intents)
+intents = discord.Intents.default()
+intents.message_content = True # special permission required for messages
+client = discord.Client(intents = intents) # creating the actual bot client
 
 deletable = True # global variable for whether to add delete reaction or not
 

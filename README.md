@@ -1,4 +1,4 @@
-# **spunch bot** 
+# **spunch bot**
 
 ## an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
@@ -25,15 +25,15 @@ go make a discord app at https://discord.com/developers
 
 further instructions are at https://discordpy.readthedocs.io/en/stable/discord.html
 
-create a `.env` file in the root folder, following the formatting of the `.env.example` file:
+copy the `.env.example` file and rename it to `.env`
 
-this just makes the connection between the app and the python files
+insert your bot token into where it says `"your_bot_token_here"`, surrounded with double quotes
+
+this just makes the connection between the actual bot and these python files
 
 > **Warning**
-> 
+>
 > **your bot token is basically your bot password, be careful with it and do not post it anywhere**
->  
-> make sure to change the hardcoded channel IDs (`SUGGEST_CHANNEL`, `STARTUP_CHANNEL`, etc) to your desired ones in the `main.py` file.
 
 ## using a database properly
 
@@ -41,6 +41,8 @@ in your main working folder (the one that this file and the `main.py` file is co
 
 it just uses regular json formatting, read the example file for specifics
 
-also you can edit `config.py` to change some defaults like prefixes and colors
+## config
+
+`config.py` contains most of the hardcoded stuff like colors and channel ids, so feel free to edit that to change most defaults
 
 from there just run the python file and enjoy
