@@ -1,6 +1,6 @@
 # I know this should probably be a json file but this is way easier to deal with so cope harder lol
 
-all = '''
+help_all = '''
 an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
 
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
@@ -27,13 +27,18 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 ```{PREFIX}help <command>```
 ''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
 
-footer = '''
+
+
+help_footer = '''
 go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
 '''
 
 
+help_not_found = '''
+no command with that name was found, use `{PREFIX}help` for the full list
+'''
 
-#using 2d lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
+#using 2D lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
 
 
 
@@ -275,7 +280,7 @@ sacrifice NUT to me, adds one to global counter
 
 
 
-generic_error = '''
+error_generic = '''
 too lazy to implement proper errors but you probably:
 
 — sent too much stuff
@@ -287,7 +292,7 @@ too lazy to implement proper errors but you probably:
 
 
 
-database_error = '''\033[91m\033[1m
+error_database = '''\033[91m\033[1m
 IMPORTANT WARNING: check the README.md more closely:
 
 TL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file

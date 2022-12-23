@@ -23,7 +23,7 @@ try:
     )
 
 except FileNotFoundError:
-    print(database_error) # no eval() necessary because it's not an f string
+    print(error_database) # no eval() necessary because it's not an f string
     DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
 
 
@@ -95,7 +95,7 @@ async def on_raw_reaction_add(payload): # handles all reacted messages rather th
 @client.event
 async def on_message(message):
     global deletable
-    if message.author == client.user and deletable == True: # saves a lot of code by applying to every bot message
+    if message.author == client.user and deletable == True: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
@@ -327,11 +327,11 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = '**spunch bot**',
-                description = eval(f'f"""{all}"""'), # source file can't pass message-specific variables
+                description = eval(f'f"""{help_all}"""'), # source file can't pass message-specific variables
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = eval(f'f"""{footer}"""'),
+                text = eval(f'f"""{help_footer}"""'),
                 icon_url = EMBED_ICON
             )
             .set_thumbnail (
@@ -345,7 +345,7 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = eval(f'f"""{generic_error}"""'),
+                description = eval(f'f"""{error_generic}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -450,7 +450,7 @@ async def on_message(message):
                         color = EMBED_COLOR
                     )
                     .set_footer (
-                        text = eval(f'f"""{footer}"""'),
+                        text = eval(f'f"""{help_footer}"""'),
                         icon_url = EMBED_ICON
                     )
                     .set_thumbnail (
@@ -466,7 +466,7 @@ async def on_message(message):
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
-                    description = f'no command with that name was found, use `{PREFIX}help` for the full list',
+                    description = eval(f'f"""{help_not_found}"""'),
                     color = EMBED_COLOR
                 )
                 .set_footer (
@@ -478,7 +478,7 @@ async def on_message(message):
         return
 
     elif COMMAND == 'prefix' or COMMAND == 'setprefix':
-        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # checks if changing to default prefix to save space
+        if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # no point having defaults saved in DB
             try:
                 del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
                 await write_database() # writes the DATABASE dictionary into the actual json file
@@ -506,7 +506,7 @@ async def on_message(message):
                 )
 
         else:
-            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # uses guild id as key for easy management
+            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
             await write_database() # writes the DATABASE dictionary into the database.json file
             await message.reply (
                 embed = discord.Embed (
@@ -523,17 +523,17 @@ async def on_message(message):
         return
 
     elif COMMAND == 'embed':
-        ARG_LIST = SENTENCE.split(',') # uses commas for arguments so you can have spaces in the embed
+        ARG_LIST = SENTENCE.split(',') # so you can have spaces in the embed
 
         TITLE = ARG_LIST[0]
         try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
             DESCRIPTION = ARG_LIST[1]
 
-        except IndexError: # if any argument isn't provided an IndexError is raised, so it just sets it to blank
+        except IndexError: # passes into except clause if any argument isn't provided
             DESCRIPTION = ''
 
         try:
-            COLOR = ARG_LIST[2].strip().lstrip('#') # formatting because discord.py is VERY picky with hex
+            COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex codes
             if COLOR != '':
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
 
@@ -551,12 +551,12 @@ async def on_message(message):
 
         await message.delete()
         await message.channel.send ( # doesn't use reply so you can't see the original message
-            embed = discord.Embed ( # uses all the variables generated in that abomination above to create an embed
+            embed = discord.Embed ( # takes all variables from above and compiles it into one embed
                 title = TITLE,
                 description = DESCRIPTION,
                 color = COLOR
             )
-            .set_footer(text = FOOTER) # no image or thumbnail support for now because I'm lazy, maybe some day lol
+            .set_footer(text = FOOTER) # no image or thumbnail support for now, too lazy
         )
         return
 
@@ -572,7 +572,7 @@ async def on_message(message):
         return
 
     elif COMMAND == 'mock':
-        mocked_word = list(SENTENCE.lower()) # separate to WORD_LIST because it's a list of characters not words
+        mocked_word = list(SENTENCE.lower()) # list of characters rather than words
         for i in range(len(mocked_word)):
             if i % 2 == 0:
                 mocked_word[i] = mocked_word[i].upper()
@@ -591,7 +591,7 @@ async def on_message(message):
         await message.reply ( # generic error handling
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = eval(f'f"""{generic_error}"""'),
+                description = eval(f'f"""{error_generic}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
