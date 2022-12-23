@@ -1,6 +1,7 @@
 import discord, os, wikipedia, random, json, datetime, dotenv
 from config import * # saves me from having to use config.VARIABLE for everything
 from help_strings import * # same thing
+
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
 client = discord.Client(intents = intents) # creating the actual bot client
@@ -25,8 +26,6 @@ try:
 except FileNotFoundError:
     print(error_database) # no eval() necessary because it's not an f string
     DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
-
-
 
 async def write_database(): # saves a LOT of copy paste
     with open(os.path.join
@@ -303,6 +302,31 @@ async def on_message(message):
                 ),
                 mention_author = False
             )
+        return
+
+    elif COMMAND == 'dice' or COMMAND == 'roll': # [0] is how many dice to roll, [1] is amount of sides
+        if SENTENCE == '':
+            WORD_LIST = ['1','6']
+
+        try: # if you provide number but not sides
+            WORD_LIST[1] # literally just tries seeing if it exists
+
+        except IndexError:
+            WORD_LIST.append('6') # all of this code just generates args if user doesn't provide any
+
+        final = 0
+        for i in range(int(WORD_LIST[0])): # message.content is a string so type casting is needed
+            rolled = random.randint(1, int(WORD_LIST[1]))
+            final = final + rolled # adds new amount to already existing amount
+
+        await message.reply (
+            embed = discord.Embed (
+                title = f'you rolled a {final}',
+                description = f'using {WORD_LIST[0]} {WORD_LIST[1]} sided dice',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
         return
 
     elif COMMAND == 'github':

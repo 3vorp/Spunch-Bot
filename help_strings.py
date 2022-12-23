@@ -19,6 +19,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}say`: say stuff with bot
 — `{PREFIX}embed`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
 — `{PREFIX}8ball`, `{PREFIX}ball`: random answers for random questions
+— `{PREFIX}dice`, `{PREFIX}roll`: roll any number of dice with any number of sides
 — `{PREFIX}mock`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 — `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}nut`: sacrifice NUT to me
@@ -34,9 +35,12 @@ go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
 '''
 
 
+
 help_not_found = '''
 no command with that name was found, use `{PREFIX}help` for the full list
 '''
+
+
 
 #using 2D lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
 
@@ -221,6 +225,30 @@ random answers for random questions
 **NOTES:**
 
 questions have to be yes/no formatted for the bot to make sense
+'''
+
+], [('dice','roll'),
+
+'''
+roll any number of dice with any number of sides
+
+**SYNTAX:**
+```
+{PREFIX}dice <number of dice> <number of sides>
+{PREFIX}roll
+```
+
+**EXAMPLE:**
+```
+{PREFIX}dice 3 12
+{PREFIX}roll 4
+{PREFIX}dice
+```
+
+**NOTES:**
+
+default is one 6 sided dice
+you can provide how many dice without providing how many sides, bot will assume 6 by default
 '''
 
 ], [('mock',),
