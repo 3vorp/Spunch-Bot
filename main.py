@@ -322,7 +322,7 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = f'you rolled a {final}',
-                description = f'using {WORD_LIST[0]} {WORD_LIST[1]} sided dice',
+                description = f'using {WORD_LIST[0]} {WORD_LIST[1]}-sided dice',
                 color = EMBED_COLOR
             ),
             mention_author = False
