@@ -1,6 +1,6 @@
 import discord, os, wikipedia, random, json, datetime, dotenv
-from config import *
-from help_strings import *
+from config import * # saves me from having to use config.VARIABLE for everything
+from help_strings import * # same thing
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
 client = discord.Client(intents = intents) # creating the actual bot client
@@ -29,7 +29,7 @@ except FileNotFoundError:
 
 
 async def write_database(): # saves a LOT of copy paste
-    with open (os.path.join
+    with open(os.path.join
         (os.path.dirname (__file__), 'database.json'),
         'w',
         encoding = 'utf-8'

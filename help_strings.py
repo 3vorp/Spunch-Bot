@@ -269,7 +269,11 @@ sacrifice NUT to me, adds one to global counter
 ]
 ]
 
+
+
 # decided to put error messages here as well since they technically help you lol
+
+
 
 generic_error = '''
 too lazy to implement proper errors but you probably:
@@ -280,6 +284,8 @@ too lazy to implement proper errors but you probably:
 
 **use `{PREFIX}help` for a list of commands**
 '''
+
+
 
 database_error = '''\033[91m\033[1m
 IMPORTANT WARNING: check the README.md more closely:
