@@ -231,6 +231,7 @@ async def on_message(message):
 ### COMMANDS WITHOUT ARGUMENTS ###
 
 
+
     if COMMAND == 'nut':
         DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
         await write_database() # adds one to global nut count and writes it
