@@ -25,7 +25,7 @@ try:
 
 except FileNotFoundError:
     print(error_database) # no eval() necessary because it's not an f string
-    DATABASE = {} # sets database to empty dictionary if none are found, stops initial errors
+    DATABASE = {} # stops initial errors, still won't really work though
 
 async def write_database(): # saves a LOT of copy paste
     with open(os.path.join
@@ -78,15 +78,15 @@ async def on_ready():
 
 
 
-@client.event # initially had this set up as a button but it only worked on most recent message
-async def on_raw_reaction_add(payload): # handles all reacted messages rather than cached ones
+@client.event
+async def on_raw_reaction_add(payload): # using raw events so it works on all bot messages
     message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
     reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
-    user = payload.member # compromise for being able to handle all messages is working with raw events :pain:
+    user = payload.member # boilerplate since its handing raw events
 
-    if user == client.user or message.author != client.user: return # otherwise it deletes its own messages lol
+    if user == client.user or message.author != client.user: return # stops abuse/infinite loops
 
-    if reaction.emoji == '🗑️': # potentially adding more reactions in future so this setup keeps stuff clean
+    if reaction.emoji == '🗑️': # keeps stuff easily expandable for future
         await message.delete()
 
 
@@ -140,7 +140,7 @@ async def on_message(message):
 
     if SENTENCE == 'f':
         await message.add_reaction('🇫')
-        return # you have to use return on basically all commands just to stop canoodling
+        return # stops canoodling with other commands
 
     elif SENTENCE == 'monke':
         await message.add_reaction('🎷')
@@ -154,7 +154,6 @@ async def on_message(message):
     elif SENTENCE == 'baller':
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
-
             mention_author = False
         )
         return
@@ -209,6 +208,7 @@ async def on_message(message):
 ### COMMAND HANDLER ###
 
 
+
     try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
@@ -220,7 +220,7 @@ async def on_message(message):
     WORD_LIST = message.content[len(PREFIX):].lower().split()
     COMMAND = WORD_LIST[0]
     WORD_LIST.pop(0) # removes command because COMMAND exists now
-    SENTENCE = message.content.partition(' ')[2] # praise stackoverflow
+    SENTENCE = message.content.partition(' ')[2] # removes command but keeps whitespace
 
     # use WORD_LIST for list (lowercase)
     # use SENTENCE for string (exactly as user sent it)
@@ -305,7 +305,7 @@ async def on_message(message):
             )
         return
 
-    elif COMMAND == 'dice' or COMMAND == 'roll': # [0] is how many dice to roll, [1] is amount of sides
+    elif COMMAND == 'dice' or COMMAND == 'roll': # [0] is how many, [1] is sides
         if SENTENCE == '':
             WORD_LIST = ['1','6']
 
@@ -313,12 +313,12 @@ async def on_message(message):
             WORD_LIST[1] # literally just tries seeing if it exists
 
         except IndexError:
-            WORD_LIST.append('6') # all of this code just generates args if user doesn't provide any
+            WORD_LIST.append('6') # generates args if user doesn't provide any
 
         final = 0
-        for i in range(int(WORD_LIST[0])): # message.content is a string so type casting is needed
+        for i in range(int(WORD_LIST[0])): # int() because message.content is a string
             rolled = random.randint(1, int(WORD_LIST[1]))
-            final = final + rolled # adds new amount to already existing amount
+            final += rolled # adds new amount to already existing amount
 
         await message.reply (
             embed = discord.Embed (
@@ -350,9 +350,9 @@ async def on_message(message):
         (len(WORD_LIST) == 0 or WORD_LIST[0] == 'all')
     ):
         await message.reply (
-            embed = discord.Embed (
+            embed = discord.Embed ( # passed variables need to be evaluated per-message
                 title = '**spunch bot**',
-                description = eval(f'f"""{help_all}"""'), # source file can't pass message-specific variables
+                description = eval(f'f"""{help_all}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -366,7 +366,7 @@ async def on_message(message):
         )
         return
 
-    elif len(WORD_LIST) < 1: # if a command doesn't have args by this point it probably doesn't exist
+    elif len(WORD_LIST) < 1: # basically just a fancy guard clause
         await message.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
@@ -419,7 +419,7 @@ async def on_message(message):
         await message.reply (
             embed = discord.Embed (
                 title = SENTENCE,
-                description = random.choice ([ # you can add as many options as you want to this list
+                description = random.choice ([ # infinitely expandable list
                     'yes',
                     'no',
                     'maybe',
@@ -437,7 +437,7 @@ async def on_message(message):
 
     elif COMMAND == 'suggest' or COMMAND == 'feedback':
         deletable = False
-        await client.get_channel(SUGGEST_CHANNEL).send ( # sends to hardcoded suggestion channel
+        await client.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
             embed = discord.Embed (
                 title = f'feedback sent by **{message.author}**:',
                 description = f'sent in {message.channel.mention}: ```{SENTENCE}```',
@@ -487,7 +487,7 @@ async def on_message(message):
                 flag = True
                 break # only needs to check for one match, otherwise just wasting resources lol
 
-        if flag == False: # there's probably a better way to check if there were no matches but this works too
+        if flag == False: # there's probably an easier way to do this but oh well
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
