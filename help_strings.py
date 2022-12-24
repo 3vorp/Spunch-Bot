@@ -212,7 +212,6 @@ you can also omit stuff at the end completely if you don't want a footer and/or 
 '''
 random answers for random questions
 
-
 **SYNTAX:**
 ```
 {PREFIX}8ball <question>

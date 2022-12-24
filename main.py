@@ -4,7 +4,7 @@ from help_strings import * # same thing
 
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
-client = discord.Client(intents = intents) # creating the actual bot client
+bot = discord.Client(intents = intents) # creating the actual bot client
 
 deletable = True # global variable for whether to add delete reaction or not
 
@@ -46,11 +46,11 @@ async def write_database(): # saves a LOT of copy paste
 
 
 
-@client.event
+@bot.event
 async def on_ready():
     global deletable
     deletable = False
-    await client.get_channel(STARTUP_CHANNEL).send (
+    await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
             title = f'hello i\'m alive now',
             description = f'''```started at {
@@ -62,12 +62,12 @@ async def on_ready():
             color = EMBED_COLOR
         ) # removes an annoying double space with redundant .join() and .split()
         .set_footer (
-            text = f'Online as {client.user}',
+            text = f'Online as {bot.user}',
             icon_url = EMBED_ICON
         )
     )
-    await client.change_presence (
-        activity = discord.Game ( # "playing spongeboy gif on repeat"
+    await bot.change_presence (
+        activity = discord.Game ( # sends "playing spongeboy gif on repeat"
             name = 'spongeboy gif on repeat'
         )
     )
@@ -78,23 +78,23 @@ async def on_ready():
 
 
 
-@client.event
+@bot.event
 async def on_raw_reaction_add(payload): # using raw events so it works on all bot messages
-    message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+    message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
     reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
     user = payload.member # boilerplate since its handing raw events
 
-    if user == client.user or message.author != client.user: return # stops abuse/infinite loops
+    if user == bot.user or message.author != bot.user: return # stops abuse/infinite loops
 
     if reaction.emoji == '🗑️': # keeps stuff easily expandable for future
         await message.delete()
 
 
 
-@client.event
+@bot.event
 async def on_message(message):
     global deletable
-    if message.author == client.user and deletable == True: # automatically applies by default
+    if message.author == bot.user and deletable == True: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
@@ -110,7 +110,7 @@ async def on_message(message):
 
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
-        for guild in client.guilds:
+        for guild in bot.guilds:
             channel = guild.text_channels[0] # custom channels coming soon™
 
             await channel.send (
@@ -437,7 +437,7 @@ async def on_message(message):
 
     elif COMMAND == 'suggest' or COMMAND == 'feedback':
         deletable = False
-        await client.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
+        await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
             embed = discord.Embed (
                 title = f'feedback sent by **{message.author}**:',
                 description = f'sent in {message.channel.mention}: ```{SENTENCE}```',
@@ -628,4 +628,4 @@ async def on_message(message):
         return
 
 dotenv.load_dotenv() # stops token from being in public files
-client.run(os.getenv('TOKEN')) # the actual execution command
+bot.run(os.getenv('TOKEN')) # the actual execution command
