@@ -84,9 +84,9 @@ async def on_raw_reaction_add(payload): # handles all reacted messages rather th
     reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
     user = payload.member # compromise for being able to handle all messages is working with raw events :pain:
 
-    if user == client.user: return # detects own reaction and deletes all bot messages otherwise lol
+    if user == client.user or message.author != client.user: return # otherwise it deletes its own messages lol
 
-    if reaction.emoji == '🗑️' and message.author == client.user: # only deletes bot messages to prevent abuse
+    if reaction.emoji == '🗑️': # potentially adding more reactions in future so this setup keeps stuff clean
         await message.delete()
 
 
@@ -485,7 +485,7 @@ async def on_message(message):
                 )
 
                 flag = True
-                break # otherwise it's just wasting resources lol
+                break # only needs to check for one match, otherwise just wasting resources lol
 
         if flag == False: # there's probably a better way to check if there were no matches but this works too
             await message.reply (
