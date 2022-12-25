@@ -470,8 +470,8 @@ async def on_message(message):
             if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                 await message.reply (
                     embed = discord.Embed ( # same reason for using eval() as in the main help command
-                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # gets first value of first index
-                        description = eval(f'f"""{i[1]}"""'), # [1] is for getting description
+                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
+                        description = eval(f'f"""{i[1]}"""'), # grabs second entry from list (description)
                         color = EMBED_COLOR
                     )
                     .set_footer (
@@ -551,7 +551,7 @@ async def on_message(message):
         ARG_LIST = SENTENCE.split(',') # so you can have spaces in the embed
 
         TITLE = ARG_LIST[0]
-        try: # if an argument isn't provided for any of these it just sets it to nothing/defaults
+        try: # just sets it to nothing/defaults if nothing is specified
             DESCRIPTION = ARG_LIST[1]
 
         except IndexError: # passes into except clause if any argument isn't provided
@@ -575,8 +575,8 @@ async def on_message(message):
             FOOTER = ''
 
         await message.delete()
-        await message.channel.send ( # doesn't use reply so you can't see the original message
-            embed = discord.Embed ( # takes all variables from above and compiles it into one embed
+        await message.channel.send ( # deletes original message so doesn't use reply
+            embed = discord.Embed ( # compiles all variables from above into one embed
                 title = TITLE,
                 description = DESCRIPTION,
                 color = COLOR
@@ -585,10 +585,18 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'len' or COMMAND == 'length': # this is a super simple command but tbh it's pretty useful
+    elif COMMAND == 'len' or COMMAND == 'length': # simple but tbh kinda useful
+        if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
+            character = 'character'
+        else: character = 'characters'
+
+        if len(WORD_LIST) == 1:
+            word = 'word'
+        else: word = 'words'
+
         await message.reply (
             embed = discord.Embed (
-                title = f'your sentence is {len(SENTENCE)} characters long and {len(WORD_LIST)} words long:',
+                title = f'your sentence is {len(SENTENCE)} {character} long and {len(WORD_LIST)} {word} long:',
                 description = f'```{SENTENCE}```',
                 color = EMBED_COLOR
             ),
