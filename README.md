@@ -45,4 +45,19 @@ it just uses regular json formatting, read the example file for specifics
 
 `config.py` contains most of the hardcoded stuff like colors and channel ids, so feel free to edit that to change most defaults
 
+# IF YOU ARE USING VISUAL STUDIO CODE (VSCODE) AND ARE USING THE CODE RUNNER EXTENSION:
+
+the default method that the Code Runner extension uses for running a python file is by running it straight from the path
+
+however since there are multiple files in the directory this can and will cause issues
+
+to resolve this go into the `settings.json` file (contained in your appdata/application support folder under `Code/User/settings.json`) and paste in the following code
+```json
+"code-runner.executorMap": {
+    "python": "cd $dir && python3 $fileName",
+}
+```
+
+this will ensure that you are changing to the proper directory _before_ running the file, allowing you to access all the other files contained in the directory (database, config, etc)
+
 from there just run the python file and enjoy

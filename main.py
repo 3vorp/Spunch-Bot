@@ -16,11 +16,7 @@ deletable = True # global variable for whether to add delete reaction or not
 
 try:
     DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
-        open(os.path.join
-            (os.path.dirname(__file__),'database.json'),
-            'r'
-        )
-        .read()
+        open('database.json','r').read()
     )
 
 except FileNotFoundError:
@@ -28,11 +24,7 @@ except FileNotFoundError:
     DATABASE = {} # stops initial errors, still won't really work though
 
 async def write_database(): # saves a LOT of copy paste
-    with open(os.path.join
-        (os.path.dirname (__file__), 'database.json'),
-        'w',
-        encoding = 'utf-8'
-    ) as db:
+    with open('database.json','w', encoding = 'utf-8') as db:
         json.dump ( # allows me to write everything into the json file
             DATABASE,
             db,
