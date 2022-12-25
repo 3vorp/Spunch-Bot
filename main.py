@@ -396,21 +396,28 @@ async def on_message(message):
     elif COMMAND == 'wikipedia':
         try:
             await message.reply ( # doesn't use embed to save screen space
-                f'```{wikipedia.page(SENTENCE).content[0:1900]}```', # trims for character limit
+                f'```{wikipedia.page(SENTENCE, pageid = None, auto_suggest = False).content[0:1994]}```',
                 mention_author = False
             )
 
-        except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError):
+        except wikipedia.exceptions.PageError:
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
-                    description = 'multiple/no wikipedia article found with that name',
+                    description = 'no wikipedia article found with that name',
                     color = EMBED_COLOR
                 )
                 .set_footer (
                     text = 'you\'re still an absolute clampongus though',
                     icon_url = EMBED_ICON
                 ),
+                mention_author = False
+            )
+
+        except wikipedia.exceptions.DisambiguationError as error:
+            CHOICE = random.choice(error.options) # if multiple pages are found picks random one
+            await message.reply (
+                f'```{wikipedia.page(CHOICE, pageid = None, auto_suggest = False).content[0:1994]}```',
                 mention_author = False
             )
         return
