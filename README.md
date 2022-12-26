@@ -15,6 +15,7 @@ requirements
 - have python installed (who would have guessed)
 - the following libraries:
     - discord.py (obviously)
+    - os (used for database/token stuff)
     - random (used for 8ball command and a few other things)
     - wikipedia (used for wikipedia command)
     - json (used for the database)
