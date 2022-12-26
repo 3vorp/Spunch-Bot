@@ -320,9 +320,13 @@ too lazy to implement proper errors but you probably:
 
 
 error_database = '''\033[91m\033[1m
-IMPORTANT WARNING: check the README.md more closely:
+IMPORTANT WARNING: Check the README.md more closely:
 
-TL;DR: create a database.json file inside the root folder following the formatting of the database_example.json example file
+There are two possible reasons for this error appearing:
+
+1. You didn't add a database. Copy the `database_example.json` file and rename it to `database.json`.
+
+2. You are using the Code Runner Visual Studio Code extension. Check the bottom of README.md for a code snippet to paste that will fix this issue.
 
 The bot will mostly work without a database, however commands such as `prefix` and `nut` will result in a LOT of errors.
 '''

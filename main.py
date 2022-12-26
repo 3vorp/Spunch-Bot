@@ -15,9 +15,7 @@ deletable = True # global variable for whether to add delete reaction or not
 
 
 try:
-    DATABASE = json.loads ( # I'm sorry to whoever has to read this abomination
-        open('database.json','r').read()
-    )
+    DATABASE = json.loads (open('database.json','r').read())
 
 except FileNotFoundError:
     print(error_database) # no eval() necessary because it's not an f string
