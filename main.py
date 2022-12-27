@@ -34,6 +34,12 @@ async def write_database(): # saves a LOT of copy paste
 @bot.event
 async def on_ready():
     global deletable
+    await bot.change_presence (
+        activity = discord.Game ( # sends "playing spongeboy gif on repeat"
+            name = 'spongeboy gif on repeat'
+        )
+    )
+
     deletable = False
     await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
@@ -51,11 +57,7 @@ async def on_ready():
             icon_url = EMBED_ICON
         )
     )
-    await bot.change_presence (
-        activity = discord.Game ( # sends "playing spongeboy gif on repeat"
-            name = 'spongeboy gif on repeat'
-        )
-    )
+
 
 
 
@@ -79,11 +81,11 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 @bot.event
 async def on_message(message):
     global deletable
-    if message.author == bot.user and deletable == True: # automatically applies by default
+    if message.author == bot.user and deletable: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
-    else:
+    else: # resets the status for the next message
         deletable = True
 
     if message.content == '': return # no point parsing blank messages
@@ -200,7 +202,7 @@ async def on_message(message):
     except KeyError:
         PREFIX = DEFAULT_PREFIX
 
-    if message.content.startswith(PREFIX) == False: return # saves on indentation
+    if not message.content.startswith(PREFIX): return # saves on indentation
 
     WORD_LIST = message.content[len(PREFIX):].lower().split()
     COMMAND = WORD_LIST[0]
@@ -373,8 +375,9 @@ async def on_message(message):
 
 
     if COMMAND == 'say': # deletes original message and sends the sentence back
-        deletable = False
         await message.delete()
+
+        deletable = False
         await message.channel.send(SENTENCE)
         return
 
@@ -479,7 +482,7 @@ async def on_message(message):
                 flag = True
                 break # only needs to check for one match, otherwise just wasting resources lol
 
-        if flag == False: # there's probably an easier way to do this but oh well
+        if not flag: # there's probably an easier way to do this but oh well
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
@@ -567,6 +570,8 @@ async def on_message(message):
             FOOTER = ''
 
         await message.delete()
+
+        deletable = False
         await message.channel.send ( # deletes original message so doesn't use reply
             embed = discord.Embed ( # compiles all variables from above into one embed
                 title = TITLE,
