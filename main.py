@@ -67,9 +67,18 @@ async def on_ready():
 
 @bot.event
 async def on_raw_reaction_add(payload): # using raw events so it works on all bot messages
-    message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
-    reaction = discord.utils.get(message.reactions, emoji=payload.emoji.name)
-    user = payload.member # boilerplate since its handing raw events
+    user = payload.member
+
+    message = await (
+        bot.get_channel(payload.channel_id)
+        .fetch_message(payload.message_id)
+    )
+
+    reaction = discord.utils.get (
+        message.reactions, emoji=payload.emoji.name
+    ) # boilerplate since its handing raw events
+
+
 
     if user == bot.user or message.author != bot.user: return # stops abuse/infinite loops
 
@@ -81,7 +90,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 @bot.event
 async def on_message(message):
     global deletable
-    if message.author == bot.user and deletable: # automatically applies by default
+    if deletable and message.author == bot.user: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
