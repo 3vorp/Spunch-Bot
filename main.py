@@ -563,29 +563,42 @@ async def on_message(message):
     elif COMMAND == 'embed':
         ARG_LIST = SENTENCE.split(',') # so you can have spaces in the embed
 
-        TITLE = ARG_LIST[0]
+        if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
+            IMAGE = ARG_LIST[0] # this way you can have image embeds and titles
+            TITLE = None
+        else:
+            TITLE = ARG_LIST[0]
+            IMAGE = None
+
         try: # just sets it to nothing/defaults if nothing is specified
             DESCRIPTION = ARG_LIST[1]
-
         except IndexError: # passes into except clause if any argument isn't provided
             DESCRIPTION = ''
 
         try:
-            COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex codes
+            COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex
             if COLOR != '':
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
 
             else: # trigger the except if no color is provided
                 raise IndexError
-
-        except IndexError:
+        except (IndexError, ValueError): # also catches invalid colors
             COLOR = EMBED_COLOR
 
         try:
             FOOTER = ARG_LIST[3]
-
         except IndexError:
             FOOTER = ''
+
+        try:
+            FOOTER_IMAGE = ARG_LIST[4]
+        except IndexError:
+            FOOTER_IMAGE = None
+
+        try:
+            THUMBNAIL = ARG_LIST[5]
+        except IndexError:
+            THUMBNAIL = None
 
         await message.delete()
 
@@ -596,7 +609,16 @@ async def on_message(message):
                 description = DESCRIPTION,
                 color = COLOR
             )
-            .set_footer(text = FOOTER) # no image or thumbnail support for now, too lazy
+            .set_footer (
+                text = FOOTER,
+                icon_url = FOOTER_IMAGE
+            )
+            .set_thumbnail (
+                url = THUMBNAIL
+            )
+            .set_image (
+                url = IMAGE
+            )
         )
         return
 

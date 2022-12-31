@@ -183,28 +183,33 @@ generates a custom embed
 
 **SYNTAX:**
 ```
-{PREFIX}embed <title>, <description>, <color>, <footer>
+{PREFIX}embed <title>, <description>, <color>, <footer>, <footer image>, <thumbnail image>
+{PREFIX}embed <image>
 ```
-**EXAMPLE:**
+**EXAMPLES:**
 ```
-{PREFIX}embed this is an example embed, epic description that **supports markdown**, #7289DA, epic small text
+{PREFIX}embed this is an example embed, epic description that **supports markdown**, #7289DA, epic small text, https://3vorp.github.io/favicon.png, https://i.imgur.com/hAuUsnD.png
+
+{PREFIX}embed https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif
 ```
 **NOTES:**
 
-to omit a portion (e.g. if you don't want to add a description), just replace that entry in the list with a space
+to omit a portion (e.g. if you don't want to add a description), just leave that entry in the list blank or a space
 
 **keep the commas for ordering purposes, just leave the area between them blank**
 ```
-{PREFIX}embed title, ,#00ff00, no description will be loaded
+{PREFIX}embed title,, #00ff00, no description will be loaded
 ```
 you can do this multiple times in a row as well:
 ```
 {PREFIX}embed now it will just use the default yellow color,,, footer
 ```
-you can also omit stuff at the end completely if you don't want a footer and/or color
+you can also omit stuff at the end completely if you don't want a footer/color/images/description
 ```
-{PREFIX}embed example title, no footer necessary
+{PREFIX}embed example title, no footer/image necessary
 ```
+if the first argument is a url (starts with https:// or http://), it will try and find an image with that url
+it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
 ], [('8ball','ball'),
