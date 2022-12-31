@@ -15,14 +15,15 @@ deletable = True # global variable for whether to add delete reaction or not
 
 
 try:
-    DATABASE = json.loads(open('database.json', 'r').read())
+    with open('database.json', 'r') as db:
+        DATABASE = json.load(db)
 
 except FileNotFoundError:
     print(error_database) # no eval() necessary because it's not an f string
     DATABASE = {} # stops initial errors, still won't really work though
 
 async def write_database(): # saves a LOT of copy paste
-    with open('database.json', 'w', encoding = 'utf-8') as db:
+    with open('database.json', 'w') as db:
         json.dump(DATABASE, db, ensure_ascii = False, indent = 4)
 
 
