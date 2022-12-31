@@ -239,23 +239,23 @@ async def on_message(message):
                 ),
                 mention_author = False
             )
+            return
 
-        else: # this way you can provide anything besides keywords and it still adds
-            DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
-            await write_database() # adds one to global nut count and writes it
+        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+        await write_database() # adds one to global nut count and writes it
 
-            await message.reply (
-                embed = discord.Embed (
-                    title = 'you have sacrificed NUT',
-                    description = 'this will make a fine addition to my collection',
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = f'total nuts collected: {DATABASE["nut_count"]}',
-                    icon_url = EMBED_ICON
-                ),
-                mention_author = False
+        await message.reply (
+            embed = discord.Embed (
+                title = 'you have sacrificed NUT',
+                description = 'this will make a fine addition to my collection',
+                color = EMBED_COLOR
             )
+            .set_footer (
+                text = f'total nuts collected: {DATABASE["nut_count"]}',
+                icon_url = EMBED_ICON
+            ),
+            mention_author = False
+        )
         return
 
     elif COMMAND == 'rps':
@@ -353,25 +353,60 @@ async def on_message(message):
         )
         return
 
-    elif (
-        (COMMAND == 'help' or COMMAND == 'info') and
-        (len(WORD_LIST) == 0 or WORD_LIST[0] == 'all')
-    ):
-        await message.reply (
-            embed = discord.Embed ( # passed variables need to be evaluated per-message
-                title = '**spunch bot**',
-                description = eval(f'f"""{help_all}"""'),
-                color = EMBED_COLOR
+    elif COMMAND == 'help' or COMMAND == 'info':
+        if SENTENCE == '' or SENTENCE == 'all':
+            await message.reply (
+                embed = discord.Embed ( # passed variables need to be evaluated per-message
+                    title = '**spunch bot**',
+                    description = eval(f'f"""{help_all}"""'),
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = eval(f'f"""{help_footer}"""'),
+                    icon_url = EMBED_ICON
+                )
+                .set_thumbnail (
+                    url = BIG_GIF
+                ),
+                mention_author = False
             )
-            .set_footer (
-                text = eval(f'f"""{help_footer}"""'),
+            return
+
+        flag = False
+        for i in help_list: # iterates through the main command list
+            if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
+                await message.reply (
+                    embed = discord.Embed ( # same reason for using eval() as in the main help command
+                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
+                        description = eval(f'f"""{i[1]}"""'), # grabs second entry from list (description)
+                        color = EMBED_COLOR
+                    )
+                    .set_footer (
+                        text = eval(f'f"""{help_footer}"""'),
+                        icon_url = EMBED_ICON
+                    )
+                    .set_thumbnail (
+                        url = BIG_GIF
+                    ),
+                    mention_author = False
+                )
+
+                flag = True
+                break # only needs to check for one match, otherwise just wasting resources lol
+
+        if not flag: # there's probably an easier way to do this but oh well
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'insert helpful error name here',
+                    description = eval(f'f"""{help_not_found}"""'),
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                text = 'you\'re still an absolute clampongus though',
                 icon_url = EMBED_ICON
+                ),
+                mention_author = False
             )
-            .set_thumbnail (
-                url = BIG_GIF
-            ),
-            mention_author = False
-        )
         return
 
     elif len(WORD_LIST) < 1: # basically just a fancy guard clause
@@ -480,44 +515,6 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'help' or COMMAND == 'info':
-        flag = False
-        for i in help_list: # iterates through the main command list
-            if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
-                await message.reply (
-                    embed = discord.Embed ( # same reason for using eval() as in the main help command
-                        title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
-                        description = eval(f'f"""{i[1]}"""'), # grabs second entry from list (description)
-                        color = EMBED_COLOR
-                    )
-                    .set_footer (
-                        text = eval(f'f"""{help_footer}"""'),
-                        icon_url = EMBED_ICON
-                    )
-                    .set_thumbnail (
-                        url = BIG_GIF
-                    ),
-                    mention_author = False
-                )
-
-                flag = True
-                break # only needs to check for one match, otherwise just wasting resources lol
-
-        if not flag: # there's probably an easier way to do this but oh well
-            await message.reply (
-                embed = discord.Embed (
-                    title = 'insert helpful error name here',
-                    description = eval(f'f"""{help_not_found}"""'),
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_ICON
-                ),
-                mention_author = False
-            )
-        return
-
     elif COMMAND == 'prefix' or COMMAND == 'setprefix':
         if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # no point having defaults saved in DB
             try:
@@ -545,22 +542,22 @@ async def on_message(message):
                     ),
                     mention_author = False
                 )
+            return
 
-        else:
-            DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
-            await write_database() # writes the DATABASE dictionary into the database.json file
-            await message.reply (
-                embed = discord.Embed (
-                    title = f'server prefix changed to {SENTENCE}',
-                    description = f'you can change it back using `{SENTENCE}prefix reset`',
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = 'this was painful to implement so you better appreciate it',
-                    icon_url = EMBED_ICON
-                ),
-                mention_author = False
+        DATABASE[f'prefix_{message.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
+        await write_database() # writes the DATABASE dictionary into the database.json file
+        await message.reply (
+            embed = discord.Embed (
+                title = f'server prefix changed to {SENTENCE}',
+                description = f'you can change it back using `{SENTENCE}prefix reset`',
+                color = EMBED_COLOR
             )
+            .set_footer (
+                text = 'this was painful to implement so you better appreciate it',
+                icon_url = EMBED_ICON
+            ),
+            mention_author = False
+        )
         return
 
     elif COMMAND == 'embed':
@@ -638,20 +635,18 @@ async def on_message(message):
         )
         return
 
-    else:
-        await message.reply ( # generic error handling
-            embed = discord.Embed (
-                title = 'insert helpful error name here',
-                description = eval(f'f"""{error_generic}"""'),
-                color = EMBED_COLOR
-            )
-            .set_footer (
-                text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_ICON
-            ),
-            mention_author = False
+    await message.reply ( # generic error handling
+        embed = discord.Embed (
+            title = 'insert helpful error name here',
+            description = eval(f'f"""{error_generic}"""'),
+            color = EMBED_COLOR
         )
-        return
+        .set_footer (
+            text = 'you\'re still an absolute clampongus though',
+            icon_url = EMBED_ICON
+        ),
+        mention_author = False
+    )
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
