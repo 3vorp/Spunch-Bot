@@ -244,6 +244,21 @@ async def on_message(message):
         DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
         await write_database() # adds one to global nut count and writes it
 
+        if DATABASE["nut_count"] % 50 == 0: # special NUT
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'you have sacrificed a special NUT',
+                    description = f'you have provided the lucky {DATABASE["nut_count"]}th NUT to my collection',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'i\'m literally just checking for multiples of 50 lol',
+                    icon_url = EMBED_ICON
+                ),
+                mention_author = False
+            )
+            return
+
         await message.reply (
             embed = discord.Embed (
                 title = 'you have sacrificed NUT',
