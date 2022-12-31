@@ -24,7 +24,7 @@ except FileNotFoundError:
 
 async def write_database(): # saves a LOT of copy paste
     with open('database.json', 'w') as db:
-        json.dump(DATABASE, db, ensure_ascii = False, indent = 4)
+        json.dump(DATABASE, db, indent = 4, ensure_ascii = False)
 
 
 
@@ -230,7 +230,7 @@ async def on_message(message):
 
 
     if COMMAND == 'nut':
-        if WORD_LIST[0] == 'total' or WORD_LIST[0] == 'amount':
+        if SENTENCE == 'total' or SENTENCE == 'amount':
             await message.reply (
                 embed = discord.Embed (
                     title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
