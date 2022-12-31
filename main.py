@@ -44,7 +44,7 @@ async def on_ready():
     deletable = False
     await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
-            title = f'hello i\'m alive now',
+            title = 'hello i\'m alive now',
             description = f'''```started at {
                 ' '.join (
                     datetime.datetime.now().strftime('%c')
