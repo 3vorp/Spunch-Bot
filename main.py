@@ -556,7 +556,7 @@ async def on_message(message):
                     color = EMBED_COLOR
                 )
                 .set_footer (
-                    text = 'this took me a long time to add so you better appreciate it',
+                    text = 'this was painful to implement so you better appreciate it',
                     icon_url = EMBED_ICON
                 ),
                 mention_author = False
