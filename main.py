@@ -135,7 +135,7 @@ async def on_message(message):
 
 
 
-    if SENTENCE == 'f':
+    if SENTENCE == 'f': # no match case because less indentation + cleaner aliases
         await message.add_reaction('🇫')
         return # stops canoodling with other commands
 
@@ -239,7 +239,7 @@ async def on_message(message):
                 ),
                 mention_author = False
             )
-            return
+            return # fancy guard clause, saves indentation so I use these everywhere
 
         DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
         await write_database() # adds one to global nut count and writes it
@@ -261,7 +261,7 @@ async def on_message(message):
     elif COMMAND == 'rps':
         BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
-        if SENTENCE == '': # if user provides no choice bot chooses for them
+        if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
             WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])]
 
         if BOT_ANSWER == WORD_LIST[0]:
@@ -314,7 +314,7 @@ async def on_message(message):
         return
 
     elif COMMAND == 'dice' or COMMAND == 'roll': # [0] is how many, [1] is sides
-        if SENTENCE == '':
+        if len(WORD_LIST) < 1:
             WORD_LIST = ['1','6']
 
         try: # if you provide number but not sides
@@ -354,7 +354,7 @@ async def on_message(message):
         return
 
     elif COMMAND == 'help' or COMMAND == 'info':
-        if SENTENCE == '' or SENTENCE == 'all':
+        if len(WORD_LIST) < 1 or SENTENCE == 'all':
             await message.reply (
                 embed = discord.Embed ( # passed variables need to be evaluated per-message
                     title = '**spunch bot**',
@@ -409,7 +409,7 @@ async def on_message(message):
             )
         return
 
-    elif len(WORD_LIST) < 1: # basically just a fancy guard clause
+    elif len(WORD_LIST) < 1: # no other command can pass 0 args
         await message.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
