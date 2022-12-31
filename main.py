@@ -225,26 +225,37 @@ async def on_message(message):
 
 
 
-### COMMANDS WITHOUT ARGUMENTS ###
+### COMMANDS WITH OPTIONAL / NO ARGUMENTS ###
 
 
 
     if COMMAND == 'nut':
-        DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
-        await write_database() # adds one to global nut count and writes it
-
-        await message.reply (
-            embed = discord.Embed (
-                title = 'you have sacrificed NUT',
-                description = 'this will make a fine addition to my collection',
-                color = EMBED_COLOR
+        if WORD_LIST[0] == 'total' or WORD_LIST[0] == 'amount':
+            await message.reply (
+                embed = discord.Embed (
+                    title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
+                    description = 'all fine additions to my collection',
+                    color = EMBED_COLOR
+                ),
+                mention_author = False
             )
-            .set_footer (
-                text = f'total nuts collected: {DATABASE["nut_count"]}',
-                icon_url = EMBED_ICON
-            ),
-            mention_author = False
-        )
+
+        else: # this way you can provide anything besides keywords and it still adds
+            DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+            await write_database() # adds one to global nut count and writes it
+
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'you have sacrificed NUT',
+                    description = 'this will make a fine addition to my collection',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = f'total nuts collected: {DATABASE["nut_count"]}',
+                    icon_url = EMBED_ICON
+                ),
+                mention_author = False
+            )
         return
 
     elif COMMAND == 'rps':

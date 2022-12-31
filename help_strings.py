@@ -22,7 +22,7 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 — `{PREFIX}dice`, `{PREFIX}roll`: roll any number of dice with any number of sides
 — `{PREFIX}mock`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 — `{PREFIX}rps`: rock paper scissors against spunch bot
-— `{PREFIX}nut`: sacrifice NUT to me
+— `{PREFIX}nut`: sacrifice NUT to me, adds one to global counter
 
 **specific info for a command can be found by running**
 ```{PREFIX}help <command>```
@@ -61,9 +61,9 @@ returns wikipedia article
 ```
 {PREFIX}wikipedia discordapp
 ```
-**NOTES:**
+**NOTE:**
 
-if no/multiple wikipedia articles are found it will raise an error, you have to be really specific for some reason idk blame the library i used
+if multiple possible articles are found it will just pick a random one
 '''
 
 ], [('feedback','suggest'), # the first entry in the tuple is always the one displayed in the title
@@ -80,7 +80,7 @@ suggest stuff to implement
 ```
 {PREFIX}feedback add actually decent errors
 ```
-**NOTES:**
+**NOTE:**
 
 there is currently no way to see if feedback has been accepted, but this is planned for the future
 '''
@@ -105,7 +105,7 @@ add reset to reset the prefix (obviously)
 {PREFIX}prefix reset
 ```
 
-**NOTES:**
+**NOTE:**
 
 currently you can only have one prefix per server, so no command aliases for now
 '''
@@ -221,7 +221,7 @@ random answers for random questions
 ```
 {PREFIX}8ball is anything real
 ```
-**NOTES:**
+**NOTE:**
 
 questions have to be yes/no formatted for the bot to make sense
 '''
@@ -283,7 +283,7 @@ rock paper scissors against spunch bot
 {PREFIX}rps paper
 {PREFIX}rps scissors
 ```
-**NOTES:**
+**NOTE:**
 
 if you don't specify what you're playing spunch bot will decide for you randomly
 '''
@@ -296,7 +296,12 @@ sacrifice NUT to me, adds one to global counter
 **SYNTAX:**
 ```
 {PREFIX}nut
+{PREFIX}nut amount
+{PREFIX}nut total
 ```
+**NOTE:**
+
+just for fun, don't take this command too seriously lol
 '''
 ]
 ]
