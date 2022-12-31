@@ -1,7 +1,7 @@
 # I know this should probably be a json file but this is way easier to deal with so cope harder lol
 
 help_all = '''
-an atrocity made in discord.py by `{DEVELOPER}` because I was bored idk
+an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
 __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 

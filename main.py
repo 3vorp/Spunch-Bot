@@ -503,7 +503,7 @@ async def on_message(message):
         deletable = True
         await message.reply ( # sends confirmation message to user
             embed = discord.Embed (
-                title = f'your feedback has been sent to {DEVELOPER}:',
+                title = 'your feedback has been sent:',
                 description = f'```{SENTENCE}```',
                 color = EMBED_COLOR
             )
