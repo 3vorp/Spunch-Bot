@@ -457,7 +457,7 @@ async def on_message(message):
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
-                    description = 'no wikipedia article found with that name',
+                    description = f'no wikipedia article found called "{SENTENCE}"',
                     color = EMBED_COLOR
                 )
                 .set_footer (

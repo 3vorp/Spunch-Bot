@@ -37,7 +37,7 @@ go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
 
 
 help_not_found = '''
-no command with that name was found, use `{PREFIX}help` for the full list
+no command called "{WORD_LIST[0]}" was found, use `{PREFIX}help` for the full list
 '''
 
 
