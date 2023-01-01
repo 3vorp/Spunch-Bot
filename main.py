@@ -133,27 +133,27 @@ async def on_message(message):
 
 
 
-    if SENTENCE == 'f': # no match case because less indentation + cleaner aliases
+    if 'f' == SENTENCE: # no match case because less indentation + cleaner aliases
         await message.add_reaction('🇫')
         return # stops canoodling with other commands
 
-    elif SENTENCE == 'monke':
+    elif 'monke' == SENTENCE:
         await message.add_reaction('🎷')
         await message.add_reaction('🐒')
         return
 
-    elif 'forgor' in SENTENCE:
+    elif 'forgor' in SENTENCE: # this way you can have variations like I forgor
         await message.add_reaction('💀')
         return
 
-    elif SENTENCE == 'baller':
+    elif 'baller' == SENTENCE:
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
             mention_author = False
         )
         return
 
-    elif SENTENCE == 'spongeboy':
+    elif 'spongeboy' == SENTENCE:
         await message.reply (
             embed = discord.Embed (
                 color = EMBED_COLOR
@@ -165,7 +165,7 @@ async def on_message(message):
         )
         return
 
-    elif SENTENCE == 'hello there':
+    elif 'hello there' == SENTENCE:
         if random.randint(0, 5) == 0: # special chance for easter egg
             url = 'https://i.imgur.com/hAuUsnD.png'
 
@@ -183,7 +183,7 @@ async def on_message(message):
         )
         return
 
-    elif 'mhhh' in SENTENCE:
+    elif 'mhhh' in SENTENCE: # "mhhh moment" will still count, etc
         await message.reply (
             embed = discord.Embed (
                 title = 'mhhh',
@@ -227,7 +227,7 @@ async def on_message(message):
 
 
 
-    if COMMAND == 'nut':
+    if 'nut' == COMMAND:
         if SENTENCE == 'total' or SENTENCE == 'amount':
             await message.reply (
                 embed = discord.Embed (
@@ -271,7 +271,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'rps':
+    elif 'rps' == COMMAND:
         BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
         if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
@@ -326,7 +326,7 @@ async def on_message(message):
             )
         return
 
-    elif COMMAND == 'dice' or COMMAND == 'roll': # [0] is how many, [1] is sides
+    elif 'dice' == COMMAND or 'roll' == COMMAND: # [0] is how many, [1] is sides
         if len(WORD_LIST) < 1:
             WORD_LIST = ['1','6']
 
@@ -351,7 +351,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'github':
+    elif 'github' == COMMAND:
         await message.reply (
             embed = discord.Embed (
                 title = 'you can find my code on github here:',
@@ -366,7 +366,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'help' or COMMAND == 'info':
+    elif 'help' == COMMAND or 'info' == COMMAND:
         if len(WORD_LIST) < 1 or SENTENCE == 'all':
             await message.reply (
                 embed = discord.Embed ( # passed variables need to be evaluated per-message
@@ -439,14 +439,14 @@ async def on_message(message):
 
 
 
-    if COMMAND == 'say': # deletes original message and sends the sentence back
+    elif 'say' == COMMAND: # deletes original message and sends the sentence back
         await message.delete()
 
         deletable = False
         await message.channel.send(SENTENCE)
         return
 
-    elif COMMAND == 'wikipedia':
+    elif 'wikipedia' == COMMAND:
         try:
             await message.reply ( # doesn't use embed to save screen space
                 f'```{wikipedia.page(SENTENCE, pageid = None, auto_suggest = False).content[0:1994]}```',
@@ -475,7 +475,7 @@ async def on_message(message):
             )
         return
 
-    elif COMMAND == '8ball' or COMMAND == 'ball':
+    elif '8ball' == COMMAND or 'ball' == COMMAND:
         await message.reply (
             embed = discord.Embed (
                 title = SENTENCE,
@@ -495,7 +495,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'suggest' or COMMAND == 'feedback':
+    elif 'suggest' == COMMAND or 'feedback' == COMMAND:
         deletable = False
         await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
             embed = discord.Embed (
@@ -524,7 +524,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'prefix' or COMMAND == 'setprefix':
+    elif 'prefix' == COMMAND or 'setprefix' == COMMAND:
         if WORD_LIST[0] == 'reset' or SENTENCE == DEFAULT_PREFIX: # no point having defaults saved in DB
             try:
                 del DATABASE[f'prefix_{message.guild.id}'] # removes value entirely
@@ -569,7 +569,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'embed':
+    elif 'embed' == COMMAND:
         ARG_LIST = SENTENCE.split(',') # so you can have spaces in the embed
 
         if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
@@ -586,9 +586,8 @@ async def on_message(message):
 
         try:
             COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex
-            if COLOR != '':
+            if COLOR: # if not empty
                 COLOR = int(COLOR, base=16) # converts into hex number/base 16
-
             else: # trigger the except if no color is provided
                 raise IndexError
         except (IndexError, ValueError): # also catches invalid colors
@@ -631,7 +630,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'len' or COMMAND == 'length': # simple but tbh kinda useful
+    elif 'len' == COMMAND or 'length' == COMMAND: # simple but tbh kinda useful
         if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
             character = 'character'
         else: character = 'characters'
@@ -650,7 +649,7 @@ async def on_message(message):
         )
         return
 
-    elif COMMAND == 'mock':
+    elif 'mock' == COMMAND:
         mocked_word = list(SENTENCE.lower()) # list of characters rather than words
         for i in range(len(mocked_word)):
             if i % 2 == 0:
