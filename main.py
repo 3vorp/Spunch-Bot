@@ -98,8 +98,6 @@ async def on_message(message):
     else: # resets the status for the next message
         deletable = True
 
-    if message.content == '': return # no point parsing blank messages
-
 
 
 ### GLOBAL ANNOUNCEMENTS ###
@@ -212,7 +210,7 @@ async def on_message(message):
     except KeyError:
         PREFIX = DEFAULT_PREFIX
 
-    if not message.content.startswith(PREFIX): return # saves on indentation
+    if not message.content.startswith(PREFIX): return # filters out regular messages
 
     WORD_LIST = message.content[len(PREFIX):].lower().split()
     COMMAND = WORD_LIST[0]
@@ -387,7 +385,6 @@ async def on_message(message):
             )
             return
 
-        flag = False
         for i in help_list: # iterates through the main command list
             if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
                 await message.reply (
@@ -405,23 +402,20 @@ async def on_message(message):
                     ),
                     mention_author = False
                 )
+                return # only needs to check for one match and then it's done
 
-                flag = True
-                break # only needs to check for one match, otherwise just wasting resources lol
-
-        if not flag: # there's probably an easier way to do this but oh well
-            await message.reply (
-                embed = discord.Embed (
-                    title = 'insert helpful error name here',
-                    description = eval(f'f"""{help_not_found}"""'),
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_ICON
-                ),
-                mention_author = False
+        await message.reply (
+            embed = discord.Embed (
+                title = 'insert helpful error name here',
+                description = eval(f'f"""{help_not_found}"""'),
+                color = EMBED_COLOR
             )
+            .set_footer (
+            text = 'you\'re still an absolute clampongus though',
+            icon_url = EMBED_ICON
+            ),
+            mention_author = False
+        )
         return
 
     elif len(WORD_LIST) < 1: # no other command can pass 0 args
