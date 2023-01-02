@@ -448,8 +448,14 @@ async def on_message(message):
 
     elif 'wikipedia' == COMMAND:
         try:
-            await message.reply ( # doesn't use embed to save screen space
-                f'```{wikipedia.page(SENTENCE, pageid = None, auto_suggest = False).content[0:1994]}```',
+            article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
+            await message.reply (
+                embed = discord.Embed (
+                    title = article.title,
+                    description = f'**preview:**\n{article.summary}',
+                    url = article.url,
+                    color = EMBED_COLOR
+                ),
                 mention_author = False
             )
 
@@ -468,16 +474,15 @@ async def on_message(message):
             )
 
         except wikipedia.exceptions.DisambiguationError as error:
-            final = ''
-            for i in range(len(error.options)-1): # nicer formatting
+            final = '' # don't ask why I spent this much time formatting the list
+            for i in range(len(error.options)-1):
                 final += f'{error.options[i].lower()}, '
-
-            final += f'and {error.options[-1].lower()} are all possible options'
+            final += f'and {error.options[-1].lower()}'
 
             await message.reply (
                 embed = discord.Embed (
                     title = 'multiple options found:',
-                    description = f'{final}',
+                    description = f'{final} are all possible options',
                     color = EMBED_COLOR
                 )
                 .set_footer (
