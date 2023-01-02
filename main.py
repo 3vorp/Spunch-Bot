@@ -55,7 +55,7 @@ async def on_ready():
         ) # removes an annoying double space with redundant .join() and .split()
         .set_footer (
             text = f'Online as {bot.user}',
-            icon_url = EMBED_ICON
+            icon_url = EMBED_GIF
         )
     )
 
@@ -192,7 +192,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'Swahili → English',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
@@ -251,7 +251,7 @@ async def on_message(message):
                 )
                 .set_footer (
                     text = 'i\'m literally just checking for multiples of 50 lol',
-                    icon_url = EMBED_ICON
+                    icon_url = EMBED_GIF
                 ),
                 mention_author = False
             )
@@ -265,7 +265,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = f'total nuts collected: {DATABASE["nut_count"]}',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -360,7 +360,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'fair warning that it\'s is a dumpster fire to read through',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -376,7 +376,7 @@ async def on_message(message):
                 )
                 .set_footer (
                     text = eval(f'f"""{help_footer}"""'),
-                    icon_url = EMBED_ICON
+                    icon_url = EMBED_GIF
                 )
                 .set_thumbnail (
                     url = BIG_GIF
@@ -395,7 +395,7 @@ async def on_message(message):
                     )
                     .set_footer (
                         text = eval(f'f"""{help_footer}"""'),
-                        icon_url = EMBED_ICON
+                        icon_url = EMBED_GIF
                     )
                     .set_thumbnail (
                         url = BIG_GIF
@@ -412,7 +412,7 @@ async def on_message(message):
             )
             .set_footer (
             text = 'you\'re still an absolute clampongus though',
-            icon_url = EMBED_ICON
+            icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -427,7 +427,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -455,6 +455,9 @@ async def on_message(message):
                     description = f'**preview:**\n{article.summary}',
                     url = article.url,
                     color = EMBED_COLOR
+                )
+                .set_thumbnail (
+                    url = 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png'
                 ),
                 mention_author = False
             )
@@ -468,7 +471,7 @@ async def on_message(message):
                 )
                 .set_footer (
                     text = 'you\'re still an absolute clampongus though',
-                    icon_url = EMBED_ICON
+                    icon_url = EMBED_GIF
                 ),
                 mention_author = False
             )
@@ -487,7 +490,7 @@ async def on_message(message):
                 )
                 .set_footer (
                     text = 'be more specific',
-                    icon_url = EMBED_ICON
+                    icon_url = EMBED_GIF
                 ),
                 mention_author = False
             )
@@ -523,7 +526,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'idk maybe react to this if you complete it or something',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             )
         )
 
@@ -536,7 +539,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'in the meantime idk go touch grass',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -565,7 +568,7 @@ async def on_message(message):
                     )
                     .set_footer (
                         text = 'you\'re still an absolute clampongus though',
-                        icon_url = EMBED_ICON
+                        icon_url = EMBED_GIF
                     ),
                     mention_author = False
                 )
@@ -581,7 +584,7 @@ async def on_message(message):
             )
             .set_footer (
                 text = 'this was painful to implement so you better appreciate it',
-                icon_url = EMBED_ICON
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
@@ -691,7 +694,7 @@ async def on_message(message):
         )
         .set_footer (
             text = 'you\'re still an absolute clampongus though',
-            icon_url = EMBED_ICON
+            icon_url = EMBED_GIF
         ),
         mention_author = False
     )
