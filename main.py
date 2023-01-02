@@ -457,7 +457,7 @@ async def on_message(message):
             await message.reply (
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
-                    description = f'no wikipedia article found called "{SENTENCE}"',
+                    description = f'no wikipedia article called "{SENTENCE}" was found',
                     color = EMBED_COLOR
                 )
                 .set_footer (
@@ -468,9 +468,22 @@ async def on_message(message):
             )
 
         except wikipedia.exceptions.DisambiguationError as error:
-            CHOICE = random.choice(error.options) # if multiple pages are found picks random one
+            final = ''
+            for i in range(len(error.options)-1): # nicer formatting
+                final += f'{error.options[i].lower()}, '
+
+            final += f'and {error.options[-1].lower()} are all possible options'
+
             await message.reply (
-                f'```{wikipedia.page(CHOICE, pageid = None, auto_suggest = False).content[0:1994]}```',
+                embed = discord.Embed (
+                    title = 'multiple options found:',
+                    description = f'{final}',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'be more specific',
+                    icon_url = EMBED_ICON
+                ),
                 mention_author = False
             )
         return

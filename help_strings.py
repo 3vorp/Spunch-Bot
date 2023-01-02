@@ -59,11 +59,11 @@ returns wikipedia article
 ```
 **EXAMPLE:**
 ```
-{PREFIX}wikipedia discordapp
+{PREFIX}wikipedia discord
 ```
 **NOTE:**
 
-if multiple possible articles are found it will just pick a random one
+you have to be specific, otherwise spunch bot will just show all possible options
 '''
 
 ], [('feedback','suggest'), # the first entry in the tuple is always the one displayed in the title
