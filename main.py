@@ -69,17 +69,14 @@ async def on_ready():
 @bot.event
 async def on_raw_reaction_add(payload): # using raw events so it works on all bot messages
     user = payload.member
-
     message = await (
         bot.get_channel(payload.channel_id)
         .fetch_message(payload.message_id)
     )
-
-    reaction = discord.utils.get (
-        message.reactions, emoji=payload.emoji.name
-    ) # boilerplate since its handing raw events
-
-
+    reaction = discord.utils.get ( # boilerplate for variable setup
+        message.reactions,
+        emoji=payload.emoji.name
+    )
 
     if user == bot.user or message.author != bot.user: return # stops abuse/infinite loops
 
