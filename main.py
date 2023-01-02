@@ -106,6 +106,7 @@ async def on_message(message):
             channel = guild.text_channels[0] # custom channels coming soon™
 
             await channel.send (
+                deletable = False
                 embed = discord.Embed (
                     title = f'global announcement from **{message.author}**:',
                     description = message.content,
@@ -113,6 +114,7 @@ async def on_message(message):
                 )
             )
 
+        deletable = True
         await message.reply (
             embed = discord.Embed (
                 title = 'message pushed to all servers',
