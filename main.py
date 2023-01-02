@@ -105,8 +105,8 @@ async def on_message(message):
         for guild in bot.guilds:
             channel = guild.text_channels[0] # custom channels coming soon™
 
+            deletable = False
             await channel.send (
-                deletable = False
                 embed = discord.Embed (
                     title = f'global announcement from **{message.author}**:',
                     description = message.content,
