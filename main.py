@@ -590,7 +590,7 @@ async def on_message(message):
         return
 
     elif 'embed' == COMMAND:
-        ARG_LIST = SENTENCE.split(',') # so you can have spaces in the embed
+        ARG_LIST = SENTENCE.split(';') # so you can have spaces in the embed
 
         if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
             IMAGE = ARG_LIST[0] # this way you can have image embeds and titles
