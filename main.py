@@ -73,12 +73,21 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
         bot.get_channel(payload.channel_id)
         .fetch_message(payload.message_id)
     )
+
+    if user == bot.user or message.author != bot.user: return # basic checks
+
     reaction = discord.utils.get ( # boilerplate for variable setup
         message.reactions,
         emoji=payload.emoji.name
     )
 
-    if user == bot.user or message.author != bot.user: return # stops abuse/infinite loops
+    user_list = [] # generates list of people who reacted
+    async for i in reaction.users(): # doesn't work unless it's an async for loop, idk why either
+        user_list.append(i) # for some reason you can't use reaction.users() but oh well
+
+    if bot.user not in user_list: return # if bot hasn't reacted message is undeletable
+
+
 
     if reaction.emoji == '🗑️': # keeps stuff easily expandable for future
         await message.delete()
