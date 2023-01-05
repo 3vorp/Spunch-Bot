@@ -99,7 +99,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
     reaction = discord.utils.get ( # boilerplate for variable setup
         message.reactions,
-        emoji=payload.emoji.name
+        emoji = payload.emoji.name
     )
 
     user_list = [] # generates list of people who reacted
