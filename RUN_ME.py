@@ -3,6 +3,12 @@ from discord.ext import commands
 from config import * # saves me from having to use config.VARIABLE for everything
 from help_strings import * # same thing
 
+
+
+### BOT/PREFIX SETUP ###
+
+
+
 async def get_prefix(bot, message): # idk why this works but it does
     global PREFIX # so it can be accessed in commands for help embeds etx
 
@@ -13,6 +19,7 @@ async def get_prefix(bot, message): # idk why this works but it does
         PREFIX = DEFAULT_PREFIX
 
     return PREFIX
+
 
 
 intents = discord.Intents.default()
@@ -220,7 +227,7 @@ async def on_message(message):
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         return
 
-    await bot.process_commands(message)
+    await bot.process_commands(message) # allows commands to actually run
 
 
 
@@ -277,8 +284,6 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
             mention_author = False
         )
 
-
-
 @bot.command(aliases=['suggest'])
 async def feedback(ctx, *, SENTENCE):
     global deletable
@@ -308,8 +313,6 @@ async def feedback(ctx, *, SENTENCE):
         ),
         mention_author = False
     )
-
-
 
 @bot.command(aliases=['prefix'])
 async def setprefix(ctx, *, SENTENCE):
@@ -356,8 +359,6 @@ async def setprefix(ctx, *, SENTENCE):
         mention_author = False
     )
 
-
-
 @bot.command(aliases=['len'])
 async def length(ctx, *, SENTENCE):
     WORD_LIST = SENTENCE.split() # you need both word list and sentence
@@ -379,8 +380,6 @@ async def length(ctx, *, SENTENCE):
         mention_author = False
     )
 
-
-
 @bot.command()
 async def github(ctx):
     await ctx.reply (
@@ -395,8 +394,6 @@ async def github(ctx):
         ),
         mention_author = False
     )
-
-
 
 @bot.command(aliases=['info'])
 async def help(ctx, *WORD_LIST):
@@ -464,8 +461,6 @@ async def say(ctx, *, SENTENCE):
     deletable = False
     await ctx.channel.send(SENTENCE)
 
-
-
 @bot.command()
 async def EMBED(ctx, *, SENTENCE): # same as wikipedia
     global deletable
@@ -528,8 +523,6 @@ async def EMBED(ctx, *, SENTENCE): # same as wikipedia
         )
     )
 
-
-
 @bot.command(aliases=['8ball'])
 async def ball(ctx, *, SENTENCE):
     await ctx.reply (
@@ -549,8 +542,6 @@ async def ball(ctx, *, SENTENCE):
         ),
         mention_author = False
     )
-
-
 
 
 @bot.command(aliases=['roll'])
@@ -579,8 +570,6 @@ async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() 
         mention_author = False
     )
 
-
-
 @bot.command()
 async def mock(ctx, *, SENTENCE):
     mocked_word = list(SENTENCE.lower()) # list of characters rather than words
@@ -596,8 +585,6 @@ async def mock(ctx, *, SENTENCE):
         ),
         mention_author = False
     )
-
-
 
 @bot.command()
 async def rps(ctx, *WORD_LIST):
@@ -654,8 +641,6 @@ async def rps(ctx, *WORD_LIST):
             mention_author = False
         )
 
-
-
 @bot.command()
 async def nut(ctx, *, SENTENCE=None):
     if SENTENCE == 'total':
@@ -699,6 +684,11 @@ async def nut(ctx, *, SENTENCE=None):
         ),
         mention_author = False
     )
+
+
+
+### ERROR HANDLING ###
+
 
 
 @bot.event
