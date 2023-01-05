@@ -4,7 +4,8 @@ from config import * # saves me from having to use config.VARIABLE for everythin
 from help_strings import * # same thing
 
 async def get_prefix(bot, message): # idk why this works but it does
-    global PREFIX
+    global PREFIX # so it can be accessed in commands for help embeds etx
+
     try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
@@ -16,8 +17,8 @@ async def get_prefix(bot, message): # idk why this works but it does
 
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
-bot = commands.Bot(intents = intents, command_prefix = get_prefix, case_insensitive=True) # creating the actual bot client
-bot.remove_command('help')
+bot = commands.Bot(intents = intents, command_prefix = get_prefix, case_insensitive=True)
+bot.remove_command('help') # default help command is garbage and idk why it's there honestly
 
 deletable = True # global variable for whether to add delete reaction or not
 
@@ -223,45 +224,84 @@ async def on_message(message):
 
 
 
+### UTILITY COMMANDS ###
+
+
+
 @bot.command()
-async def nut(ctx, *, SENTENCE=None):
-    if SENTENCE == 'total':
+async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already a library
+    try:
+        article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
         await ctx.reply (
             embed = discord.Embed (
-                title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
-                description = 'all fine additions to my collection',
+                title = article.title,
+                description = f'**preview:**\n{article.summary}',
+                url = article.url,
                 color = EMBED_COLOR
+            )
+            .set_thumbnail (
+                url = 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png'
             ),
             mention_author = False
         )
-        return # fancy guard clause, saves indentation so I use these everywhere
-
-    DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
-    await write_database() # adds one to global nut count and writes it
-
-    if DATABASE["nut_count"] % 50 == 0: # special NUT
+    except wikipedia.exceptions.PageError:
         await ctx.reply (
             embed = discord.Embed (
-                title = 'you have sacrificed a special NUT',
-                description = f'you have provided the lucky {DATABASE["nut_count"]}th NUT to my collection',
+                title = 'insert helpful error name here',
+                description = f'no wikipedia article called "{SENTENCE}" was found',
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = 'i\'m literally just checking for multiples of 50 lol',
+                text = 'you\'re still an absolute clampongus though',
                 icon_url = EMBED_GIF
             ),
             mention_author = False
         )
-        return
 
-    await ctx.reply (
+    except wikipedia.exceptions.DisambiguationError as error:
+        final = '' # don't ask why I spent this much time formatting the list
+        for i in range(len(error.options)-1):
+            final += f'{error.options[i].lower()}, '
+        final += f'and {error.options[-1].lower()}'
+
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'multiple options found:',
+                description = f'{final} are all possible options',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'be more specific',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+
+
+
+@bot.command(aliases=['suggest'])
+async def feedback(ctx, *, SENTENCE):
+    global deletable
+    deletable = False
+    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
-            title = 'you have sacrificed NUT',
-            description = 'this will make a fine addition to my collection',
+            title = f'feedback sent by **{ctx.author}**:',
+            description = f'sent in {ctx.channel.mention}: ```{SENTENCE}```',
             color = EMBED_COLOR
         )
         .set_footer (
-            text = f'total nuts collected: {DATABASE["nut_count"]}',
+            text = 'idk maybe react to this if you complete it or something',
+            icon_url = EMBED_GIF
+        )
+    )
+    await ctx.reply ( # sends confirmation message to user
+        embed = discord.Embed (
+            title = 'your feedback has been sent:',
+            description = f'```{SENTENCE}```',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'in the meantime idk go touch grass',
             icon_url = EMBED_GIF
         ),
         mention_author = False
@@ -269,88 +309,73 @@ async def nut(ctx, *, SENTENCE=None):
 
 
 
-@bot.command()
-async def rps(ctx, *WORD_LIST):
-    BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
+@bot.command(aliases=['prefix'])
+async def setprefix(ctx, *, SENTENCE):
+    if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
+        try:
+            del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
+            await write_database() # writes the DATABASE dictionary into the actual json file
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'server prefix has been reset',
+                    description = f'default prefix is `{DEFAULT_PREFIX}`',
+                    color = EMBED_COLOR
+                ),
+                mention_author = False
+            )
 
-    if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
-        WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])]
+        except KeyError:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'insert helpful error name here',
+                    description = 'there was no prefix set for this server',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'you\'re still an absolute clampongus though',
+                    icon_url = EMBED_GIF
+                ),
+                mention_author = False
+            )
+        return
 
-    if BOT_ANSWER == WORD_LIST[0]:
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'it\'s a tie',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
+    DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
+    await write_database() # writes the DATABASE dictionary into the database.json file
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'server prefix changed to {SENTENCE}',
+            description = f'you can change it back using `{SENTENCE}prefix reset`',
+            color = EMBED_COLOR
         )
-
-    elif ( # pain
-        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or
-        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or
-        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors')
-    ):
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'you win',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
-
-    elif ( # pain II
-        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or
-        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or
-        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock')
-    ):
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'i win',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
-
-    else:
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'that wasn\'t an option so I automatically win :sunglasses:',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
+        .set_footer (
+            text = 'this was painful to implement so you better appreciate it',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
 
 
 
-@bot.command(aliases=['roll'])
-async def dice(ctx, *WORD_LIST):
-    WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
-    if len(WORD_LIST) < 1:
-            WORD_LIST = ['1','6']
+@bot.command(aliases=['len'])
+async def length(ctx, *, SENTENCE):
+    WORD_LIST = SENTENCE.split() # you need both word list and sentence
+    if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
+        character = 'character'
+    else: character = 'characters'
 
-    try: # if you provide number but not sides
-        WORD_LIST[1] # literally just tries seeing if it exists
-
-    except IndexError:
-        WORD_LIST.append('6') # generates args if user doesn't provide any
-
-    final = 0
-    for _ in range(int(WORD_LIST[0])): # int() because message.content is a string
-        rolled = random.randint(1, int(WORD_LIST[1]))
-        final += rolled # adds new amount to already existing amount
+    if len(WORD_LIST) == 1:
+        word = 'word'
+    else: word = 'words'
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'you rolled a {final}',
-            description = f'using {WORD_LIST[0]} {WORD_LIST[1]}-sided dice',
+            title = f'your sentence is {len(SENTENCE)} {character} long and {len(WORD_LIST)} {word} long:',
+            description = f'```{SENTENCE}```',
             color = EMBED_COLOR
         ),
         mention_author = False
     )
+
 
 
 @bot.command()
@@ -424,6 +449,10 @@ async def help(ctx, *WORD_LIST):
 
 
 
+### FUN COMMANDS ###
+
+
+
 @bot.command()
 async def say(ctx, *, SENTENCE):
     global deletable # has to be declared global in every single command that uses it
@@ -431,158 +460,6 @@ async def say(ctx, *, SENTENCE):
 
     deletable = False
     await ctx.channel.send(SENTENCE)
-
-
-
-@bot.command()
-async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already a library
-    try:
-        article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
-        await ctx.reply (
-            embed = discord.Embed (
-                title = article.title,
-                description = f'**preview:**\n{article.summary}',
-                url = article.url,
-                color = EMBED_COLOR
-            )
-            .set_thumbnail (
-                url = 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png'
-            ),
-            mention_author = False
-        )
-    except wikipedia.exceptions.PageError:
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'insert helpful error name here',
-                description = f'no wikipedia article called "{SENTENCE}" was found',
-                color = EMBED_COLOR
-            )
-            .set_footer (
-                text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_GIF
-            ),
-            mention_author = False
-        )
-
-    except wikipedia.exceptions.DisambiguationError as error:
-        final = '' # don't ask why I spent this much time formatting the list
-        for i in range(len(error.options)-1):
-            final += f'{error.options[i].lower()}, '
-        final += f'and {error.options[-1].lower()}'
-
-        await ctx.reply (
-            embed = discord.Embed (
-                title = 'multiple options found:',
-                description = f'{final} are all possible options',
-                color = EMBED_COLOR
-            )
-            .set_footer (
-                text = 'be more specific',
-                icon_url = EMBED_GIF
-            ),
-            mention_author = False
-        )
-
-
-
-@bot.command(aliases=['8ball'])
-async def ball(ctx, *, SENTENCE):
-    await ctx.reply (
-        embed = discord.Embed (
-            title = SENTENCE,
-            description = random.choice ([ # infinitely expandable list
-                'yes',
-                'no',
-                'maybe',
-                'idk',
-                'ask later',
-                'definitely',
-                'never',
-                'never ask me that again'
-            ]),
-            color = EMBED_COLOR
-        ),
-        mention_author = False
-    )
-
-
-
-@bot.command(aliases=['suggest'])
-async def feedback(ctx, *, SENTENCE):
-    global deletable
-    deletable = False
-    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
-        embed = discord.Embed (
-            title = f'feedback sent by **{ctx.author}**:',
-            description = f'sent in {ctx.channel.mention}: ```{SENTENCE}```',
-            color = EMBED_COLOR
-        )
-        .set_footer (
-            text = 'idk maybe react to this if you complete it or something',
-            icon_url = EMBED_GIF
-        )
-    )
-
-    deletable = True
-    await ctx.reply ( # sends confirmation message to user
-        embed = discord.Embed (
-            title = 'your feedback has been sent:',
-            description = f'```{SENTENCE}```',
-            color = EMBED_COLOR
-        )
-        .set_footer (
-            text = 'in the meantime idk go touch grass',
-            icon_url = EMBED_GIF
-        ),
-        mention_author = False
-    )
-
-
-
-@bot.command(aliases=['prefix'])
-async def setprefix(ctx, *, SENTENCE):
-    if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
-        try:
-            del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
-            await write_database() # writes the DATABASE dictionary into the actual json file
-            await ctx.reply (
-                embed = discord.Embed (
-                    title = 'server prefix has been reset',
-                    description = f'default prefix is `{DEFAULT_PREFIX}`',
-                    color = EMBED_COLOR
-                ),
-                mention_author = False
-            )
-
-        except KeyError:
-            await ctx.reply (
-                embed = discord.Embed (
-                    title = 'insert helpful error name here',
-                    description = 'there was no prefix set for this server',
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = 'you\'re still an absolute clampongus though',
-                    icon_url = EMBED_GIF
-                ),
-                mention_author = False
-            )
-        return
-
-    DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
-    await write_database() # writes the DATABASE dictionary into the database.json file
-    await ctx.reply (
-        embed = discord.Embed (
-            title = f'server prefix changed to {SENTENCE}',
-            description = f'you can change it back using `{SENTENCE}prefix reset`',
-            color = EMBED_COLOR
-        )
-        .set_footer (
-            text = 'this was painful to implement so you better appreciate it',
-            icon_url = EMBED_GIF
-        ),
-        mention_author = False
-    )
 
 
 
@@ -650,21 +527,50 @@ async def EMBED(ctx, *, SENTENCE): # same as wikipedia
 
 
 
-@bot.command(aliases=['len'])
-async def length(ctx, *, SENTENCE):
-    WORD_LIST = SENTENCE.split() # you need both word list and sentence
-    if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
-        character = 'character'
-    else: character = 'characters'
+@bot.command(aliases=['8ball'])
+async def ball(ctx, *, SENTENCE):
+    await ctx.reply (
+        embed = discord.Embed (
+            title = SENTENCE,
+            description = random.choice ([ # infinitely expandable list
+                'yes',
+                'no',
+                'maybe',
+                'idk',
+                'ask later',
+                'definitely',
+                'never',
+                'never ask me that again'
+            ]),
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
 
-    if len(WORD_LIST) == 1:
-        word = 'word'
-    else: word = 'words'
+
+
+
+@bot.command(aliases=['roll'])
+async def dice(ctx, *WORD_LIST):
+    WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
+
+    if len(WORD_LIST) < 1:
+        WORD_LIST = ['1','6']
+
+    try: WORD_LIST[1] # if you provide number but not sides
+
+    except IndexError:
+        WORD_LIST.append('6') # generates args if user doesn't provide any
+
+    final = 0
+    for _ in range(int(WORD_LIST[0])): # int() because message.content is a string
+        rolled = random.randint(1, int(WORD_LIST[1]))
+        final += rolled # adds new amount to already existing amount
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'your sentence is {len(SENTENCE)} {character} long and {len(WORD_LIST)} {word} long:',
-            description = f'```{SENTENCE}```',
+            title = f'you rolled a {final}',
+            description = f'using {WORD_LIST[0]} {WORD_LIST[1]}-sided dice',
             color = EMBED_COLOR
         ),
         mention_author = False
@@ -687,6 +593,111 @@ async def mock(ctx, *, SENTENCE):
         ),
         mention_author = False
     )
+
+
+
+@bot.command()
+async def rps(ctx, *WORD_LIST):
+    BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
+
+    if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
+        WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])]
+
+    if BOT_ANSWER == WORD_LIST[0]:
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'it\'s a tie',
+                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+
+    elif ( # pain
+        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or
+        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or
+        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors')
+    ):
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'you win',
+                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+
+    elif ( # pain II
+        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or
+        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or
+        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock')
+    ):
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'i win',
+                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+
+    else:
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'that wasn\'t an option so I automatically win :sunglasses:',
+                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+
+
+
+@bot.command()
+async def nut(ctx, *, SENTENCE=None):
+    if SENTENCE == 'total':
+        await ctx.reply (
+            embed = discord.Embed (
+                title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
+                description = 'all fine additions to my collection',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+        return # fancy guard clause, saves indentation so I use these everywhere
+
+    DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+    await write_database() # adds one to global nut count and writes it
+
+    if DATABASE["nut_count"] % 50 == 0: # special NUT
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'you have sacrificed a special NUT',
+                description = f'you have provided the lucky {DATABASE["nut_count"]}th NUT to my collection',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'i\'m literally just checking for multiples of 50 lol',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+        return
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = 'you have sacrificed NUT',
+            description = 'this will make a fine addition to my collection',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = f'total nuts collected: {DATABASE["nut_count"]}',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
+
+
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
