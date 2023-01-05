@@ -16,7 +16,7 @@ async def get_prefix(bot, message): # idk why this works but it does
 
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
-bot = commands.Bot(intents = intents, command_prefix = get_prefix) # creating the actual bot client
+bot = commands.Bot(intents = intents, command_prefix = get_prefix, case_insensitive=True) # creating the actual bot client
 bot.remove_command('help')
 
 deletable = True # global variable for whether to add delete reaction or not
@@ -421,7 +421,7 @@ async def help(ctx, *WORD_LIST):
         ),
         mention_author = False
     )
-    return
+
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
