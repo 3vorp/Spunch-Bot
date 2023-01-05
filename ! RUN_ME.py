@@ -176,6 +176,9 @@ async def on_message(message):
         await message.add_reaction('💀')
         return
 
+    elif 'bogos' in SENTENCE and 'binted' in SENTENCE: # allows for more variation, again
+        await message.add_reaction('👽')
+
     elif 'baller' == SENTENCE:
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
@@ -345,7 +348,7 @@ async def setprefix(ctx, *, SENTENCE):
                 ),
                 mention_author = False
             )
-        return
+        return # fancy guard clause, saves indentation so I use these everywhere
 
     DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
     await write_database() # writes the DATABASE dictionary into the database.json file
@@ -656,7 +659,7 @@ async def nut(ctx, *, SENTENCE=None):
             ),
             mention_author = False
         )
-        return # fancy guard clause, saves indentation so I use these everywhere
+        return
 
     DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
     await write_database() # adds one to global nut count and writes it
