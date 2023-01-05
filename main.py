@@ -328,7 +328,7 @@ async def dice(ctx, *WORD_LIST):
         WORD_LIST.append('6') # generates args if user doesn't provide any
 
     final = 0
-    for i in range(int(WORD_LIST[0])): # int() because message.content is a string
+    for _ in range(int(WORD_LIST[0])): # int() because message.content is a string
         rolled = random.randint(1, int(WORD_LIST[1]))
         final += rolled # adds new amount to already existing amount
 
