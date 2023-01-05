@@ -294,6 +294,8 @@ async def feedback(ctx, *, SENTENCE):
             icon_url = EMBED_GIF
         )
     )
+
+    deletable = True
     await ctx.reply ( # sends confirmation message to user
         embed = discord.Embed (
             title = 'your feedback has been sent:',
