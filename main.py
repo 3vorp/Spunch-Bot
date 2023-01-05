@@ -213,7 +213,7 @@ async def on_message(message):
 
 
 @bot.command()
-async def nut(ctx, *, SENTENCE):
+async def nut(ctx, *, SENTENCE=None):
     if SENTENCE == 'total':
         await ctx.reply (
             embed = discord.Embed (
@@ -255,6 +255,8 @@ async def nut(ctx, *, SENTENCE):
         ),
         mention_author = False
     )
+
+
 
 @bot.command()
 async def rps(ctx, *WORD_LIST):
@@ -310,6 +312,35 @@ async def rps(ctx, *WORD_LIST):
             ),
             mention_author = False
         )
+
+
+
+@bot.command(aliases=['roll'])
+async def dice(ctx, *WORD_LIST):
+    WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
+    if len(WORD_LIST) < 1:
+            WORD_LIST = ['1','6']
+
+    try: # if you provide number but not sides
+        WORD_LIST[1] # literally just tries seeing if it exists
+
+    except IndexError:
+        WORD_LIST.append('6') # generates args if user doesn't provide any
+
+    final = 0
+    for i in range(int(WORD_LIST[0])): # int() because message.content is a string
+        rolled = random.randint(1, int(WORD_LIST[1]))
+        final += rolled # adds new amount to already existing amount
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'you rolled a {final}',
+            description = f'using {WORD_LIST[0]} {WORD_LIST[1]}-sided dice',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
+
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
