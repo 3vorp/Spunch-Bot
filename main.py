@@ -434,8 +434,8 @@ async def say(ctx, *, SENTENCE):
 
 
 
-@bot.command(aliases=['wikipedia'])
-async def _wikipedia(ctx, *, SENTENCE): # wikipedia is defined already as a library
+@bot.command()
+async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already a library
     try:
         article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
         await ctx.reply (
@@ -585,6 +585,90 @@ async def setprefix(ctx, *, SENTENCE):
     )
 
 
+
+@bot.command()
+async def EMBED(ctx, *, SENTENCE): # same as wikipedia
+    global deletable
+    ARG_LIST = SENTENCE.split(';') # so you can have spaces in the embed
+
+    if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
+        IMAGE = ARG_LIST[0] # this way you can have image embeds and titles
+        TITLE = None
+    else:
+        TITLE = ARG_LIST[0]
+        IMAGE = None
+
+    try: # just sets it to nothing/defaults if nothing is specified
+        DESCRIPTION = ARG_LIST[1]
+    except IndexError: # passes into except clause if any argument isn't provided
+        DESCRIPTION = ''
+
+    try:
+        COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex
+        if COLOR: # if not empty
+            COLOR = int(COLOR, base=16) # converts into hex number/base 16
+        else: # trigger the except if no color is provided
+            raise IndexError
+    except (IndexError, ValueError): # also catches invalid colors
+        COLOR = EMBED_COLOR
+
+    try:
+        FOOTER = ARG_LIST[3]
+    except IndexError:
+        FOOTER = ''
+
+    try:
+        FOOTER_IMAGE = ARG_LIST[4]
+    except IndexError:
+        FOOTER_IMAGE = None
+
+    try:
+        THUMBNAIL = ARG_LIST[5]
+    except IndexError:
+        THUMBNAIL = None
+
+    await ctx.message.delete()
+
+    deletable = False
+    await ctx.channel.send ( # deletes original message so doesn't use reply
+        embed = discord.Embed ( # compiles all variables from above into one embed
+            title = TITLE,
+            description = DESCRIPTION,
+            color = COLOR
+        )
+        .set_footer (
+            text = FOOTER,
+            icon_url = FOOTER_IMAGE
+        )
+        .set_thumbnail (
+            url = THUMBNAIL
+        )
+        .set_image (
+            url = IMAGE
+        )
+    )
+
+
+
+@bot.command(aliases=['len'])
+async def length(ctx, *, SENTENCE):
+    WORD_LIST = SENTENCE.split() # you need both word list and sentence
+    if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
+        character = 'character'
+    else: character = 'characters'
+
+    if len(WORD_LIST) == 1:
+        word = 'word'
+    else: word = 'words'
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'your sentence is {len(SENTENCE)} {character} long and {len(WORD_LIST)} {word} long:',
+            description = f'```{SENTENCE}```',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
