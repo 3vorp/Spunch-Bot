@@ -10,7 +10,7 @@ from help_strings import * # same thing
 
 
 async def get_prefix(bot, message): # idk why this works but it does
-    global PREFIX # so it can be accessed in commands for help embeds etc
+    global PREFIX # only needs to be declared global once since no command changes the value
 
     try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
@@ -57,7 +57,7 @@ async def write_database(): # saves a LOT of copy paste
 async def on_ready():
     global deletable
     await bot.change_presence (
-        activity = discord.Game ( # sends "playing spongeboy gif on repeat"
+        activity = discord.Game ( # shows "playing spongeboy gif on repeat"
             name = 'spongeboy gif on repeat'
         )
     )
@@ -236,7 +236,7 @@ async def on_message(message):
 
 
 @bot.command()
-async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already a library
+async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the name of the module
     try:
         article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
         await ctx.reply (
@@ -286,8 +286,8 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
         )
 
 @bot.command(aliases = ['suggest'])
-async def feedback(ctx, *, SENTENCE):
-    global deletable # has to be declared global in every single command that uses it
+async def feedback(ctx, *, SENTENCE): # "*" means that everything after the command goes into SENTENCE as-is
+    global deletable # value is being modified so it's declared global for every function that uses it
 
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
@@ -399,7 +399,7 @@ async def github(ctx):
     )
 
 @bot.command(aliases = ['info'])
-async def help(ctx, *WORD_LIST):
+async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WORD_LIST as args
     if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
@@ -423,7 +423,7 @@ async def help(ctx, *WORD_LIST):
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
                     title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
-                    description = eval(f'f"""{i[1]}"""'), # grabs second entry from list (description)
+                    description = eval(f'f"""{i[1]}"""'), # grabs description from second index
                     color = EMBED_COLOR
                 )
                 .set_footer (
@@ -435,9 +435,9 @@ async def help(ctx, *WORD_LIST):
                 ),
                 mention_author = False
             )
-            return # only needs to check for one match and then it's done
+            return # only needs to check for one match, otherwise it's just wasting resources
 
-    await ctx.reply (
+    await ctx.reply ( # if the return statement was never reached it probably doesn't exist
         embed = discord.Embed (
             title = 'insert helpful error name here',
             description = eval(f'f"""{help_not_found}"""'),
@@ -461,11 +461,11 @@ async def say(ctx, *, SENTENCE):
     global deletable
     await ctx.message.delete()
 
-    deletable = False
+    deletable = False # having a delete button next to bot text looked weird
     await ctx.channel.send(SENTENCE)
 
 @bot.command()
-async def EMBED(ctx, *, SENTENCE): # same as wikipedia
+async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
     global deletable
     ARG_LIST = SENTENCE.split(';') # so you can have spaces in the embed
 
@@ -699,7 +699,7 @@ async def on_command_error(ctx, error):
     await ctx.reply ( # generic error handling
         embed = discord.Embed (
             title = 'insert helpful error name here',
-            description = eval(f'f"""{error_generic}"""'),
+            description = f'discord.py error: {error}\n\n**use `{PREFIX}help` for a list of commands**',
             color = EMBED_COLOR
         )
         .set_footer (
