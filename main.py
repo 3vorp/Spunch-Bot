@@ -423,5 +423,14 @@ async def help(ctx, *WORD_LIST):
     )
 
 
+
+@bot.command()
+async def say(ctx, *, SENTENCE):
+    global deletable # has to be declared global in every single command that uses it
+    await ctx.message.delete()
+
+    deletable = False
+    await ctx.channel.send(SENTENCE)
+
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
