@@ -505,5 +505,86 @@ async def ball(ctx, *, SENTENCE):
         mention_author = False
     )
 
+
+
+@bot.command(aliases=['suggest'])
+async def feedback(ctx, *, SENTENCE):
+    global deletable
+    deletable = False
+    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
+        embed = discord.Embed (
+            title = f'feedback sent by **{ctx.author}**:',
+            description = f'sent in {ctx.channel.mention}: ```{SENTENCE}```',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'idk maybe react to this if you complete it or something',
+            icon_url = EMBED_GIF
+        )
+    )
+
+    deletable = True
+    await ctx.reply ( # sends confirmation message to user
+        embed = discord.Embed (
+            title = 'your feedback has been sent:',
+            description = f'```{SENTENCE}```',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'in the meantime idk go touch grass',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
+
+
+
+@bot.command(aliases=['prefix'])
+async def setprefix(ctx, *, SENTENCE):
+    if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
+        try:
+            del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
+            await write_database() # writes the DATABASE dictionary into the actual json file
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'server prefix has been reset',
+                    description = f'default prefix is `{DEFAULT_PREFIX}`',
+                    color = EMBED_COLOR
+                ),
+                mention_author = False
+            )
+
+        except KeyError:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'insert helpful error name here',
+                    description = 'there was no prefix set for this server',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'you\'re still an absolute clampongus though',
+                    icon_url = EMBED_GIF
+                ),
+                mention_author = False
+            )
+        return
+
+    DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
+    await write_database() # writes the DATABASE dictionary into the database.json file
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'server prefix changed to {SENTENCE}',
+            description = f'you can change it back using `{SENTENCE}prefix reset`',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'this was painful to implement so you better appreciate it',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
+
+
+
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
