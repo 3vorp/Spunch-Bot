@@ -5,7 +5,7 @@ from help_strings import * # same thing
 
 
 
-### BOT/PREFIX SETUP ###
+### BOT / PREFIX SETUP ###
 
 
 
