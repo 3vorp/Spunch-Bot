@@ -432,5 +432,78 @@ async def say(ctx, *, SENTENCE):
     deletable = False
     await ctx.channel.send(SENTENCE)
 
+
+
+@bot.command(aliases=['wikipedia'])
+async def _wikipedia(ctx, *, SENTENCE): # wikipedia is defined already as a library
+    try:
+        article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
+        await ctx.reply (
+            embed = discord.Embed (
+                title = article.title,
+                description = f'**preview:**\n{article.summary}',
+                url = article.url,
+                color = EMBED_COLOR
+            )
+            .set_thumbnail (
+                url = 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png'
+            ),
+            mention_author = False
+        )
+    except wikipedia.exceptions.PageError:
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'insert helpful error name here',
+                description = f'no wikipedia article called "{SENTENCE}" was found',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'you\'re still an absolute clampongus though',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+
+    except wikipedia.exceptions.DisambiguationError as error:
+        final = '' # don't ask why I spent this much time formatting the list
+        for i in range(len(error.options)-1):
+            final += f'{error.options[i].lower()}, '
+        final += f'and {error.options[-1].lower()}'
+
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'multiple options found:',
+                description = f'{final} are all possible options',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'be more specific',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+
+
+
+@bot.command(aliases=['8ball'])
+async def ball(ctx, *, SENTENCE):
+    await ctx.reply (
+        embed = discord.Embed (
+            title = SENTENCE,
+            description = random.choice ([ # infinitely expandable list
+                'yes',
+                'no',
+                'maybe',
+                'idk',
+                'ask later',
+                'definitely',
+                'never',
+                'never ask me that again'
+            ]),
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
+
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
