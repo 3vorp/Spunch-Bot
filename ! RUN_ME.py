@@ -102,9 +102,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
         emoji = payload.emoji.name
     )
 
-    user_list = [] # generates list of people who reacted
-    async for i in reaction.users(): # doesn't work unless it's an async for loop, idk why either
-        user_list.append(i) # for some reason you can't use reaction.users() but oh well
+    user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
     if bot.user not in user_list: return # if bot hasn't reacted message is undeletable
 
