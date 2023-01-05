@@ -284,7 +284,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
             mention_author = False
         )
 
-@bot.command(aliases=['suggest'])
+@bot.command(aliases = ['suggest'])
 async def feedback(ctx, *, SENTENCE):
     global deletable
     deletable = False
@@ -314,7 +314,7 @@ async def feedback(ctx, *, SENTENCE):
         mention_author = False
     )
 
-@bot.command(aliases=['prefix'])
+@bot.command(aliases = ['prefix'])
 async def setprefix(ctx, *, SENTENCE):
     if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
         try:
@@ -359,7 +359,7 @@ async def setprefix(ctx, *, SENTENCE):
         mention_author = False
     )
 
-@bot.command(aliases=['len'])
+@bot.command(aliases = ['len'])
 async def length(ctx, *, SENTENCE):
     WORD_LIST = SENTENCE.split() # you need both word list and sentence
 
@@ -395,7 +395,7 @@ async def github(ctx):
         mention_author = False
     )
 
-@bot.command(aliases=['info'])
+@bot.command(aliases = ['info'])
 async def help(ctx, *WORD_LIST):
     if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
         await ctx.reply (
@@ -523,7 +523,7 @@ async def EMBED(ctx, *, SENTENCE): # same as wikipedia
         )
     )
 
-@bot.command(aliases=['8ball'])
+@bot.command(aliases = ['8ball'])
 async def ball(ctx, *, SENTENCE):
     await ctx.reply (
         embed = discord.Embed (
@@ -544,12 +544,12 @@ async def ball(ctx, *, SENTENCE):
     )
 
 
-@bot.command(aliases=['roll'])
+@bot.command(aliases = ['roll'])
 async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
     WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
 
     if len(WORD_LIST) < 1:
-        WORD_LIST = [1,6]
+        WORD_LIST = [1, 6]
 
     try: WORD_LIST[1] # if you provide number but not sides
 
