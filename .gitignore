@@ -1,6 +1,4 @@
 .DS_Store
 .env
-bot-env/
-discord.log
 database.json
-*.pyc
+__pycache__/
