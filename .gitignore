@@ -2,4 +2,4 @@
 .env
 database.json
 __pycache__/
-main copy.py
+main_old.py

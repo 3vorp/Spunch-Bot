@@ -98,6 +98,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
 @bot.event
 async def on_message(message):
+    global PREFIX
     global deletable
     if deletable and message.author == bot.user: # automatically applies by default
         await message.add_reaction('🗑️')
@@ -207,6 +208,12 @@ async def on_message(message):
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         return
+
+    try: # assigns server prefix if one exists, if not use default prefix
+        PREFIX = DATABASE[f'prefix_{message.guild.id}']
+
+    except KeyError:
+        PREFIX = DEFAULT_PREFIX
 
     await bot.process_commands(message)
 
@@ -341,6 +348,76 @@ async def dice(ctx, *WORD_LIST):
         mention_author = False
     )
 
+
+@bot.command()
+async def github(ctx):
+    await ctx.reply (
+        embed = discord.Embed (
+            title = 'you can find my code on github here:',
+            description = 'https://github.com/3vorp/Spunch-Bot',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'fair warning that it\'s is a dumpster fire to read through',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
+
+
+
+@bot.command(aliases=['info'])
+async def help(ctx, *WORD_LIST):
+    if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
+        await ctx.reply (
+            embed = discord.Embed ( # passed variables need to be evaluated per-message
+                title = '**spunch bot**',
+                description = eval(f'f"""{help_all}"""'),
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = eval(f'f"""{help_footer}"""'),
+                icon_url = EMBED_GIF
+            )
+            .set_thumbnail (
+                url = BIG_GIF
+            ),
+            mention_author = False
+        )
+        return
+
+    for i in help_list: # iterates through the main command list
+        if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
+            await ctx.reply (
+                embed = discord.Embed ( # same reason for using eval() as in the main help command
+                    title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
+                    description = eval(f'f"""{i[1]}"""'), # grabs second entry from list (description)
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = eval(f'f"""{help_footer}"""'),
+                    icon_url = EMBED_GIF
+                )
+                .set_thumbnail (
+                    url = BIG_GIF
+                ),
+                mention_author = False
+            )
+            return # only needs to check for one match and then it's done
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = 'insert helpful error name here',
+            description = eval(f'f"""{help_not_found}"""'),
+            color = EMBED_COLOR
+        )
+        .set_footer (
+        text = 'you\'re still an absolute clampongus though',
+        icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
+    return
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
