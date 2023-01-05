@@ -251,6 +251,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
             ),
             mention_author = False
         )
+
     except wikipedia.exceptions.PageError:
         await ctx.reply (
             embed = discord.Embed (
@@ -287,6 +288,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
 @bot.command(aliases = ['suggest'])
 async def feedback(ctx, *, SENTENCE):
     global deletable
+
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
@@ -346,6 +348,7 @@ async def setprefix(ctx, *, SENTENCE):
 
     DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
     await write_database() # writes the DATABASE dictionary into the database.json file
+
     await ctx.reply (
         embed = discord.Embed (
             title = f'server prefix changed to {SENTENCE}',
@@ -527,8 +530,7 @@ async def EMBED(ctx, *, SENTENCE): # same as wikipedia
 async def ball(ctx, *, SENTENCE):
     await ctx.reply (
         embed = discord.Embed (
-            title = SENTENCE,
-            description = random.choice ([ # infinitely expandable list
+            title = random.choice ([ # infinitely expandable list
                 'yes',
                 'no',
                 'maybe',
@@ -538,6 +540,7 @@ async def ball(ctx, *, SENTENCE):
                 'never',
                 'never ask me that again'
             ]),
+            description = f'```{SENTENCE}```',
             color = EMBED_COLOR
         ),
         mention_author = False
