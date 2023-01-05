@@ -3,9 +3,20 @@ from discord.ext import commands
 from config import * # saves me from having to use config.VARIABLE for everything
 from help_strings import * # same thing
 
+async def get_prefix(bot, message): # idk why this works but it does
+    global PREFIX
+    try: # assigns server prefix if one exists, if not use default prefix
+        PREFIX = DATABASE[f'prefix_{message.guild.id}']
+
+    except KeyError:
+        PREFIX = DEFAULT_PREFIX
+
+    return PREFIX
+
+
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
-bot = commands.Bot(intents = intents, command_prefix = DEFAULT_PREFIX) # creating the actual bot client
+bot = commands.Bot(intents = intents, command_prefix = get_prefix) # creating the actual bot client
 bot.remove_command('help')
 
 deletable = True # global variable for whether to add delete reaction or not
@@ -98,8 +109,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
 @bot.event
 async def on_message(message):
-    global PREFIX
-    global deletable
+    global deletable, PREFIX, bot
     if deletable and message.author == bot.user: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
@@ -208,12 +218,6 @@ async def on_message(message):
             mention_author = False
         ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
         return
-
-    try: # assigns server prefix if one exists, if not use default prefix
-        PREFIX = DATABASE[f'prefix_{message.guild.id}']
-
-    except KeyError:
-        PREFIX = DEFAULT_PREFIX
 
     await bot.process_commands(message)
 
