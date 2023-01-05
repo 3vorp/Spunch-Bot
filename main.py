@@ -361,6 +361,7 @@ async def setprefix(ctx, *, SENTENCE):
 @bot.command(aliases=['len'])
 async def length(ctx, *, SENTENCE):
     WORD_LIST = SENTENCE.split() # you need both word list and sentence
+
     if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
         character = 'character'
     else: character = 'characters'
@@ -700,6 +701,20 @@ async def nut(ctx, *, SENTENCE=None):
     )
 
 
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.reply ( # generic error handling
+        embed = discord.Embed (
+            title = 'insert helpful error name here',
+            description = eval(f'f"""{error_generic}"""'),
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'you\'re still an absolute clampongus though',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
 
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
