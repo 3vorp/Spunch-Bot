@@ -10,7 +10,7 @@ from help_strings import * # same thing
 
 
 async def get_prefix(bot, message): # idk why this works but it does
-    global PREFIX # so it can be accessed in commands for help embeds etx
+    global PREFIX # so it can be accessed in commands for help embeds etc
 
     try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
@@ -117,7 +117,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
 @bot.event
 async def on_message(message):
-    global deletable, PREFIX, bot
+    global deletable
     if deletable and message.author == bot.user: # automatically applies by default
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
@@ -287,7 +287,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is already
 
 @bot.command(aliases = ['suggest'])
 async def feedback(ctx, *, SENTENCE):
-    global deletable
+    global deletable # has to be declared global in every single command that uses it
 
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
@@ -458,7 +458,7 @@ async def help(ctx, *WORD_LIST):
 
 @bot.command()
 async def say(ctx, *, SENTENCE):
-    global deletable # has to be declared global in every single command that uses it
+    global deletable
     await ctx.message.delete()
 
     deletable = False
