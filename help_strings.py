@@ -320,7 +320,7 @@ too lazy to implement proper errors but you probably:
 
 — didn't send enough stuff
 — sent something that wasn't a command
-— sent the wrong arguments
+— sent invalid arguments
 
 **use `{PREFIX}help` for a list of commands**
 '''

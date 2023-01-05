@@ -554,20 +554,20 @@ async def ball(ctx, *, SENTENCE):
 
 
 @bot.command(aliases=['roll'])
-async def dice(ctx, *WORD_LIST):
+async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
     WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
 
     if len(WORD_LIST) < 1:
-        WORD_LIST = ['1','6']
+        WORD_LIST = [1,6]
 
     try: WORD_LIST[1] # if you provide number but not sides
 
     except IndexError:
-        WORD_LIST.append('6') # generates args if user doesn't provide any
+        WORD_LIST.append(6) # generates args if user doesn't provide any
 
     final = 0
-    for _ in range(int(WORD_LIST[0])): # int() because message.content is a string
-        rolled = random.randint(1, int(WORD_LIST[1]))
+    for _ in range(WORD_LIST[0]):
+        rolled = random.randint(1, WORD_LIST[1])
         final += rolled # adds new amount to already existing amount
 
     await ctx.reply (
