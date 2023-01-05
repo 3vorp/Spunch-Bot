@@ -318,9 +318,9 @@ just for fun, don't take this command too seriously lol
 error_generic = '''
 too lazy to implement proper errors but you probably:
 
-— sent too much stuff
 — didn't send enough stuff
 — sent something that wasn't a command
+— sent the wrong arguments
 
 **use `{PREFIX}help` for a list of commands**
 '''
