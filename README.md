@@ -38,7 +38,7 @@ this just makes the connection between the actual bot and these python files
 
 ## using a database properly
 
-in your main working folder (the one that this file and the `main.py` file is contained in) create a file called `database.json`.
+in your main working folder (the one that this file and the `RUN_ME.py` file are contained in) create a file called `database.json`.
 
 it just uses regular json formatting, read the example file for specifics
 
