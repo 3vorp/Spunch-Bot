@@ -670,5 +670,23 @@ async def length(ctx, *, SENTENCE):
         mention_author = False
     )
 
+
+
+@bot.command()
+async def mock(ctx, *, SENTENCE):
+    mocked_word = list(SENTENCE.lower()) # list of characters rather than words
+    for i in range(len(mocked_word)):
+        if i % 2 == 0:
+            mocked_word[i] = mocked_word[i].upper()
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = 'imagine mocking other users over the internet couldn\'t be me',
+            description = f'```{"".join(mocked_word)}```',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
+
 dotenv.load_dotenv() # stops token from being in public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
