@@ -95,8 +95,6 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
         .fetch_message(payload.message_id)
     )
 
-    if user == bot.user or message.author != bot.user: return # basic checks
-
     reaction = discord.utils.get ( # boilerplate for variable setup
         message.reactions,
         emoji = payload.emoji.name
@@ -104,7 +102,12 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
     user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
-    if bot.user not in user_list: return # if bot hasn't reacted message is undeletable
+    if (
+        bot.user not in user_list or # checks if the message is not deletable
+        user == bot.user or # check if the bot is the one reacting
+        message.author != bot.user # checks if the message is not from a bot
+    ):
+        return
 
 
 
