@@ -66,7 +66,7 @@ returns wikipedia article
 you have to be specific, otherwise spunch bot will just show all possible options
 '''
 
-], [('feedback', 'suggest'), # the first entry in the tuple is always the one displayed in the title
+], [('feedback', 'f', 'suggest'), # the first entry in the tuple is always the one displayed in the title
 
 '''
 suggest stuff to implement
@@ -84,7 +84,7 @@ suggest stuff to implement
 there is currently no way to see if feedback has been accepted, but this is planned for the future
 '''
 
-], [('prefix', 'setprefix'),
+], [('setprefix', 'prefix', 'p'),
 
 '''
 set prefix for current server
@@ -109,7 +109,7 @@ add reset to reset the prefix (obviously)
 currently you can only have one prefix per server, so no command aliases for now
 '''
 
-], [('length', 'len'),
+], [('length', 'len', 'l'),
 
 '''
 return word and character count of string
@@ -136,7 +136,7 @@ show github listing
 ```
 '''
 
-], [('help', 'info', 'h', 'i'),
+], [('help', 'h', 'info', 'i'),
 
 '''
 if no command mentioned, shows main help message
@@ -209,7 +209,7 @@ if the first argument is a url (starts with https:// or http://), it will try an
 it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
-], [('8ball', 'ball', 'b'),
+], [('ball', '8ball', 'b'),
 
 '''
 random answers for random questions
@@ -228,7 +228,7 @@ random answers for random questions
 questions have to be yes/no formatted for the bot to make sense
 '''
 
-], [('dice', 'roll', 'd', 'r'),
+], [('dice', 'd', 'roll', 'r'),
 
 '''
 roll any number of dice with any number of sides

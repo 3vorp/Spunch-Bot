@@ -102,12 +102,12 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
 
     user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
-    if (
+    if ( # filters out unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
         user == bot.user or # check if the bot is the one reacting
-        message.author != bot.user # checks if the message is not from a bot
+        message.author != bot.user # checks if the message is not from the bot
     ):
-        return
+        return # ignores reactions if any of these are met
 
 
 
