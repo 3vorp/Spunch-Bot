@@ -24,7 +24,12 @@ async def get_prefix(_, message): # idk why this works but it does
 
 intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
-bot = commands.Bot(intents = intents, command_prefix = get_prefix, case_insensitive=True)
+bot = commands.Bot ( # generating the actual bot client
+    intents = intents,
+    command_prefix = get_prefix, # idk how this doesn't need parentheses but it doesn't work otherwise
+    case_insensitive=True, # this and prefix spaces are for mobile users mostly
+    strip_after_prefix = True # I hate when bots don't do this
+)
 bot.remove_command('help') # default help command is garbage and idk why it's there honestly
 
 deletable = True # global variable for whether to add delete reaction or not
