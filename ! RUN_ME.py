@@ -27,7 +27,7 @@ intents.message_content = True # special permission required for messages
 bot = commands.Bot ( # generating the actual bot client
     intents = intents,
     command_prefix = get_prefix, # idk how this doesn't need parentheses but it doesn't work otherwise
-    case_insensitive=True, # this and prefix spaces are for mobile users mostly
+    case_insensitive = True, # this and prefix spaces are for mobile users mostly
     strip_after_prefix = True # I hate when bots don't do this
 )
 bot.remove_command('help') # default help command is garbage and idk why it's there honestly
@@ -93,8 +93,9 @@ async def on_ready():
 
 
 @bot.event
-async def on_raw_reaction_add(payload): # using raw events so it works on all bot messages
+async def on_raw_reaction_add(payload): # doesn't work on all messages unless raw event
     user = payload.member
+
     message = await (
         bot.get_channel(payload.channel_id)
         .fetch_message(payload.message_id)
@@ -105,7 +106,7 @@ async def on_raw_reaction_add(payload): # using raw events so it works on all bo
         emoji = payload.emoji.name
     )
 
-    user_list = [i async for i in reaction.users()] # generates list of people who reacted
+    user_list = [i async for i in reaction.users()] # list of people who reacted
 
     if ( # filters out unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
@@ -296,7 +297,7 @@ async def WIKIPEDIA(ctx, *, sentence): # weird caps because wikipedia is the nam
 
 @bot.command(aliases = ['suggest', 'f'])
 async def FEEDBACK(ctx, *, sentence): # "*" puts all args into sentence as-is
-    global deletable # value is being modified so it's declared global for every function that uses it
+    global deletable # modifying value so every function that uses it declares it global
 
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
@@ -330,7 +331,7 @@ async def SETPREFIX(ctx, *, sentence):
     if sentence == 'reset' or DEFAULT_PREFIX == sentence:
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
-            await write_database() # writes the DATABASE dictionary into the actual json file
+            await write_database() # writes DATABASE dictionary into the json
             await ctx.reply (
                 embed = discord.Embed (
                     title = 'server prefix has been reset',
@@ -429,10 +430,10 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
     for i in help_list: # iterates through the main command list
         if search in i[0]: # first entry of the list is always the command name(s)
-            command = ', '.join([f'{PREFIX}{j}' for j in i[0]]) # converting list comprehension into string
+            command = ', '.join([f'{PREFIX}{j}' for j in i[0]]) # list comprehension to string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
-                    title = eval(f'f"""help for {command}"""'), # too hard to do list comprehension here
+                    title = eval(f'f"""help for {command}"""'), # comma-separated string of all aliases
                     description = eval(f'f"""{i[1]}"""'), # grabs description from second index
                     color = EMBED_COLOR
                 )
@@ -494,7 +495,7 @@ async def EMBED(ctx, *, sentence): # same problem as wikipedia
     try:
         COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex
         if COLOR: # if not empty
-            COLOR = int(COLOR, base=16) # converts into hex number/base 16
+            COLOR = int(COLOR, base = 16) # converts into hex number/base 16
         else: # trigger the except if no color is provided
             raise IndexError
     except (IndexError, ValueError): # also catches invalid colors
@@ -558,7 +559,7 @@ async def BALL(ctx, *, sentence):
 
 
 @bot.command(aliases = ['roll', 'd', 'r'])
-async def DICE(ctx, count: int = 1, sides: int = 6): # cast to int to use range() and random() later on
+async def DICE(ctx, count: int = 1, sides: int = 6): # casting to int to perform operations later
     final = 0
     for _ in range(count):
         rolled = random.randint(1, sides)
