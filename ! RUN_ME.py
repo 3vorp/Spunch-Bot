@@ -160,7 +160,7 @@ async def on_message(message):
             mention_author = False
         )
 
-    SENTENCE = message.content.lower() # removes case sensitivity
+    sentence = message.content.lower() # removes case sensitivity
 
 
 
@@ -168,30 +168,30 @@ async def on_message(message):
 
 
 
-    if 'f' == SENTENCE: # no match case because less indentation + cleaner aliases
+    if 'f' == sentence: # no match case because less indentation + cleaner aliases
         await message.add_reaction('🇫')
         return # stops canoodling with other commands
 
-    elif 'monke' == SENTENCE:
+    elif 'monke' == sentence:
         await message.add_reaction('🎷')
         await message.add_reaction('🐒')
         return
 
-    elif 'forgor' in SENTENCE: # this way you can have variations like I forgor
+    elif 'forgor' in sentence: # this way you can have variations like I forgor
         await message.add_reaction('💀')
         return
 
-    elif 'bogos' in SENTENCE and 'binted' in SENTENCE: # allows for more variation, again
+    elif 'bogos' in sentence and 'binted' in sentence: # allows for more variation, again
         await message.add_reaction('👽')
 
-    elif 'baller' == SENTENCE:
+    elif 'baller' == sentence:
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
             mention_author = False
         )
         return
 
-    elif 'spongeboy' == SENTENCE:
+    elif 'spongeboy' == sentence:
         await message.reply (
             embed = discord.Embed (
                 color = EMBED_COLOR
@@ -203,7 +203,7 @@ async def on_message(message):
         )
         return
 
-    elif 'hello there' == SENTENCE:
+    elif 'hello there' == sentence:
         if random.randint(0, 5) == 0: # special chance for easter egg
             url = 'https://i.imgur.com/hAuUsnD.png'
 
@@ -221,7 +221,7 @@ async def on_message(message):
         )
         return
 
-    elif 'mhhh' in SENTENCE: # "mhhh moment" will still count, etc
+    elif 'mhhh' in sentence: # "mhhh moment" will still count, etc
         await message.reply (
             embed = discord.Embed (
                 title = 'mhhh',
@@ -245,9 +245,9 @@ async def on_message(message):
 
 
 @bot.command(aliases = ['wiki', 'w'])
-async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the name of the module
+async def WIKIPEDIA(ctx, *, sentence): # weird caps because wikipedia is the name of the module
     try:
-        article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
+        article = wikipedia.page(sentence, pageid = None, auto_suggest = False)
         await ctx.reply (
             embed = discord.Embed (
                 title = article.title,
@@ -265,7 +265,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the nam
         await ctx.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = f'no wikipedia article called "{SENTENCE}" was found',
+                description = f'no wikipedia article called "{sentence}" was found',
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -295,14 +295,14 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the nam
         )
 
 @bot.command(aliases = ['suggest', 'f'])
-async def FEEDBACK(ctx, *, SENTENCE): # "*" means that everything after the command goes into SENTENCE as-is
+async def FEEDBACK(ctx, *, sentence): # "*" puts all args into sentence as-is
     global deletable # value is being modified so it's declared global for every function that uses it
 
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
             title = f'feedback sent by **{ctx.author}**:',
-            description = f'sent in {ctx.channel.mention}: ```{SENTENCE}```',
+            description = f'sent in {ctx.channel.mention}: ```{sentence}```',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -315,7 +315,7 @@ async def FEEDBACK(ctx, *, SENTENCE): # "*" means that everything after the comm
     await ctx.reply ( # sends confirmation message to user
         embed = discord.Embed (
             title = 'your feedback has been sent:',
-            description = f'```{SENTENCE}```',
+            description = f'```{sentence}```',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -326,8 +326,8 @@ async def FEEDBACK(ctx, *, SENTENCE): # "*" means that everything after the comm
     )
 
 @bot.command(aliases = ['prefix', 'p'])
-async def SETPREFIX(ctx, *, SENTENCE):
-    if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
+async def SETPREFIX(ctx, *, sentence):
+    if sentence == 'reset' or DEFAULT_PREFIX == sentence:
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
             await write_database() # writes the DATABASE dictionary into the actual json file
@@ -355,13 +355,13 @@ async def SETPREFIX(ctx, *, SENTENCE):
             )
         return # fancy guard clause, saves indentation so I use these everywhere
 
-    DATABASE[f'prefix_{ctx.guild.id}'] = f'{SENTENCE}' # convenient to use guild id as key
+    DATABASE[f'prefix_{ctx.guild.id}'] = f'{sentence}' # convenient to use guild id as key
     await write_database() # writes the DATABASE dictionary into the database.json file
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'server prefix changed to {SENTENCE}',
-            description = f'you can change it back using `{SENTENCE}prefix reset`',
+            title = f'server prefix changed to {sentence}',
+            description = f'you can change it back using `{sentence}prefix reset`',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -372,21 +372,21 @@ async def SETPREFIX(ctx, *, SENTENCE):
     )
 
 @bot.command(aliases = ['len', 'l'])
-async def LENGTH(ctx, *, SENTENCE):
-    WORD_LIST = SENTENCE.split() # you need both word list and sentence
+async def LENGTH(ctx, *, sentence):
+    word_list = sentence.split() # you need both word list and sentence
 
-    if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
+    if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
         character = 'character'
     else: character = 'characters'
 
-    if len(WORD_LIST) == 1:
+    if len(word_list) == 1:
         word = 'word'
     else: word = 'words'
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'your sentence is {len(SENTENCE)} {character} long and {len(WORD_LIST)} {word} long:',
-            description = f'```{SENTENCE}```',
+            title = f'your sentence is {len(sentence)} {character} long and {len(word_list)} {word} long:',
+            description = f'```{sentence}```',
             color = EMBED_COLOR
         ),
         mention_author = False
@@ -408,8 +408,8 @@ async def GITHUB(ctx):
     )
 
 @bot.command(aliases = ['h', 'info', 'i'])
-async def HELP(ctx, arg='all'): # only really need to track the first word
-    if arg == 'all':
+async def HELP(ctx, search = 'all'): # only really need to track the first word
+    if search == 'all':
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
                 title = '**spunch bot**',
@@ -428,7 +428,7 @@ async def HELP(ctx, arg='all'): # only really need to track the first word
         return
 
     for i in help_list: # iterates through the main command list
-        if arg in i[0]: # first entry of the list is always the command name(s)
+        if search in i[0]: # first entry of the list is always the command name(s)
             command = ', '.join([f'{PREFIX}{j}' for j in i[0]]) # converting list comprehension into string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
@@ -467,17 +467,17 @@ async def HELP(ctx, arg='all'): # only really need to track the first word
 
 
 @bot.command(aliases = ['s'])
-async def SAY(ctx, *, SENTENCE):
+async def SAY(ctx, *, sentence):
     global deletable
     await ctx.message.delete()
 
     deletable = False # having a delete button next to bot text looked weird
-    await ctx.channel.send(SENTENCE)
+    await ctx.channel.send(sentence)
 
 @bot.command(aliases = ['e'])
-async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
+async def EMBED(ctx, *, sentence): # same problem as wikipedia
     global deletable
-    ARG_LIST = SENTENCE.split(';') # so you can have spaces in the embed
+    ARG_LIST = sentence.split(';') # so you can have spaces in the embed
 
     if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
         IMAGE = ARG_LIST[0] # this way you can have image embeds and titles
@@ -537,7 +537,7 @@ async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
     )
 
 @bot.command(aliases = ['8ball', 'b'])
-async def BALL(ctx, *, SENTENCE):
+async def BALL(ctx, *, sentence):
     await ctx.reply (
         embed = discord.Embed (
             title = random.choice ([ # infinitely expandable list
@@ -550,7 +550,7 @@ async def BALL(ctx, *, SENTENCE):
                 'never',
                 'never ask me that again'
             ]),
-            description = f'```{SENTENCE}```',
+            description = f'```{sentence}```',
             color = EMBED_COLOR
         ),
         mention_author = False
@@ -558,24 +558,24 @@ async def BALL(ctx, *, SENTENCE):
 
 
 @bot.command(aliases = ['roll', 'd', 'r'])
-async def DICE(ctx, COUNT: int = 1, SIDES: int = 6): # cast to int to use range() and random() later on
+async def DICE(ctx, count: int = 1, sides: int = 6): # cast to int to use range() and random() later on
     final = 0
-    for _ in range(COUNT):
-        rolled = random.randint(1, SIDES)
+    for _ in range(count):
+        rolled = random.randint(1, sides)
         final += rolled # adds new amount to already existing amount
 
     await ctx.reply (
         embed = discord.Embed (
             title = f'you rolled a {final}',
-            description = f'using {COUNT} {SIDES}-sided dice',
+            description = f'using {count} {sides}-sided dice',
             color = EMBED_COLOR
         ),
         mention_author = False
     )
 
 @bot.command(aliases = ['m'])
-async def MOCK(ctx, *, SENTENCE):
-    mocked_word = list(SENTENCE.lower()) # list of characters rather than words
+async def MOCK(ctx, *, sentence):
+    mocked_word = list(sentence.lower()) # list of characters rather than words
     for i in range(len(mocked_word)):
         if i % 2 == 0:
             mocked_word[i] = mocked_word[i].upper()
@@ -590,45 +590,42 @@ async def MOCK(ctx, *, SENTENCE):
     )
 
 @bot.command(aliases = ['rps'])
-async def ROCKPAPERSCISSORS(ctx, *WORD_LIST):
-    BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
+async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', 'scissors'])):
+    bot_answer = random.choice(['rock', 'paper', 'scissors'])
 
-    if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
-        WORD_LIST = [random.choice(['rock', 'paper', 'scissors'])]
-
-    if BOT_ANSWER == WORD_LIST[0]:
+    if bot_answer == user_answer:
         await ctx.reply (
             embed = discord.Embed (
                 title = 'it\'s a tie',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                description = f'you sent {user_answer}, i sent {bot_answer}',
                 color = EMBED_COLOR
             ),
             mention_author = False
         )
 
     elif ( # pain
-        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'paper') or
-        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'rock') or
-        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'scissors')
+        (user_answer == 'scissors' and bot_answer == 'paper') or
+        (user_answer == 'paper' and bot_answer == 'rock') or
+        (user_answer == 'rock' and bot_answer == 'scissors')
     ):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'you win',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                description = f'you sent {user_answer}, i sent {bot_answer}',
                 color = EMBED_COLOR
             ),
             mention_author = False
         )
 
     elif ( # pain II
-        (WORD_LIST[0] == 'paper' and BOT_ANSWER == 'scissors') or
-        (WORD_LIST[0] == 'rock' and BOT_ANSWER == 'paper') or
-        (WORD_LIST[0] == 'scissors' and BOT_ANSWER == 'rock')
+        (user_answer == 'paper' and bot_answer == 'scissors') or
+        (user_answer == 'rock' and bot_answer == 'paper') or
+        (user_answer == 'scissors' and bot_answer == 'rock')
     ):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'i win',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                description = f'you sent {user_answer}, i sent {bot_answer}',
                 color = EMBED_COLOR
             ),
             mention_author = False
@@ -638,15 +635,15 @@ async def ROCKPAPERSCISSORS(ctx, *WORD_LIST):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'that wasn\'t an option so I automatically win :sunglasses:',
-                description = f'you sent {WORD_LIST[0]}, i sent {BOT_ANSWER}',
+                description = f'you sent {user_answer}, i sent {bot_answer}',
                 color = EMBED_COLOR
             ),
             mention_author = False
         )
 
 @bot.command(aliases = ['n'])
-async def NUT(ctx, *, SENTENCE=None):
-    if SENTENCE == 'total':
+async def NUT(ctx, *, sentence=None):
+    if sentence == 'total':
         await ctx.reply (
             embed = discord.Embed (
                 title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
