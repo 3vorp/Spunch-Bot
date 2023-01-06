@@ -275,14 +275,14 @@ rock paper scissors against spunch bot
 
 **SYNTAX:**
 ```
-{PREFIX}rps <choice>
+{PREFIX}rockpaperscissors <choice>
 {PREFIX}rps
 ```
 **EXAMPLES:**
 ```
-{PREFIX}rps
+{PREFIX}rockpaperscissors
 {PREFIX}rps rock
-{PREFIX}rps paper
+{PREFIX}rockpaperscissors paper
 {PREFIX}rps scissors
 ```
 **NOTE:**
