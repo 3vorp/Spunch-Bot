@@ -26,7 +26,7 @@ intents = discord.Intents.default()
 intents.message_content = True # special permission required for messages
 bot = commands.Bot ( # generating the actual bot client
     intents = intents,
-    command_prefix = get_prefix, # idk how this doesn't need parentheses but it doesn't work otherwise
+    command_prefix = get_prefix, # idk how this doesn't need parentheses but it works
     case_insensitive = True, # this and prefix spaces are for mobile users mostly
     strip_after_prefix = True # I hate when bots don't do this
 )
@@ -93,19 +93,11 @@ async def on_ready():
 
 
 @bot.event
-async def on_raw_reaction_add(payload): # doesn't work on all messages unless raw event
-    user = payload.member
+async def on_raw_reaction_add(payload): # raw events can handle all messages and not just cache
+    message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+    reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
 
-    message = await (
-        bot.get_channel(payload.channel_id)
-        .fetch_message(payload.message_id)
-    )
-
-    reaction = discord.utils.get ( # boilerplate for variable setup
-        message.reactions,
-        emoji = payload.emoji.name
-    )
-
+    user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
     user_list = [i async for i in reaction.users()] # list of people who reacted
 
     if ( # filters out unviable messages by doing the following:
@@ -694,7 +686,7 @@ async def NUT(ctx, *, sentence=None):
 
 @bot.event
 async def on_command_error(ctx, error):
-    await ctx.reply ( # generic error handling
+    await ctx.reply ( # handles basically all errors
         embed = discord.Embed (
             title = 'insert helpful error name here',
             description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
@@ -707,5 +699,5 @@ async def on_command_error(ctx, error):
         mention_author = False
     )
 
-dotenv.load_dotenv() # stops token from being in public files
+dotenv.load_dotenv() # keeps token out of public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
