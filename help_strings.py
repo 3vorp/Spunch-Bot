@@ -7,22 +7,22 @@ __**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
 
 **utility:**
 
-— `{PREFIX}wikipedia (wiki, w)`: returns wikipedia article
-— `{PREFIX}feedback (f, suggest)`: suggest stuff to implement
-— `{PREFIX}setprefix (prefix, p)`: change prefix for server, add `reset` to reset prefix
-— `{PREFIX}length (len, l)`: returns word and character count of string
-— `{PREFIX}github (git, g)`: show github listing
-— `{PREFIX}help (h, info, i)`: if no command mentioned shows main help message, otherwise shows specific help for that command
+— `{PREFIX}wikipedia`, `{PREFIX}wiki`, `{PREFIX}w`: returns wikipedia article
+— `{PREFIX}feedback`, `{PREFIX}f`, `{PREFIX}suggest`: suggest stuff to implement
+— `{PREFIX}setprefix`, `{PREFIX}prefix`, `{PREFIX}p`: change prefix for server, add `reset` to reset prefix
+— `{PREFIX}length`, `{PREFIX}len`, `{PREFIX}l`: returns word and character count of string
+— `{PREFIX}github`, `{PREFIX}git`, `{PREFIX}g`: show github listing
+— `{PREFIX}help`, `{PREFIX}h`, `{PREFIX}info`, `{PREFIX}i`: if no command mentioned shows main help message, otherwise shows specific help for that command
 
 **fun:**
 
-— `{PREFIX}say (s)`: say stuff with bot
-— `{PREFIX}embed (e)`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
-— `{PREFIX}ball (8ball, b)`: random answers for random questions
-— `{PREFIX}dice (d, roll, r)`: roll any number of dice with any number of sides
-— `{PREFIX}mock (m)`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
-— `{PREFIX}rockpaperscissors (rps)`: rock paper scissors against spunch bot
-— `{PREFIX}nut (n)`: sacrifice NUT to me, adds one to global counter
+— `{PREFIX}say`, `{PREFIX}s`: say stuff with bot
+— `{PREFIX}embed`, `{PREFIX}e`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
+— `{PREFIX}ball`, `{PREFIX}8ball`, `{PREFIX}b`: random answers for random questions
+— `{PREFIX}dice`, `{PREFIX}d`, `{PREFIX}roll`, `{PREFIX}r`: roll any number of dice with any number of sides
+— `{PREFIX}mock`, `{PREFIX}m`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
+— `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against spunch bot
+— `{PREFIX}nut`, `{PREFIX}n`: sacrifice NUT to me, adds one to global counter
 
 **specific info for a command can be found by running**
 ```{PREFIX}help <command>```
