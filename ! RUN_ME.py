@@ -408,8 +408,8 @@ async def GITHUB(ctx):
     )
 
 @bot.command(aliases = ['h', 'info', 'i'])
-async def HELP(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WORD_LIST as args
-    if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
+async def HELP(ctx, arg='all'): # only really need to track the first word
+    if arg == 'all':
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
                 title = '**spunch bot**',
@@ -428,7 +428,7 @@ async def HELP(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WO
         return
 
     for i in help_list: # iterates through the main command list
-        if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
+        if arg in i[0]: # first entry of the list is always the command name(s)
             command = ', '.join([f'{PREFIX}{j}' for j in i[0]]) # converting list comprehension into string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
@@ -558,26 +558,16 @@ async def BALL(ctx, *, SENTENCE):
 
 
 @bot.command(aliases = ['roll', 'd', 'r'])
-async def DICE(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
-    WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
-
-    if len(WORD_LIST) < 1:
-        WORD_LIST = [1, 6]
-
-    try: WORD_LIST[1] # if you provide number but not sides
-
-    except IndexError:
-        WORD_LIST.append(6) # generates args if user doesn't provide any
-
+async def DICE(ctx, COUNT: int = 1, SIDES: int = 6): # cast to int to use range() and random() later on
     final = 0
-    for _ in range(WORD_LIST[0]):
-        rolled = random.randint(1, WORD_LIST[1])
+    for _ in range(COUNT):
+        rolled = random.randint(1, SIDES)
         final += rolled # adds new amount to already existing amount
 
     await ctx.reply (
         embed = discord.Embed (
             title = f'you rolled a {final}',
-            description = f'using {WORD_LIST[0]} {WORD_LIST[1]}-sided dice',
+            description = f'using {COUNT} {SIDES}-sided dice',
             color = EMBED_COLOR
         ),
         mention_author = False
