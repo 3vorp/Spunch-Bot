@@ -424,9 +424,10 @@ async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WO
 
     for i in help_list: # iterates through the main command list
         if WORD_LIST[0] in i[0]: # first entry of the list is always the command name(s)
+            command = ', '.join([f'{PREFIX}{j}' for j in i[0]]) # converting list comprehension into string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
-                    title = eval(f'f"""help for {PREFIX}{i[0][0]}"""'), # grabs first entry from tuple
+                    title = eval(f'f"""help for {command}"""'), # too hard to do list comprehension here
                     description = eval(f'f"""{i[1]}"""'), # grabs description from second index
                     color = EMBED_COLOR
                 )
