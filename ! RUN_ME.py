@@ -9,7 +9,7 @@ from help_strings import * # same thing
 
 
 
-async def get_prefix(bot, message): # idk why this works but it does
+async def get_prefix(_, message): # idk why this works but it does
     global PREFIX # only needs to be declared global once since no command changes the value
 
     try: # assigns server prefix if one exists, if not use default prefix
@@ -290,7 +290,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the nam
         )
 
 @bot.command(aliases = ['suggest', 'f'])
-async def feedback(ctx, *, SENTENCE): # "*" means that everything after the command goes into SENTENCE as-is
+async def FEEDBACK(ctx, *, SENTENCE): # "*" means that everything after the command goes into SENTENCE as-is
     global deletable # value is being modified so it's declared global for every function that uses it
 
     deletable = False
@@ -321,7 +321,7 @@ async def feedback(ctx, *, SENTENCE): # "*" means that everything after the comm
     )
 
 @bot.command(aliases = ['prefix', 'p'])
-async def setprefix(ctx, *, SENTENCE):
+async def SETPREFIX(ctx, *, SENTENCE):
     if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
@@ -367,7 +367,7 @@ async def setprefix(ctx, *, SENTENCE):
     )
 
 @bot.command(aliases = ['len', 'l'])
-async def length(ctx, *, SENTENCE):
+async def LENGTH(ctx, *, SENTENCE):
     WORD_LIST = SENTENCE.split() # you need both word list and sentence
 
     if len(SENTENCE) == 1: # grammar stuff because I'm a perfectionist lol
@@ -388,7 +388,7 @@ async def length(ctx, *, SENTENCE):
     )
 
 @bot.command(aliases = ['git', 'g'])
-async def github(ctx):
+async def GITHUB(ctx):
     await ctx.reply (
         embed = discord.Embed (
             title = 'you can find my code on github here:',
@@ -403,7 +403,7 @@ async def github(ctx):
     )
 
 @bot.command(aliases = ['h', 'info', 'i'])
-async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WORD_LIST as args
+async def HELP(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WORD_LIST as args
     if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
@@ -462,7 +462,7 @@ async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WO
 
 
 @bot.command(aliases = ['s'])
-async def say(ctx, *, SENTENCE):
+async def SAY(ctx, *, SENTENCE):
     global deletable
     await ctx.message.delete()
 
@@ -532,7 +532,7 @@ async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
     )
 
 @bot.command(aliases = ['8ball', 'b'])
-async def ball(ctx, *, SENTENCE):
+async def BALL(ctx, *, SENTENCE):
     await ctx.reply (
         embed = discord.Embed (
             title = random.choice ([ # infinitely expandable list
@@ -553,7 +553,7 @@ async def ball(ctx, *, SENTENCE):
 
 
 @bot.command(aliases = ['roll', 'd', 'r'])
-async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
+async def DICE(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
     WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
 
     if len(WORD_LIST) < 1:
@@ -579,7 +579,7 @@ async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() 
     )
 
 @bot.command(aliases = ['m'])
-async def mock(ctx, *, SENTENCE):
+async def MOCK(ctx, *, SENTENCE):
     mocked_word = list(SENTENCE.lower()) # list of characters rather than words
     for i in range(len(mocked_word)):
         if i % 2 == 0:
@@ -595,7 +595,7 @@ async def mock(ctx, *, SENTENCE):
     )
 
 @bot.command(aliases = ['rps'])
-async def rockpaperscissors(ctx, *WORD_LIST):
+async def ROCKPAPERSCISSORS(ctx, *WORD_LIST):
     BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
     if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
@@ -650,7 +650,7 @@ async def rockpaperscissors(ctx, *WORD_LIST):
         )
 
 @bot.command(aliases = ['n'])
-async def nut(ctx, *, SENTENCE=None):
+async def NUT(ctx, *, SENTENCE=None):
     if SENTENCE == 'total':
         await ctx.reply (
             embed = discord.Embed (
