@@ -703,7 +703,7 @@ async def on_command_error(ctx, error):
     await ctx.reply ( # generic error handling
         embed = discord.Embed (
             title = 'insert helpful error name here',
-            description = f'discord.py error: {error}\n\n**use `{PREFIX}help` for a list of commands**',
+            description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
             color = EMBED_COLOR
         )
         .set_footer (
