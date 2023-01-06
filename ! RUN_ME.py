@@ -239,7 +239,7 @@ async def on_message(message):
 
 
 
-@bot.command()
+@bot.command(aliases = ['wiki', 'w'])
 async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the name of the module
     try:
         article = wikipedia.page(SENTENCE, pageid = None, auto_suggest = False)
@@ -289,7 +289,7 @@ async def WIKIPEDIA(ctx, *, SENTENCE): # weird caps because wikipedia is the nam
             mention_author = False
         )
 
-@bot.command(aliases = ['suggest'])
+@bot.command(aliases = ['suggest', 'f'])
 async def feedback(ctx, *, SENTENCE): # "*" means that everything after the command goes into SENTENCE as-is
     global deletable # value is being modified so it's declared global for every function that uses it
 
@@ -320,7 +320,7 @@ async def feedback(ctx, *, SENTENCE): # "*" means that everything after the comm
         mention_author = False
     )
 
-@bot.command(aliases = ['prefix'])
+@bot.command(aliases = ['prefix', 'p'])
 async def setprefix(ctx, *, SENTENCE):
     if SENTENCE == 'reset' or DEFAULT_PREFIX == SENTENCE:
         try:
@@ -366,7 +366,7 @@ async def setprefix(ctx, *, SENTENCE):
         mention_author = False
     )
 
-@bot.command(aliases = ['len'])
+@bot.command(aliases = ['len', 'l'])
 async def length(ctx, *, SENTENCE):
     WORD_LIST = SENTENCE.split() # you need both word list and sentence
 
@@ -387,7 +387,7 @@ async def length(ctx, *, SENTENCE):
         mention_author = False
     )
 
-@bot.command()
+@bot.command(aliases = ['git', 'g'])
 async def github(ctx):
     await ctx.reply (
         embed = discord.Embed (
@@ -402,7 +402,7 @@ async def github(ctx):
         mention_author = False
     )
 
-@bot.command(aliases = ['info'])
+@bot.command(aliases = ['h', 'info', 'i'])
 async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WORD_LIST as args
     if len(WORD_LIST) < 1 or 'all' in WORD_LIST: # can't use indexes if it doesn't exist
         await ctx.reply (
@@ -460,7 +460,7 @@ async def help(ctx, *WORD_LIST): # *WORD_LIST means that every word goes into WO
 
 
 
-@bot.command()
+@bot.command(aliases = ['s'])
 async def say(ctx, *, SENTENCE):
     global deletable
     await ctx.message.delete()
@@ -468,7 +468,7 @@ async def say(ctx, *, SENTENCE):
     deletable = False # having a delete button next to bot text looked weird
     await ctx.channel.send(SENTENCE)
 
-@bot.command()
+@bot.command(aliases = ['e'])
 async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
     global deletable
     ARG_LIST = SENTENCE.split(';') # so you can have spaces in the embed
@@ -530,7 +530,7 @@ async def EMBED(ctx, *, SENTENCE): # same problem as wikipedia
         )
     )
 
-@bot.command(aliases = ['8ball'])
+@bot.command(aliases = ['8ball', 'b'])
 async def ball(ctx, *, SENTENCE):
     await ctx.reply (
         embed = discord.Embed (
@@ -551,7 +551,7 @@ async def ball(ctx, *, SENTENCE):
     )
 
 
-@bot.command(aliases = ['roll'])
+@bot.command(aliases = ['roll', 'd', 'r'])
 async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() later on
     WORD_LIST = list(WORD_LIST) # converting from tuple to be able to use .append() later on
 
@@ -577,7 +577,7 @@ async def dice(ctx, *WORD_LIST: int): # cast to int to use range() and random() 
         mention_author = False
     )
 
-@bot.command()
+@bot.command(aliases = ['m'])
 async def mock(ctx, *, SENTENCE):
     mocked_word = list(SENTENCE.lower()) # list of characters rather than words
     for i in range(len(mocked_word)):
@@ -593,8 +593,8 @@ async def mock(ctx, *, SENTENCE):
         mention_author = False
     )
 
-@bot.command()
-async def rps(ctx, *WORD_LIST):
+@bot.command(aliases = ['rps'])
+async def rockpaperscissors(ctx, *WORD_LIST):
     BOT_ANSWER = random.choice(['rock', 'paper', 'scissors'])
 
     if len(WORD_LIST) < 1: # if user provides no choice bot chooses for them
@@ -648,7 +648,7 @@ async def rps(ctx, *WORD_LIST):
             mention_author = False
         )
 
-@bot.command()
+@bot.command(aliases = ['n'])
 async def nut(ctx, *, SENTENCE=None):
     if SENTENCE == 'total':
         await ctx.reply (
