@@ -238,9 +238,9 @@ async def on_message(message):
 
 
 @bot.command(aliases = ['wiki', 'w'])
-async def WIKIPEDIA(ctx, *, sentence):
+async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
     try:
-        article = wikipedia.page(sentence, pageid = None, auto_suggest = False)
+        article = wikipedia.page(search, pageid = None, auto_suggest = False)
         await ctx.reply (
             embed = discord.Embed (
                 title = article.title,
@@ -258,7 +258,7 @@ async def WIKIPEDIA(ctx, *, sentence):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
-                description = f'no wikipedia article called "{sentence}" was found',
+                description = f'no wikipedia article called "{search}" was found',
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -288,14 +288,14 @@ async def WIKIPEDIA(ctx, *, sentence):
         )
 
 @bot.command(aliases = ['suggest', 'f'])
-async def FEEDBACK(ctx, *, sentence): # "*" puts all args into sentence as-is
+async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
     deletable = False
     await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
             title = f'feedback sent by **{ctx.author}**:',
-            description = f'sent in {ctx.channel.mention}: ```{sentence}```',
+            description = f'sent in {ctx.channel.mention}: ```{message}```',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -308,7 +308,7 @@ async def FEEDBACK(ctx, *, sentence): # "*" puts all args into sentence as-is
     await ctx.reply ( # sends confirmation message to user
         embed = discord.Embed (
             title = 'your feedback has been sent:',
-            description = f'```{sentence}```',
+            description = f'```{message}```',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -319,8 +319,8 @@ async def FEEDBACK(ctx, *, sentence): # "*" puts all args into sentence as-is
     )
 
 @bot.command(aliases = ['prefix', 'p'])
-async def SETPREFIX(ctx, *, sentence):
-    if sentence == 'reset' or DEFAULT_PREFIX == sentence:
+async def SETPREFIX(ctx, *, new_prefix):
+    if new_prefix == 'reset' or DEFAULT_PREFIX == new_prefix:
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
             await write_database() # writes DATABASE dictionary into the json
@@ -348,13 +348,13 @@ async def SETPREFIX(ctx, *, sentence):
             )
         return # fancy guard clause, saves indentation so I use these everywhere
 
-    DATABASE[f'prefix_{ctx.guild.id}'] = f'{sentence}' # convenient to use guild id as key
+    DATABASE[f'prefix_{ctx.guild.id}'] = f'{new_prefix}' # convenient to use guild id as key
     await write_database() # writes the DATABASE dictionary into the database.json file
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'server prefix changed to {sentence}',
-            description = f'you can change it back using `{sentence}prefix reset`',
+            title = f'server prefix changed to {new_prefix}',
+            description = f'you can change it back using `{new_prefix}prefix reset`',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -473,24 +473,24 @@ async def SAY(ctx, *, sentence):
     await ctx.channel.send(sentence)
 
 @bot.command(aliases = ['e'])
-async def EMBED(ctx, *, sentence): # can't split by spaces so needs to be passed in one string
+async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in one string
     global deletable # this command is useful for server info so it's not deletable
-    ARG_LIST = sentence.split(';') # so you can have spaces in the embed
+    arg_list = args.split(';') # so you can have spaces in the embed
 
-    if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
-        IMAGE = ARG_LIST[0] # this way you can have image embeds and titles
+    if arg_list[0].startswith('https://') or arg_list[0].startswith('http://'):
+        IMAGE = arg_list[0] # this way you can have image embeds and titles
         TITLE = None
     else:
-        TITLE = ARG_LIST[0]
+        TITLE = arg_list[0]
         IMAGE = None
 
     try: # just sets it to nothing/defaults if nothing is specified
-        DESCRIPTION = ARG_LIST[1]
+        DESCRIPTION = arg_list[1]
     except IndexError: # passes into except clause if any argument isn't provided
         DESCRIPTION = ''
 
     try:
-        COLOR = ARG_LIST[2].strip().lstrip('#') # discord.py is VERY picky with hex
+        COLOR = arg_list[2].strip().lstrip('#') # discord.py is VERY picky with hex
         if COLOR: # if not empty
             COLOR = int(COLOR, base = 16) # converts into hex number/base 16
         else: # trigger the except if no color is provided
@@ -499,17 +499,17 @@ async def EMBED(ctx, *, sentence): # can't split by spaces so needs to be passed
         COLOR = EMBED_COLOR
 
     try:
-        FOOTER = ARG_LIST[3]
+        FOOTER = arg_list[3]
     except IndexError:
         FOOTER = ''
 
     try:
-        FOOTER_IMAGE = ARG_LIST[4]
+        FOOTER_IMAGE = arg_list[4]
     except IndexError:
         FOOTER_IMAGE = None
 
     try:
-        THUMBNAIL = ARG_LIST[5]
+        THUMBNAIL = arg_list[5]
     except IndexError:
         THUMBNAIL = None
 
@@ -535,7 +535,7 @@ async def EMBED(ctx, *, sentence): # can't split by spaces so needs to be passed
     )
 
 @bot.command(aliases = ['8ball', 'b'])
-async def BALL(ctx, *, sentence):
+async def BALL(ctx, *, question = ' '): # you can ask for opinion without input
     await ctx.reply (
         embed = discord.Embed (
             title = random.choice ([ # infinitely expandable list
@@ -545,7 +545,7 @@ async def BALL(ctx, *, sentence):
                 'never', 'never ask me that again',
                 'yesn\'t', 'doubt'
             ]),
-            description = f'```{sentence}```',
+            description = f'```{question}```',
             color = EMBED_COLOR
         ),
         mention_author = False
@@ -637,8 +637,8 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', '
         )
 
 @bot.command(aliases = ['n'])
-async def NUT(ctx, *, sentence = None):
-    if sentence == 'total' or sentence == 'amount':
+async def NUT(ctx, *, query = None):
+    if query == 'total' or query == 'amount':
         await ctx.reply (
             embed = discord.Embed (
                 title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
