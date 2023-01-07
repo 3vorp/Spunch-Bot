@@ -534,14 +534,11 @@ async def BALL(ctx, *, sentence):
     await ctx.reply (
         embed = discord.Embed (
             title = random.choice ([ # infinitely expandable list
-                'yes',
-                'no',
-                'maybe',
-                'idk',
-                'ask later',
-                'definitely',
-                'never',
-                'never ask me that again'
+                'yes', 'no',
+                'maybe', 'idk',
+                'ask later', 'definitely',
+                'never', 'never ask me that again',
+                'yesn\'t', 'doubt'
             ]),
             description = f'```{sentence}```',
             color = EMBED_COLOR
@@ -551,7 +548,7 @@ async def BALL(ctx, *, sentence):
 
 
 @bot.command(aliases = ['roll', 'd', 'r'])
-async def DICE(ctx, count: int = 1, sides: int = 6): # casting to int to perform operations later
+async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     final = 0
     for _ in range(count):
         rolled = random.randint(1, sides)
@@ -635,7 +632,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', '
         )
 
 @bot.command(aliases = ['n'])
-async def NUT(ctx, *, sentence=None):
+async def NUT(ctx, *, sentence = None):
     if sentence == 'total':
         await ctx.reply (
             embed = discord.Embed (
