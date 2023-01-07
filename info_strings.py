@@ -3,7 +3,7 @@
 help_all = '''
 an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
-__**COMMANDS AVAILABLE:**__ *(more to be added soon™)*
+**COMMANDS AVAILABLE:**
 
 **utility:**
 
