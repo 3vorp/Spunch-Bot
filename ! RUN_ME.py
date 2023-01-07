@@ -370,11 +370,13 @@ async def LENGTH(ctx, *, sentence):
 
     if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
         character = 'character'
-    else: character = 'characters'
+    else:
+        character = 'characters'
 
     if len(word_list) == 1:
         word = 'word'
-    else: word = 'words'
+    else:
+        word = 'words'
 
     await ctx.reply (
         embed = discord.Embed (
