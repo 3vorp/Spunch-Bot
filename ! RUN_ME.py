@@ -452,8 +452,8 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
             color = EMBED_COLOR
         )
         .set_footer (
-        text = 'you\'re still an absolute clampongus though',
-        icon_url = EMBED_GIF
+            text = 'you\'re still an absolute clampongus though',
+            icon_url = EMBED_GIF
         ),
         mention_author = False
     )
@@ -555,7 +555,7 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
         )
         return
 
-    await ctx.reply (
+    await ctx.reply ( # if no option provided no description will be set
         embed = discord.Embed (
             title = random.choice(ball_choices),
             color = EMBED_COLOR
