@@ -32,8 +32,6 @@ bot = commands.Bot ( # generating the actual bot client
 )
 bot.remove_command('help') # default help command is garbage and idk why it's there honestly
 
-deletable = True # global variable for whether to add delete reaction or not
-
 
 
 ### DATABASE ###
@@ -86,6 +84,8 @@ async def on_ready():
 ### DELETE BUTTON / REACTION ###
 
 
+
+deletable = True # global variable for whether to add delete reaction or not
 
 @bot.event
 async def on_raw_reaction_add(payload): # raw events can handle all messages and not just cache
