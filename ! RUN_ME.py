@@ -22,7 +22,7 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
 
 
 bot = commands.Bot ( # generating the actual bot client
-    intents = discord.Intents.all(),
+    intents = discord.Intents.all(), # permission stuff
     command_prefix = get_prefix, # idk how this doesn't need parentheses but it works
     case_insensitive = True, # this and prefix spaces are for mobile users mostly
     strip_after_prefix = True # I hate when bots don't do this
@@ -162,7 +162,7 @@ async def on_message(message):
         await message.add_reaction('🐒')
         return
 
-    elif 'forgor' in sentence: # this way you can have variations like I forgor
+    elif 'forgor' in sentence: # this way you can have variations like "I forgor"
         await message.add_reaction('💀')
         return
 
@@ -633,7 +633,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', '
     else:
         await ctx.reply (
             embed = discord.Embed (
-                title = 'that wasn\'t an option so I automatically win :sunglasses:',
+                title = 'that wasn\'t an option so i automatically win :sunglasses:',
                 description = f'you sent {user_answer}, i sent {bot_answer}',
                 color = EMBED_COLOR
             ),
