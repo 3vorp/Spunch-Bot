@@ -1,7 +1,6 @@
-import discord, os, wikipedia, random, json, time, dotenv
+import discord, os, wikipedia, random, json, time, dotenv, info_strings
 from discord.ext import commands
 from config import * # saves me from having to use config.VARIABLE for everything
-from info_strings import * # contains help strings, errors, etc
 
 
 
@@ -43,7 +42,7 @@ try:
         DATABASE = json.load(db)
 
 except FileNotFoundError:
-    print(error_database) # no eval() necessary because it's not an f string
+    print(info_strings.error_database) # no eval() necessary because it's not an f string
     DATABASE = {} # stops initial errors, still won't really work though
 
 async def write_database(): # saves a LOT of copy paste
@@ -406,11 +405,11 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
                 title = '**spunch bot**',
-                description = eval(f'f"""{help_all}"""'),
+                description = eval(f'f"""{info_strings.help_all}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
-                text = eval(f'f"""{help_footer}"""'),
+                text = eval(f'f"""{info_strings.help_footer}"""'),
                 icon_url = EMBED_GIF
             )
             .set_thumbnail (
@@ -420,7 +419,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         )
         return
 
-    for i in help_list: # iterates through the main command list
+    for i in info_strings.help_list: # iterates through the main command list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
             command = ', '.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
             await ctx.reply (
@@ -430,7 +429,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
                     color = EMBED_COLOR
                 )
                 .set_footer (
-                    text = eval(f'f"""{help_footer}"""'),
+                    text = eval(f'f"""{info_strings.help_footer}"""'),
                     icon_url = EMBED_GIF
                 )
                 .set_thumbnail (
@@ -443,7 +442,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
     await ctx.reply ( # if the return statement was never reached it probably doesn't exist
         embed = discord.Embed (
             title = 'insert helpful error name here',
-            description = eval(f'f"""{help_not_found}"""'),
+            description = eval(f'f"""{info_strings.help_not_found}"""'),
             color = EMBED_COLOR
         )
         .set_footer (
