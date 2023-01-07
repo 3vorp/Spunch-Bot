@@ -567,7 +567,7 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
 @bot.command(aliases = ['roll', 'd', 'r'])
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     final = 0
-    for _ in range(count):
+    for _ in range(count): # underscore will just ignore the iterator
         rolled = random.randint(1, sides)
         final += rolled # adds new amount to already existing amount
 

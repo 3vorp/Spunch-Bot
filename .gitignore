@@ -2,4 +2,3 @@
 .env
 database.json
 __pycache__/
-main_old.py
