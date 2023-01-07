@@ -633,7 +633,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', '
 
 @bot.command(aliases = ['n'])
 async def NUT(ctx, *, sentence = None):
-    if sentence == 'total':
+    if sentence == 'total' or sentence == 'amount':
         await ctx.reply (
             embed = discord.Embed (
                 title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
