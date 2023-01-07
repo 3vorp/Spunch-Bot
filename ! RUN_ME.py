@@ -1,7 +1,7 @@
 import discord, os, wikipedia, random, json, time, dotenv
 from discord.ext import commands
 from config import * # saves me from having to use config.VARIABLE for everything
-from help_strings import * # same thing
+from info_strings import * # contains help strings, errors, etc
 
 
 
