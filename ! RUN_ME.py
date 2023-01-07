@@ -430,7 +430,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
             command = ', '.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
-                    title = eval(f'f"""help for {command}"""'), # comma-separated string of all aliases
+                    title = eval(f'f"""help for {command}"""'), # formatted list of aliases
                     description = eval(f'f"""{i[1]}"""'), # grabs description from second index
                     color = EMBED_COLOR
                 )
@@ -661,7 +661,7 @@ async def NUT(ctx, *, query = None):
         )
         return
 
-    DATABASE['nut_count'] = int(DATABASE['nut_count']) + 1
+    DATABASE['nut_count'] = DATABASE['nut_count'] + 1
     await write_database() # adds one to global nut count and writes it
 
     if DATABASE["nut_count"] % 50 == 0: # special NUT
