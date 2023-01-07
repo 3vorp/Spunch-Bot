@@ -535,17 +535,29 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
     )
 
 @bot.command(aliases = ['8ball', 'b'])
-async def BALL(ctx, *, question = ' '): # you can ask for opinion without input
+async def BALL(ctx, *, question = ''): # you can ask for opinion without input
+    ball_choices = [ # infinitely expandable list
+        'yes', 'no',
+        'maybe', 'idk',
+        'ask later', 'definitely',
+        'never', 'never ask me that again',
+        'yesn\'t', 'doubt'
+    ]
+
+    if question:
+        await ctx.reply (
+            embed = discord.Embed (
+                title = random.choice(ball_choices),
+                description = f'```{question}```',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+        return
+
     await ctx.reply (
         embed = discord.Embed (
-            title = random.choice ([ # infinitely expandable list
-                'yes', 'no',
-                'maybe', 'idk',
-                'ask later', 'definitely',
-                'never', 'never ask me that again',
-                'yesn\'t', 'doubt'
-            ]),
-            description = f'```{question}```',
+            title = random.choice(ball_choices),
             color = EMBED_COLOR
         ),
         mention_author = False
