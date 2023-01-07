@@ -9,8 +9,8 @@ from help_strings import * # same thing
 
 
 
-async def get_prefix(_, message): # idk why this works but it does
-    global PREFIX # only needs to be declared global once since no command changes the value
+async def get_prefix(_, message): # somehow this actually works exactly how the old setup did
+    global PREFIX # only needs to be declared global once since value is constant
 
     try: # assigns server prefix if one exists, if not use default prefix
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
@@ -238,7 +238,7 @@ async def on_message(message):
 
 
 @bot.command(aliases = ['wiki', 'w'])
-async def WIKIPEDIA(ctx, *, sentence): # weird caps because wikipedia is the name of the module
+async def WIKIPEDIA(ctx, *, sentence):
     try:
         article = wikipedia.page(sentence, pageid = None, auto_suggest = False)
         await ctx.reply (
@@ -468,7 +468,7 @@ async def SAY(ctx, *, sentence):
     await ctx.channel.send(sentence)
 
 @bot.command(aliases = ['e'])
-async def EMBED(ctx, *, sentence): # same problem as wikipedia
+async def EMBED(ctx, *, sentence):
     global deletable
     ARG_LIST = sentence.split(';') # so you can have spaces in the embed
 
