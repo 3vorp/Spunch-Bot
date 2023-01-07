@@ -19,7 +19,7 @@ requirements
     - random (used for 8ball command and a few other things)
     - wikipedia (used for wikipedia command)
     - json (used for the database)
-    - datetime (used for startup message)
+    - time (used for startup message)
     - dotenv (used for bot token)
 
 go make a discord app at https://discord.com/developers

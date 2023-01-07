@@ -1,4 +1,4 @@
-import discord, os, wikipedia, random, json, datetime, dotenv
+import discord, os, wikipedia, random, json, time, dotenv
 from discord.ext import commands
 from config import * # saves me from having to use config.VARIABLE for everything
 from help_strings import * # same thing
@@ -71,12 +71,7 @@ async def on_ready():
     await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed (
             title = 'hello i\'m alive now',
-            description = f'''```started at {
-                ' '.join (
-                    datetime.datetime.now().strftime('%c')
-                    .split()
-                )
-            }```''',
+            description = f'''started at <t:{int(time.time())}>''',
             color = EMBED_COLOR
         ) # removes an annoying double space with redundant .join() and .split()
         .set_footer (
