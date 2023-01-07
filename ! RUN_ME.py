@@ -66,11 +66,11 @@ async def on_ready():
 
     deletable = False
     await bot.get_channel(STARTUP_CHANNEL).send (
-        embed = discord.Embed (
+        embed = discord.Embed ( # time.time() is a unix timestamp
             title = 'hello i\'m alive now',
             description = f'''started at <t:{int(time.time())}>''',
             color = EMBED_COLOR
-        ) # removes an annoying double space with redundant .join() and .split()
+        )
         .set_footer (
             text = f'Online as {bot.user}',
             icon_url = EMBED_GIF
