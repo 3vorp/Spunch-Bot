@@ -394,8 +394,11 @@ async def GITHUB(ctx):
             color = EMBED_COLOR
         )
         .set_footer (
-            text = 'fair warning that it\'s is a dumpster fire to read through',
+            text = 'fair warning that it\'s kinda a dumpster fire to read through',
             icon_url = EMBED_GIF
+        )
+        .set_thumbnail (
+            url = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
         ),
         mention_author = False
     )
@@ -468,8 +471,8 @@ async def SAY(ctx, *, sentence):
     await ctx.channel.send(sentence)
 
 @bot.command(aliases = ['e'])
-async def EMBED(ctx, *, sentence):
-    global deletable
+async def EMBED(ctx, *, sentence): # can't split by spaces so needs to be passed in one string
+    global deletable # this command is useful for server info so it's not deletable
     ARG_LIST = sentence.split(';') # so you can have spaces in the embed
 
     if ARG_LIST[0].startswith('https://') or ARG_LIST[0].startswith('http://'):
