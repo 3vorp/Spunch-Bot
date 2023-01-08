@@ -19,8 +19,6 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
 
     return PREFIX
 
-
-
 bot = commands.Bot ( # generating the actual bot client
     intents = discord.Intents.all(), # permission stuff
     command_prefix = get_prefix, # idk how this doesn't need parentheses but it works
@@ -704,8 +702,6 @@ async def NUT(ctx, *, query = None):
         ),
         mention_author = False
     )
-
-
 
 dotenv.load_dotenv() # keeps token out of public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
