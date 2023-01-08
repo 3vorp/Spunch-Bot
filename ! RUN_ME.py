@@ -149,7 +149,7 @@ async def on_message(message):
 
 
 
-### GENERAL/JOKE RESPONSES ###
+### GENERAL / JOKE RESPONSES ###
 
 
 
@@ -222,6 +222,27 @@ async def on_message(message):
         return
 
     await bot.process_commands(message) # allows commands to actually run
+
+
+
+### ERROR HANDLING ###
+
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.reply ( # handles basically all errors
+        embed = discord.Embed (
+            title = 'insert helpful error name here',
+            description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'you\'re still an absolute clampongus though',
+            icon_url = EMBED_GIF
+        ),
+        mention_author = False
+    )
 
 
 
@@ -685,25 +706,6 @@ async def NUT(ctx, *, query = None):
     )
 
 
-
-### ERROR HANDLING ###
-
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    await ctx.reply ( # handles basically all errors
-        embed = discord.Embed (
-            title = 'insert helpful error name here',
-            description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
-            color = EMBED_COLOR
-        )
-        .set_footer (
-            text = 'you\'re still an absolute clampongus though',
-            icon_url = EMBED_GIF
-        ),
-        mention_author = False
-    )
 
 dotenv.load_dotenv() # keeps token out of public files
 bot.run(os.getenv('TOKEN')) # the actual execution command
