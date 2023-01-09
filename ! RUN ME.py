@@ -186,6 +186,12 @@ async def on_message(message):
         )
         return
 
+    elif 'vine boom' == sentence:
+        await message.reply (
+            'https://bit.ly/3XgGYGJ',
+            mention_author = False
+        )
+
     elif 'hello there' == sentence:
         if random.randint(0, 5) == 0: # special chance for easter egg
             url = 'https://i.imgur.com/hAuUsnD.png'
