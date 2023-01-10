@@ -88,7 +88,10 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
 
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
-    user_list = [i async for i in reaction.users()] # list of people who reacted
+
+    try: user_list = [i async for i in reaction.users()] # list of people who reacted
+
+    except AttributeError: user_list = [] # for some reason this prevents errors with normal reactions
 
     if ( # filters out unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
