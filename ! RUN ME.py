@@ -89,9 +89,11 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
-    try: user_list = [i async for i in reaction.users()] # list of people who reacted
+    try: # list of people who reacted
+        user_list = [i async for i in reaction.users()]
 
-    except AttributeError: user_list = [] # for some reason this prevents errors with normal reactions
+    except AttributeError: # is raised when reacting to a non-bot message for some reason
+        return # since it's pretty obvious that it's not a bot message just ignore it
 
     if ( # filters out unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
