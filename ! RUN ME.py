@@ -291,10 +291,8 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
         )
 
     except wikipedia.exceptions.DisambiguationError as error:
-        final = '' # don't ask why I spent this much time formatting the list
-        for i in range(len(error.options)-1):
-            final += f'{error.options[i].lower()}, '
-        final += f'and {error.options[-1].lower()}'
+        final = ', '.join(f'{i}' for i in error.options[:-1]).lower()
+        final += f', and {error.options[-1].lower()}' # yes I wanted it to be formatted nicely
 
         await ctx.reply (
             embed = discord.Embed (
