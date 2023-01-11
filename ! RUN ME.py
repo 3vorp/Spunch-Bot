@@ -75,7 +75,6 @@ async def on_ready():
 
 
 
-
 ### DELETE BUTTON / REACTION ###
 
 
@@ -165,13 +164,6 @@ async def on_message(message):
         await message.add_reaction('🐒')
         return
 
-    elif 'forgor' in sentence: # this way you can have variations like "I forgor"
-        await message.add_reaction('💀')
-        return
-
-    elif 'bogos binted' in sentence: # allows for more variation, again
-        await message.add_reaction('👽')
-
     elif 'baller' == sentence:
         await message.reply (
             'https://bit.ly/3UY1D0M', # original url was like 130 characters
@@ -214,6 +206,13 @@ async def on_message(message):
             mention_author = False
         )
         return
+
+    elif 'forgor' in sentence: # this way you can have variations like "I forgor"
+        await message.add_reaction('💀')
+        return
+
+    elif 'bogos binted' in sentence: # allows for more variation, again
+        await message.add_reaction('👽')
 
     elif 'mhhh' in sentence: # "mhhh moment" will still count, etc
         await message.reply (
