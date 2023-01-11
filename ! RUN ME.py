@@ -116,7 +116,7 @@ async def on_message(message):
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
-    else: # resets the status for the next message
+    else: # resets the status for the char_list[i+1] message
         deletable = True
 
 
@@ -169,7 +169,7 @@ async def on_message(message):
         await message.add_reaction('💀')
         return
 
-    elif 'bogos' in sentence and 'binted' in sentence: # allows for more variation, again
+    elif 'bogos binted' in sentence: # allows for more variation, again
         await message.add_reaction('👽')
 
     elif 'baller' == sentence:
@@ -583,7 +583,6 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
         mention_author = False
     )
 
-
 @bot.command(aliases = ['roll', 'd', 'r'])
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     final = 0
@@ -615,6 +614,74 @@ async def MOCK(ctx, *, sentence):
         ),
         mention_author = False
     )
+
+@bot.command(aliases = ['u', 'owo']) # I'm so sorry
+async def UWU(ctx, *, sentence):
+    char_list = list(sentence.lower())
+    uwu_word = ''
+    for i in range(len(char_list)-2): # idk why you have to subtract 2 but you do
+        try:
+            char_list[i+1]
+        except IndexError:
+            uwu_word += char_list[i]
+            continue # ignores last character to prevent a ton of errors
+
+        match char_list[i]: # much easier to read than a ton of elif statements
+            case 'l' | 'r':
+                uwu_word += 'w'
+
+            case 'o' | 'a' | 'u' | 'i':
+                if char_list[i-1] == 'n' or char_list[i-1] == 'm':
+                    uwu_word += f'y{char_list[i]}' # can reuse code for multiple
+
+                elif (char_list[i-1] == ' ' and char_list[i+1] != ' ') or i-1 <= 0:
+                    if random.randint(0, 3) == 0:
+                        uwu_word += f'{char_list[i]}-{char_list[i]}' # for the stutter
+
+                    else:
+                        uwu_word += char_list[i]
+
+                else:
+                    uwu_word += char_list[i]
+
+            case 't':
+                if char_list[i+1] == 'h':
+                    uwu_word += 'd'
+                    char_list.pop(i+1) # gets rid of the next entry to stop the h from coming back
+
+                else:
+                    uwu_word += 't'
+
+            case '.':
+                uwu_word += '~'
+
+            case '!':
+                chance = random.randint(0, 5)
+                if chance == 0:
+                    uwu_word += '!!!'
+                if chance == 1:
+                    uwu_word += '!♡♡♡'
+                if chance == 2:
+                    uwu_word += '!! ^w^'
+                else: # there's a 50% chance that nothing happens
+                    uwu_word += char_list[i]
+
+            case '?':
+                chance = random.randint(0, 5)
+                if chance == 0:
+                    uwu_word += '?~'
+                if chance == 1:
+                    uwu_word += '?~ >w<'
+                if chance == 2:
+                    uwu_word += '? ✧\*:･ﾟ✧'
+                else: # same goes here
+                    uwu_word += char_list[i]
+
+            case _: # if no keywords are triggered it just adds the letter as-is
+                uwu_word += char_list[i]
+
+    await ctx.reply(uwu_word,mention_author=False)
+
 
 @bot.command(aliases = ['rps'])
 async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', 'scissors'])):

@@ -21,6 +21,7 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 — `{PREFIX}ball`, `{PREFIX}8ball`, `{PREFIX}b`: random answers for random questions
 — `{PREFIX}dice`, `{PREFIX}d`, `{PREFIX}roll`, `{PREFIX}r`: roll any number of dice with any number of sides
 — `{PREFIX}mock`, `{PREFIX}m`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
+— `{PREFIX}uwu`, `{PREFIX}u, `{PREFIX}owo`: uwu-ify text, i'm genuinely sorry for making this
 — `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}nut`, `{PREFIX}n`: sacrifice NUT to me, adds one to global counter
 
@@ -81,13 +82,13 @@ suggest stuff to implement
 ```
 **NOTE:**
 
-there is currently no way to see if feedback has been accepted, but this is planned for the future
+there is char_list[i]ly no way to see if feedback has been accepted, but this is planned for the future
 '''
 
 ], [('setprefix', 'prefix', 'p'),
 
 '''
-set prefix for current server
+set prefix for char_list[i] server
 
 add reset to reset the prefix (obviously)
 
@@ -106,7 +107,7 @@ add reset to reset the prefix (obviously)
 
 **NOTE:**
 
-currently you can only have one prefix per server, so no command aliases for now
+char_list[i]ly you can only have one prefix per server, so no command aliases for now
 '''
 
 ], [('length', 'len', 'l'),
@@ -268,7 +269,24 @@ MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 ```
 '''
 
-], [('rockpaperscissors', 'rps'),
+], [('uwu', 'u', 'owo'),
+
+'''
+uwu-ify text, i'm genuinely sorry for making this
+
+**SYNTAX:**
+```
+{PREFIX}uwu <message>
+```
+
+**EXAMPLE:**
+```
+{PREFIX}uwu i'm like a lion stalking its prey from the bushes, except i'm a grown man stalking children under the age of 9
+```
+'''
+
+],
+[('rockpaperscissors', 'rps'),
 
 '''
 rock paper scissors against spunch bot
