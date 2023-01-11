@@ -82,13 +82,13 @@ suggest stuff to implement
 ```
 **NOTE:**
 
-there is char_list[i]ly no way to see if feedback has been accepted, but this is planned for the future
+there is currently no way to see if feedback has been accepted, but this is planned for the future
 '''
 
 ], [('setprefix', 'prefix', 'p'),
 
 '''
-set prefix for char_list[i] server
+set prefix for current server
 
 add reset to reset the prefix (obviously)
 
@@ -107,7 +107,7 @@ add reset to reset the prefix (obviously)
 
 **NOTE:**
 
-char_list[i]ly you can only have one prefix per server, so no command aliases for now
+currently you can only have one prefix per server, so no command aliases for now
 '''
 
 ], [('length', 'len', 'l'),
