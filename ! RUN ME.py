@@ -116,7 +116,7 @@ async def on_message(message):
         await message.add_reaction('🗑️')
         return # nothing else uses bot messages so this stops infinite loops
 
-    else: # resets the status for the char_list[i+1] message
+    else: # resets the status for the next message
         deletable = True
 
 
