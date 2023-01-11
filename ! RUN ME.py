@@ -680,7 +680,14 @@ async def UWU(ctx, *, sentence):
             case _: # if no keywords are triggered it just adds the letter as-is
                 uwu_word += char_list[i]
 
-    await ctx.reply(uwu_word,mention_author=False)
+    await ctx.reply (
+        embed = discord.Embed (
+            title = 'i hate this as much as you do',
+            description = f'```{uwu_word}```',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
 
 
 @bot.command(aliases = ['rps'])
