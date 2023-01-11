@@ -155,81 +155,76 @@ async def on_message(message):
 
 
 
-    if 'f' == sentence: # no match case because less indentation + cleaner aliases
-        await message.add_reaction('🇫')
-        return # stops canoodling with other commands
+    match sentence: # only direct matches go here
+        case 'f':
+            await message.add_reaction('🇫')
 
-    elif 'monke' == sentence:
-        await message.add_reaction('🎷')
-        await message.add_reaction('🐒')
-        return
+        case 'monke':
+            await message.add_reaction('🎷')
+            await message.add_reaction('🐒')
 
-    elif 'baller' == sentence:
-        await message.reply (
-            'https://bit.ly/3UY1D0M', # original url was like 130 characters
-            mention_author = False
-        )
-        return
-
-    elif 'spongeboy' == sentence:
-        await message.reply (
-            embed = discord.Embed (
-                color = EMBED_COLOR
+        case 'baller':
+            await message.reply (
+                'https://bit.ly/3UY1D0M', # original url was like 130 characters
+                mention_author = False
             )
-            .set_image (
-                url = BIG_GIF
-            ),
-            mention_author = False
-        )
-        return
 
-    elif 'vine boom' == sentence:
-        await message.reply (
-            'https://bit.ly/3XgGYGJ',
-            mention_author = False
-        )
-
-    elif 'hello there' == sentence:
-        if random.randint(0, 5) == 0: # special chance for easter egg
-            url = 'https://i.imgur.com/hAuUsnD.png'
-
-        else:
-            url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
-
-        await message.reply (
-            embed = discord.Embed (
-                color = EMBED_COLOR
+        case 'spongeboy':
+            await message.reply (
+                embed = discord.Embed (
+                    color = EMBED_COLOR
+                )
+                .set_image (
+                    url = BIG_GIF
+                ),
+                mention_author = False
             )
-            .set_image (
-                url = url
-            ),
-            mention_author = False
-        )
-        return
 
-    elif 'forgor' in sentence: # this way you can have variations like "I forgor"
-        await message.add_reaction('💀')
-        return
-
-    elif 'bogos binted' in sentence: # allows for more variation, again
-        await message.add_reaction('👽')
-
-    elif 'mhhh' in sentence: # "mhhh moment" will still count, etc
-        await message.reply (
-            embed = discord.Embed (
-                title = 'mhhh',
-                description = '```Uh-oh moment```',
-                color = EMBED_COLOR
+        case 'vine boom':
+            await message.reply (
+                'https://bit.ly/3XgGYGJ',
+                mention_author = False
             )
-            .set_footer (
-                text = 'Swahili → English',
-                icon_url = EMBED_GIF
-            ),
-            mention_author = False
-        ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
-        return
 
-    await bot.process_commands(message) # allows commands to actually run
+        case 'hello there':
+            if random.randint(0, 5) == 0: # special chance for easter egg
+                url = 'https://i.imgur.com/hAuUsnD.png'
+
+            else:
+                url = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'
+
+            await message.reply (
+                embed = discord.Embed (
+                    color = EMBED_COLOR
+                )
+                .set_image (
+                    url = url
+                ),
+                mention_author = False
+            )
+
+        case _ if 'forgor' in sentence: # this was a pain to implement but at least it's consistent
+            await message.add_reaction('💀')
+
+        case _ if 'bogos binted' in sentence: # allows for more variation
+            await message.add_reaction('👽')
+
+        case _ if 'mhhh' in sentence: # "mhhh moment" will still count, etc
+            await message.reply (
+                embed = discord.Embed (
+                    title = 'mhhh',
+                    description = '```Uh-oh moment```',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'Swahili → English',
+                    icon_url = EMBED_GIF
+                ),
+                mention_author = False
+            ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
+
+        case _:
+            await bot.process_commands(message) # allows commands to actually run
 
 
 
@@ -563,7 +558,7 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
         'yesn\'t', 'doubt'
     ]
 
-    if question:
+    if question: # checks if exists
         await ctx.reply (
             embed = discord.Embed (
                 title = random.choice(ball_choices),
@@ -672,7 +667,7 @@ async def UWU(ctx, *, sentence):
                 if chance == 1:
                     uwu_word += '?~ >w<'
                 if chance == 2:
-                    uwu_word += '? ✧\*:･ﾟ✧'
+                    uwu_word += '? ✧﹡:･ﾟ✧'
                 else: # same goes here
                     uwu_word += char_list[i]
 

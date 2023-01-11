@@ -107,7 +107,7 @@ add reset to reset the prefix (obviously)
 
 **NOTE:**
 
-currently you can only have one prefix per server, so no command aliases for now
+currently you can only have one prefix per server, so no prefix aliases for now
 '''
 
 ], [('length', 'len', 'l'),
