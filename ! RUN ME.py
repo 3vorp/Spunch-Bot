@@ -83,20 +83,41 @@ deletable = True # global variable for whether to add delete reaction or not
 
 @bot.event
 async def on_raw_reaction_add(payload): # raw events can handle all messages and not just cache
+    global deletable
+    if isinstance(payload.channel_id, discord.channel.DMChannel):
+        return # ignore dms
     message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
     reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
+    original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
 
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
     try: # list of people who reacted
         user_list = [i async for i in reaction.users()]
+        if original.author != user:
+            deletable = False
+            await user.send (
+                embed = discord.Embed (
+                    title = 'you can\'t do that',
+                    description = 'only the original sender can delete bot messages',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'if you\'re moderating just use the delete button lol',
+                    icon_url = EMBED_GIF
+                )
+            )
+            return
 
-    except AttributeError: # is raised when reacting to a non-bot message for some reason
+    except AttributeError: # sometimes random errors occur so yeah
         return # since it's pretty obvious that it's not a bot message just ignore it
+
+
 
     if ( # filters out unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
         user == bot.user or # check if the bot is the one reacting
+        original.author != user or # checks if the original message author is not the one reacting
         message.author != bot.user # checks if the message is not from the bot
     ):
         return # ignores reactions if any of these are met
@@ -559,19 +580,14 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     ]
 
     if question: # checks if exists
-        await ctx.reply (
-            embed = discord.Embed (
-                title = random.choice(ball_choices),
-                description = f'```{question}```',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
-        return
+        description = f'```{question}```'
+    else: # sets blank if it doesn't exist
+        description = ''
 
     await ctx.reply ( # if no option provided no description will be set
         embed = discord.Embed (
             title = random.choice(ball_choices),
+            description = description,
             color = EMBED_COLOR
         ),
         mention_author = False
@@ -579,16 +595,25 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
 
 @bot.command(aliases = ['roll', 'd', 'r'])
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
-    final = 0
-    for _ in range(count): # underscore will just ignore the iterator
-        rolled = random.randint(1, sides)
-        final += rolled # adds new amount to already existing amount
+    rolls = [random.randint(1, sides) for _ in range(count)] # _ ignores iterator
+    final = sum(rolls)
+
+    if count > 1: # won't show roll count if there was only one roll and no need for a sum
+        footer = f'if you\'re interested these were the results for each roll: {rolls}'
+        icon_url = EMBED_GIF
+    else:
+        footer = ''
+        icon_url = None
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'you rolled a {final}',
+            title = f'you rolled **{final}**',
             description = f'using {count} {sides}-sided dice',
             color = EMBED_COLOR
+        )
+        .set_footer (
+            text = footer,
+            icon_url = icon_url
         ),
         mention_author = False
     )
