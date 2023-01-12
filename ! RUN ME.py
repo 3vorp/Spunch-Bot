@@ -62,11 +62,11 @@ async def on_ready():
 
     deletable = False
     await bot.get_channel(STARTUP_CHANNEL).send (
-        embed = discord.Embed ( # time.time() is a unix timestamp
+        embed = discord.Embed ( # time.time() is a float unix timestamp
             title = 'hello i\'m alive now',
-            description = f'''started at <t:{int(time.time())}>''',
+            description = f'''started at <t:{time.time() // 1}>''',
             color = EMBED_COLOR
-        )
+        ) # floor division from float to int, cleaner looking than int() imo
         .set_footer (
             text = f'Online as {bot.user}',
             icon_url = EMBED_GIF
