@@ -613,24 +613,23 @@ async def MOCK(ctx, *, sentence):
 async def UWU(ctx, *, sentence):
     char_list = list(sentence.lower())
     uwu_word = ''
-    for i in range(len(char_list)-2): # idk why you have to subtract 2 but you do
+    for i in range(len(char_list)):
         try:
-            char_list[i+1]
+            char_list[i+1] # there's no next index if it's on the final character
         except IndexError:
-            uwu_word += char_list[i]
-            continue # ignores last character to prevent a ton of errors
+            char_list.append('') # just adds an empty string to stop final errors
 
         match char_list[i]: # much easier to read than a ton of elif statements
             case 'l' | 'r':
                 uwu_word += 'w'
 
-            case 'o' | 'a' | 'u' | 'i':
+            case 'o' | 'a' | 'u' | 'i' | 'e': # can be reused for multiple vowels
                 if char_list[i-1] == 'n' or char_list[i-1] == 'm':
-                    uwu_word += f'y{char_list[i]}' # can reuse code for multiple
+                    uwu_word += f'y{char_list[i]}' # adds y for maximum uwu
 
                 elif (char_list[i-1] == ' ' and char_list[i+1] != ' ') or i-1 <= 0:
-                    if random.randint(0, 3) == 0:
-                        uwu_word += f'{char_list[i]}-{char_list[i]}' # for the stutter
+                    if random.randint(0, 4) == 0: # stutter only happens occasionally
+                        uwu_word += f'{char_list[i]}-{char_list[i]}'
 
                     else:
                         uwu_word += char_list[i]
@@ -640,7 +639,7 @@ async def UWU(ctx, *, sentence):
 
             case 't':
                 if char_list[i+1] == 'h':
-                    uwu_word += 'd'
+                    uwu_word += 'd' # replaces th with d
                     char_list.pop(i+1) # gets rid of the next entry to stop the h from coming back
 
                 else:
@@ -657,7 +656,7 @@ async def UWU(ctx, *, sentence):
                     uwu_word += '!♡♡♡'
                 if chance == 2:
                     uwu_word += '!! ^w^'
-                else: # there's a 50% chance that nothing happens
+                else: # there's a 50% chance that nothing happens to stop things getting too crazy
                     uwu_word += char_list[i]
 
             case '?':
@@ -671,7 +670,7 @@ async def UWU(ctx, *, sentence):
                 else: # same goes here
                     uwu_word += char_list[i]
 
-            case _: # if no keywords are triggered it just adds the letter as-is
+            case _: # if no key letters are triggered it just adds the letter as-is
                 uwu_word += char_list[i]
 
     await ctx.reply (
