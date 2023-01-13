@@ -89,11 +89,9 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
     reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
     original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
-
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
-    try: # list of people who reacted
-        user_list = [i async for i in reaction.users()]
+    try:
         if original.author != user:
             deletable = False
             await user.send (
@@ -109,15 +107,14 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
             )
             return
 
+        user_list = [i async for i in reaction.users()] # generates list of people who reacted
+
     except AttributeError: # sometimes random errors occur so yeah
         return # since it's pretty obvious that it's not a bot message just ignore it
 
-
-
-    if ( # filters out unviable messages by doing the following:
+    if ( # filters out the rest of the unviable messages by doing the following:
         bot.user not in user_list or # checks if the message is not deletable
         user == bot.user or # check if the bot is the one reacting
-        original.author != user or # checks if the original message author is not the one reacting
         message.author != bot.user # checks if the message is not from the bot
     ):
         return # ignores reactions if any of these are met
@@ -147,10 +144,9 @@ async def on_message(message):
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL:
         for guild in bot.guilds:
-            channel = guild.text_channels[0] # custom channels coming soon™
 
             deletable = False
-            await channel.send (
+            await guild.text_channels[0].send (
                 embed = discord.Embed (
                     title = f'global announcement from **{message.author}**:',
                     description = message.content,
