@@ -88,10 +88,10 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
         return # ignore dms
     message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
     reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
-    original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
     try:
+        original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
         if original.author != user:
             deletable = False
             await user.send (
