@@ -91,39 +91,68 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
     try:
-        original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
-        if original.author != user:
-            deletable = False
-            await user.send (
-                embed = discord.Embed (
-                    title = 'you can\'t do that',
-                    description = 'only the original sender can delete bot messages',
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = 'if you\'re moderating just use the delete button lol',
-                    icon_url = EMBED_GIF
-                )
-            )
-            return
-
         user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
-    except AttributeError: # sometimes random errors occur so yeah
-        return # since it's pretty obvious that it's not a bot message just ignore it
+    except AttributeError: # sometimes reaction.users() stops existing and idk why but this fixes it
+        pass
 
-    if ( # filters out the rest of the unviable messages by doing the following:
-        bot.user not in user_list or # checks if the message is not deletable
-        user == bot.user or # check if the bot is the one reacting
-        message.author != bot.user # checks if the message is not from the bot
-    ):
-        return # ignores reactions if any of these are met
+    if bot.user not in user_list or user == bot.user:
+        return # additional guard clauses to prevent abuse/errors
 
 
 
-    if reaction.emoji == '🗑️': # keeps stuff easily expandable for future
-        await message.delete()
+    if reaction.emoji == '🗑️' and message.author == bot.user:
+        try: # tries locating the original message for checking permissions
+            original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
+            if original.author != user: # checks if the original command is the same as the reactor
 
+                deletable = False
+                await user.send (
+                    embed = discord.Embed (
+                        title = 'you can\'t do that',
+                        description = 'only the original sender can delete bot messages',
+                        color = EMBED_COLOR
+                    )
+                    .set_footer (
+                        text = 'if you\'re moderating just use the delete button lol',
+                        icon_url = EMBED_GIF
+                    )
+                )
+                return
+
+        except AttributeError: # passes to delete the message if there's no reply
+            pass
+
+        await message.delete() # if there's no reply and the original author is the reactor the message is deleted
+
+
+
+### GLOBAL ANNOUNCEMENTS ###
+
+
+
+    if reaction.emoji == '✅' and message.channel.id == ANNOUNCEMENT_CHANNEL:
+        if '\n' in message.content:
+            announcement_list = message.content.split('\n', 1)
+        else: # if no title is provided just use "global announcement" as title
+            announcement_list = ['GLOBAL ANNOUNCEMENT', message.content]
+
+        for guild in bot.guilds: # just sends in the first channel available lol
+
+            deletable = False
+            await guild.text_channels[0].send (
+                embed = discord.Embed (
+                    title = announcement_list[0],
+                    description = announcement_list[1],
+                    color = EMBED_COLOR
+                )
+            )
+
+        await message.clear_reactions() # stops accidental double reactions or cannodling etc
+
+
+    if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
+        await message.clear_reactions() # prevents people from being able to send it, effectively cancels
 
 
 @bot.event
@@ -138,39 +167,17 @@ async def on_message(message):
 
 
 
-### GLOBAL ANNOUNCEMENTS ###
-
-
-
-    if message.channel.id == ANNOUNCEMENT_CHANNEL:
-        for guild in bot.guilds:
-
-            deletable = False
-            await guild.text_channels[0].send (
-                embed = discord.Embed (
-                    title = f'global announcement from **{message.author}**:',
-                    description = message.content,
-                    color = EMBED_COLOR
-                )
-            )
-
-        deletable = True
-        await message.reply (
-            embed = discord.Embed (
-                title = 'message pushed to all servers',
-                description = f'```{message.content}```',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
-
-    sentence = message.content.lower() # removes case sensitivity
+    if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
+        await message.add_reaction('✅') # the rest of the code is handled in on_raw_reaction_add()
+        await message.add_reaction('❌')
 
 
 
 ### GENERAL / JOKE RESPONSES ###
 
 
+
+    sentence = message.content.lower() # removes case sensitivity
 
     match sentence: # only direct matches go here
         case 'f':
@@ -592,7 +599,6 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
 @bot.command(aliases = ['roll', 'd', 'r'])
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     rolls = [random.randint(1, sides) for _ in range(count)] # _ ignores iterator
-    final = sum(rolls)
 
     if count > 1: # won't show roll count if there was only one roll and no need for a sum
         footer = f'if you\'re interested these were the results for each roll: {rolls}'
@@ -603,7 +609,7 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'you rolled **{final}**',
+            title = f'you rolled **{sum(rolls)}**',
             description = f'using {count} {sides}-sided dice',
             color = EMBED_COLOR
         )
