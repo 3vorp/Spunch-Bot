@@ -64,7 +64,7 @@ async def on_ready():
     await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed ( # time.time() is a unix timestamp
             title = 'hello i\'m alive now',
-            description = f'''started at <t:{int(time.time())}>''',
+            description = f'started at <t:{int(time.time())}>',
             color = EMBED_COLOR
         )
         .set_footer (
@@ -424,6 +424,36 @@ async def LENGTH(ctx, *, sentence):
         ),
         mention_author = False
     )
+
+@bot.command(aliases = ['announcement'])
+async def CHANGELOG(ctx, amount: int = 1):
+    try:
+        changelogs = [
+            message async for message in bot.get_channel(ANNOUNCEMENT_CHANNEL).history(limit = amount)
+        ] # just gets the first entry of list since that's the actually relevant info
+    except IndexError: # if there's not enough announcements
+        ctx.reply (
+            embed = discord.Embed (
+                title = 'insert helpful error name here',
+                description = 'too many announcements selected',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+
+    for i in reversed(changelogs): # goes from oldest to newest to make sense
+        if '\n' in i.content: # same code as in the actual announcement pusher
+            announcement_list = i.content.split('\n', 1)
+        else:
+            announcement_list = ['GLOBAL ANNOUNCEMENT', i.content]
+        await ctx.reply (
+            embed = discord.Embed (
+                title = announcement_list[0],
+                description = announcement_list[1],
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
 
 @bot.command(aliases = ['git', 'g'])
 async def GITHUB(ctx):
