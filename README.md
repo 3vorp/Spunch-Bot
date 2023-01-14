@@ -46,6 +46,8 @@ it just uses regular json formatting, read the example file for specifics
 
 `config.py` contains most of the hardcoded stuff like colors and channel ids, so feel free to edit that to change most defaults
 
+oh also if you're renaming the bot etc the frame of spongeboy used on static images is always 106
+
 # IF YOU ARE USING VISUAL STUDIO CODE (VSCODE) AND ARE USING THE CODE RUNNER EXTENSION:
 
 the default method that the Code Runner extension uses for running a python file is by running it straight from the path
