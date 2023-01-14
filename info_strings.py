@@ -11,6 +11,7 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 — `{PREFIX}feedback`, `{PREFIX}f`, `{PREFIX}suggest`: suggest stuff to implement
 — `{PREFIX}setprefix`, `{PREFIX}prefix`, `{PREFIX}p`: change prefix for server, add `reset` to reset prefix
 — `{PREFIX}length`, `{PREFIX}len`, `{PREFIX}l`: returns word and character count of string
+— `{PREFIX}changelog`, `{PREFIX}announcement`: show bot update changelogs
 — `{PREFIX}github`, `{PREFIX}git`, `{PREFIX}g`: show github listing
 — `{PREFIX}help`, `{PREFIX}h`, `{PREFIX}info`, `{PREFIX}i`: if no command mentioned shows main help message, otherwise shows specific help for that command
 
@@ -124,6 +125,28 @@ return word and character count of string
 ```
 {PREFIX}length this is a string of text
 ```
+'''
+
+], [('changelog', 'announcement'),
+
+'''
+show bot update changelogs
+
+**SYNTAX:**
+```
+{PREFIX}changelog <amount>
+```
+
+**EXAMPLE:**
+```
+{PREFIX}changelog 3
+```
+
+**NOTES:**
+
+by default only provides one
+orders by oldest to newest
+causes a lot of spam, beware of using large numbers
 '''
 
 ], [('github', 'git', 'g'),

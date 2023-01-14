@@ -427,25 +427,16 @@ async def LENGTH(ctx, *, sentence):
 
 @bot.command(aliases = ['announcement'])
 async def CHANGELOG(ctx, amount: int = 1):
-    try:
-        changelogs = [
-            message async for message in bot.get_channel(ANNOUNCEMENT_CHANNEL).history(limit = amount)
-        ] # just gets the first entry of list since that's the actually relevant info
-    except IndexError: # if there's not enough announcements
-        ctx.reply (
-            embed = discord.Embed (
-                title = 'insert helpful error name here',
-                description = 'too many announcements selected',
-                color = EMBED_COLOR
-            ),
-            mention_author = False
-        )
+    changelogs = [ # scrapes the announcement channel for all recent messages
+        message async for message in bot.get_channel(ANNOUNCEMENT_CHANNEL).history(limit = amount)
+    ] # why does this work but not the super obvious normal way
 
     for i in reversed(changelogs): # goes from oldest to newest to make sense
         if '\n' in i.content: # same code as in the actual announcement pusher
             announcement_list = i.content.split('\n', 1)
         else:
             announcement_list = ['GLOBAL ANNOUNCEMENT', i.content]
+
         await ctx.reply (
             embed = discord.Embed (
                 title = announcement_list[0],
