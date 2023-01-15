@@ -85,9 +85,18 @@ deletable = True # global variable for whether to add delete reaction or not
 async def on_raw_reaction_add(payload): # raw events can handle all messages and not just cache
     global deletable
     if isinstance(payload.channel_id, discord.channel.DMChannel):
-        return # ignore dms
-    message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
-    reaction = discord.utils.get(message.reactions, emoji = payload.emoji.name)
+        return # ignore dms because things really start breaking otherwise
+
+    message = (await bot
+        .get_channel(payload.channel_id)
+        .fetch_message(payload.message_id)
+    )
+
+    reaction = discord.utils.get (
+        message.reactions,
+        emoji = payload.emoji.name
+    )
+
     user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
 
     try:
@@ -103,8 +112,12 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
     if reaction.emoji == '🗑️' and message.author == bot.user:
         try: # tries locating the original message for checking permissions
-            original = await bot.get_channel(message.reference.channel_id).fetch_message(message.reference.message_id)
-            if original.author != user: # checks if the original command is the same as the reactor
+            original = (await bot
+                .get_channel(message.reference.channel_id)
+                .fetch_message(message.reference.message_id)
+            )
+
+            if original.author != user: # checks if original message and reactor are the same
 
                 deletable = False
                 await user.send (
@@ -123,7 +136,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
         except AttributeError: # passes to delete the message if there's no reply
             pass
 
-        await message.delete() # if there's no reply and the original author is the reactor the message is deleted
+        await message.delete() # if all these checks passes the message is actually deleted
 
 
 
@@ -152,7 +165,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
     if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
-        await message.clear_reactions() # prevents people from being able to send it, effectively cancels
+        await message.clear_reactions() # didn't want to delete message so copy/paste still works
 
 
 @bot.event
@@ -168,7 +181,7 @@ async def on_message(message):
 
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
-        await message.add_reaction('✅') # the rest of the code is handled in on_raw_reaction_add()
+        await message.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
         await message.add_reaction('❌')
 
 
@@ -227,7 +240,7 @@ async def on_message(message):
                 mention_author = False
             )
 
-        case _ if 'forgor' in sentence: # this was a pain to implement but at least it's consistent
+        case _ if 'forgor' in sentence: # I know this is ugly but at least it's consistent
             await message.add_reaction('💀')
 
         case _ if 'bogos binted' in sentence: # allows for more variation
@@ -309,7 +322,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
         )
 
     except wikipedia.exceptions.DisambiguationError as error:
-        final = ', '.join(f'{i}' for i in error.options[:-1]).lower()
+        final = ', '.join(str(i) for i in error.options[:-1]).lower()
         final += f', and {error.options[-1].lower()}' # yes I wanted it to be formatted nicely
 
         await ctx.reply (
@@ -386,7 +399,7 @@ async def SETPREFIX(ctx, *, new_prefix):
             )
         return # fancy guard clause, saves indentation so I use these everywhere
 
-    DATABASE[f'prefix_{ctx.guild.id}'] = f'{new_prefix}' # convenient to use guild id as key
+    DATABASE[f'prefix_{ctx.guild.id}'] = new_prefix # convenient to use guild id as key
     await write_database() # writes the DATABASE dictionary into the database.json file
 
     await ctx.reply (
@@ -428,7 +441,10 @@ async def LENGTH(ctx, *, sentence):
 @bot.command(aliases = ['announcement'])
 async def CHANGELOG(ctx, amount: int = 1):
     changelogs = [ # scrapes the announcement channel for all recent messages
-        message async for message in bot.get_channel(ANNOUNCEMENT_CHANNEL).history(limit = amount)
+        message async for message in (bot
+            .get_channel(ANNOUNCEMENT_CHANNEL)
+            .history(limit = amount)
+        )
     ] # why does this work but not the super obvious normal way
 
     for i in reversed(changelogs): # goes from oldest to newest to make sense
@@ -486,7 +502,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
     for i in info_strings.help_list: # iterates through the main command list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
-            command = '/'.join(f'{j}' for j in i[0]) # list comprehension to string
+            command = '/'.join(str(j) for j in i[0]) # list comprehension to string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
                     title = eval(f'f"""help for {PREFIX}{command}"""'), # formatted list of aliases
@@ -688,7 +704,7 @@ async def UWU(ctx, *, sentence):
             case 't':
                 if char_list[i+1] == 'h':
                     uwu_word += 'd' # replaces th with d
-                    char_list.pop(i+1) # gets rid of the next entry to stop the h from coming back
+                    char_list.pop(i+1) # stops the h from coming back by removing it
 
                 else:
                     uwu_word += 't'
@@ -704,7 +720,7 @@ async def UWU(ctx, *, sentence):
                     uwu_word += '!♡♡♡'
                 if chance == 2:
                     uwu_word += '!! ^w^'
-                else: # there's a 50% chance that nothing happens to stop things getting too crazy
+                else: # 50% of nothing happening, stops things from getting too chaotic
                     uwu_word += char_list[i]
 
             case '?':
@@ -732,7 +748,7 @@ async def UWU(ctx, *, sentence):
 
 
 @bot.command(aliases = ['rps'])
-async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice(['rock', 'paper', 'scissors'])):
+async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 'scissors'])):
     bot_answer = random.choice(['rock', 'paper', 'scissors'])
 
     if bot_answer == user_answer:

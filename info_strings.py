@@ -22,7 +22,7 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 — `{PREFIX}ball`, `{PREFIX}8ball`, `{PREFIX}b`: random answers for random questions
 — `{PREFIX}dice`, `{PREFIX}d`, `{PREFIX}roll`, `{PREFIX}r`: roll any number of dice with any number of sides
 — `{PREFIX}mock`, `{PREFIX}m`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
-— `{PREFIX}uwu`, `{PREFIX}u, `{PREFIX}owo`: uwu-ify text, i hate this as much as you do
+— `{PREFIX}uwu`, `{PREFIX}u`, `{PREFIX}owo`: uwu-ify text, i hate this as much as you do
 — `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against spunch bot
 — `{PREFIX}nut`, `{PREFIX}n`: sacrifice NUT to me, adds one to global counter
 
