@@ -17,7 +17,7 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
     except KeyError:
         PREFIX = DEFAULT_PREFIX
 
-    return PREFIX
+    return commands.when_mentioned_or(PREFIX)(bot, message)
 
 bot = commands.Bot ( # generating the actual bot client
     intents = discord.Intents.all(), # permission stuff
