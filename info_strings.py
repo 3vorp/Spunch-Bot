@@ -1,7 +1,12 @@
-# I tried making this a json but dealing with super long strings really didn't work well
-# and honestly this is a lot easier to read
-# plus in the main file you can just use info_strings.variable to access it
+'''
+I tried making this a json but dealing with super long strings really didn't work well,
+and honestly this is a lot easier to read,
+plus in the main file you can just use info_strings.variable to access it
+'''
 
+
+
+# as PREFIX is evaluated per-command it's parsed in the main file instead using eval()
 help_all = '''
 an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
@@ -30,23 +35,11 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
 **specific info for a command can be found by running**
 ```{PREFIX}help <command>```
-''' # can't use an f string since PREFIX can't really be imported easily, instead it's evaluated in main file
-
-
-
-help_footer = '''
-go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
 '''
 
 
 
-help_not_found = '''
-no command called "{search}" was found, use `{PREFIX}help` for the full list
-'''
-
-
-
-# as previously mentioned, dictionaries have a lot of limitations with storing data
+# dictionaries have a lot of limitations with storing data, similar to json
 # there's no way to have aliases in the conventional sense, like how using the tuple here works
 # so a 2d list with standardized indexing ends up working a lot better
 
@@ -72,7 +65,7 @@ returns wikipedia article
 you have to be specific, otherwise spunch bot will just show all possible options
 '''
 
-), (('feedback', 'f', 'suggest'), # the first entry in the tuple is always the one displayed in the title
+), (('feedback', 'f', 'suggest'),
 
 '''
 suggest stuff to implement
@@ -353,9 +346,18 @@ just for fun, don't take this command too seriously lol
 )
 )
 
+# generic messages that didn't fit anywhere else
+help_footer = '''
+go suggest stuff using {PREFIX}feedback if you want me to add stuff ig
+'''
+
+help_not_found = '''
+no command called "{search}" was found, use `{PREFIX}help` for the full list
+'''
 
 
-# decided to put error messages here as well since they technically help you lol
+
+# ended up using a prefix system of sorts
 
 
 
