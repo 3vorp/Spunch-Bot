@@ -12,7 +12,7 @@ anyways bearing that in mind use this at your own risk lol
 
 requirements
 
-- have python installed (who would have guessed)
+- have python installed (minimum 3.10 because match case)
 - the following libraries:
     - discord.py (obviously)
     - os (used for database/token stuff)
