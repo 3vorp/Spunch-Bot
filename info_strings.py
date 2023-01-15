@@ -48,9 +48,9 @@ no command called "{search}" was found, use `{PREFIX}help` for the full list
 
 
 
-help_list = [ # I know this is hard to read but it's a lot better than having it all in one file so oh well
+help_list = ( # I know this is hard to read but it's a lot better than having it all in one file so oh well
 
-[('wikipedia', 'wiki', 'w'),
+(('wikipedia', 'wiki', 'w'),
 
 '''
 returns wikipedia article
@@ -68,7 +68,7 @@ returns wikipedia article
 you have to be specific, otherwise spunch bot will just show all possible options
 '''
 
-], [('feedback', 'f', 'suggest'), # the first entry in the tuple is always the one displayed in the title
+), (('feedback', 'f', 'suggest'), # the first entry in the tuple is always the one displayed in the title
 
 '''
 suggest stuff to implement
@@ -86,7 +86,7 @@ suggest stuff to implement
 there is currently no way to see if feedback has been accepted, but this is planned for the future
 '''
 
-], [('setprefix', 'prefix', 'p'),
+), (('setprefix', 'prefix', 'p'),
 
 '''
 set prefix for current server
@@ -111,7 +111,7 @@ add reset to reset the prefix (obviously)
 currently you can only have one prefix per server, so no prefix aliases for now
 '''
 
-], [('length', 'len', 'l'),
+), (('length', 'len', 'l'),
 
 '''
 return word and character count of string
@@ -127,7 +127,7 @@ return word and character count of string
 ```
 '''
 
-], [('changelog', 'announcement'),
+), (('changelog', 'announcement'),
 
 '''
 show bot update changelogs
@@ -149,7 +149,7 @@ orders by oldest to newest
 causes a lot of spam, beware of using large numbers
 '''
 
-], [('github', 'git', 'g'),
+), (('github', 'git', 'g'),
 
 '''
 show github listing
@@ -160,7 +160,7 @@ show github listing
 ```
 '''
 
-], [('help', 'h', 'info', 'i'),
+), (('help', 'h', 'info', 'i'),
 
 '''
 if no command mentioned, shows main help message
@@ -180,9 +180,9 @@ otherwise, shows specific help for that command
 ```
 '''
 
-], # fun section
+), # fun section
 
-[('say', 's'),
+(('say', 's'),
 
 '''
 make the bot say stuff
@@ -197,7 +197,7 @@ make the bot say stuff
 ```
 '''
 
-], [('embed', 'e'),
+), (('embed', 'e'),
 
 '''
 like `{PREFIX}say`, but better
@@ -233,7 +233,7 @@ if the first searchument is a url (starts with https:// or http://), it will try
 it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
-], [('ball', '8ball', 'b'),
+), (('ball', '8ball', 'b'),
 
 '''
 random answers for random questions
@@ -252,7 +252,7 @@ random answers for random questions
 questions have to be yes/no formatted for the bot to make sense
 '''
 
-], [('dice', 'd', 'roll', 'r'),
+), (('dice', 'd', 'roll', 'r'),
 
 '''
 roll any number of dice with any number of sides
@@ -276,7 +276,7 @@ default is one 6 sided dice
 you can provide how many dice without providing how many sides, bot will assume 6 by default
 '''
 
-], [('mock', 'm'),
+), (('mock', 'm'),
 
 '''
 MoCk a sTrInG Of tExT To lOoK LiKe tHiS
@@ -292,7 +292,7 @@ MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 ```
 '''
 
-], [('uwu', 'u', 'owo'),
+), (('uwu', 'u', 'owo'),
 
 '''
 uwu-ify text, i hate this as much as you do
@@ -308,8 +308,8 @@ uwu-ify text, i hate this as much as you do
 ```
 '''
 
-],
-[('rockpaperscissors', 'rps'),
+),
+(('rockpaperscissors', 'rps'),
 
 '''
 rock paper scissors against spunch bot
@@ -331,7 +331,7 @@ rock paper scissors against spunch bot
 if you don't specify what you're playing spunch bot will decide for you randomly
 '''
 
-], [('nut', 'n'),
+), (('nut', 'n'),
 
 '''
 sacrifice NUT to me, adds one to global counter
@@ -346,8 +346,8 @@ sacrifice NUT to me, adds one to global counter
 
 just for fun, don't take this command too seriously lol
 '''
-]
-]
+)
+)
 
 
 
