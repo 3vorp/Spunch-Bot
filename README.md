@@ -56,9 +56,7 @@ however since there are multiple files in the directory this can and will cause 
 
 to resolve this go into the `settings.json` file (contained in your appdata/application support folder under `Code/User/settings.json`) and paste in the following code
 ```json
-"code-runner.executorMap": {
-    "python": "cd $dir && python3 $fileName",
-}
+"code-runner.fileDirectoryAsCwd": true,
 ```
 
 this will ensure that you are changing to the proper directory _before_ running the file, allowing you to access all the other files contained in the directory (database, config, etc)
