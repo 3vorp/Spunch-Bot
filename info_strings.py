@@ -1,4 +1,6 @@
-# I know this should probably be a json file but this is way easier to deal with so cope harder lol
+# I tried making this a json but dealing with super long strings really didn't work well
+# and honestly this is a lot easier to read
+# plus in the main file you can just use info_strings.variable to access it
 
 help_all = '''
 an atrocity made in discord.py by `Evorp#5819` because I was bored idk
@@ -44,7 +46,9 @@ no command called "{search}" was found, use `{PREFIX}help` for the full list
 
 
 
-#using 2D lists to separate each command out so that I can iterate through it in a for loop in the main program really really easily
+# as previously mentioned, dictionaries have a lot of limitations with storing data
+# there's no way to have aliases in the conventional sense, like how using the tuple here works
+# so a 2d list with standardized indexing ends up working a lot better
 
 
 
