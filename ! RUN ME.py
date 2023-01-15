@@ -458,6 +458,10 @@ async def CHANGELOG(ctx, amount: int = 1):
                 title = announcement_list[0],
                 description = announcement_list[1],
                 color = EMBED_COLOR
+            )
+            .set_footer ( # adds original send date just for fun
+                text = i.created_at.strftime('originally sent on %x at %X %p (%Z)'),
+                icon_url = EMBED_GIF
             ),
             mention_author = False
         )
