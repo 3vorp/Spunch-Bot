@@ -725,14 +725,25 @@ async def UWU(ctx, *, sentence):
                 else:
                     uwu_word += 't'
 
+            case ',':
+                match chance:
+                    case 0:
+                        uwu_word += ' 7w7,'
+                    case 1:
+                        uwu_word += ' •w•,'
+                    case 2:
+                        uwu_word += '☆..'
+                    case _:
+                        uwu_word += char_list[i]
+
             case '.':
                 match chance:
                     case 0:
-                        uwu_word += '~ uwu'
+                        uwu_word += ' uwu~'
                     case 1:
-                        uwu_word += '~ owo'
+                        uwu_word += ' owo~'
                     case 2:
-                        uwu_word += '... 🥺🥺🥺'
+                        uwu_word += '... 👉🥺👈'
                     case _: # 50% chance of nothing happening, stops things from getting too chaotic
                         uwu_word += '~'
 
