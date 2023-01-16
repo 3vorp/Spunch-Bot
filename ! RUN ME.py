@@ -333,7 +333,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
         )
 
     except wikipedia.exceptions.DisambiguationError as error:
-        final = ', '.join(str(i) for i in error.options[:-1]).lower()
+        final = ', '.join(i for i in error.options[:-1]).lower()
         final += f', and {error.options[-1].lower()}' # yes I wanted it to be formatted nicely
 
         await ctx.reply (
@@ -517,7 +517,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
     for i in info_strings.help_list: # iterates through the main command list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
-            command = '/'.join(str(j) for j in i[0]) # list comprehension to string
+            command = '/'.join(j for j in i[0]) # list comprehension to string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
                     title = eval(f'f"""help for {PREFIX}{command}"""'), # formatted list of aliases
