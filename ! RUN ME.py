@@ -707,12 +707,8 @@ async def UWU(ctx, *, sentence):
                 if char_list[i-1] == 'n' or char_list[i-1] == 'm':
                     uwu_word += f'y{char_list[i]}' # adds y for maximum uwu
 
-                elif (char_list[i-1] == ' ' and char_list[i+1] != ' ') or i-1 <= 0:
-                    if random.randint(0, 4) == 0: # stutter only happens occasionally
-                        uwu_word += f'{char_list[i]}-{char_list[i]}'
-
-                    else:
-                        uwu_word += char_list[i]
+                elif char_list[i-1] == ' ' and char_list[i+1] != ' ' and chance == 0:
+                    uwu_word += f'{char_list[i]}-{char_list[i]}'
 
                 else:
                     uwu_word += char_list[i]
@@ -732,7 +728,7 @@ async def UWU(ctx, *, sentence):
                     case 1:
                         uwu_word += ' •w•,'
                     case 2:
-                        uwu_word += '☆..'
+                        uwu_word += ' ♥w♥,'
                     case _:
                         uwu_word += char_list[i]
 
@@ -743,7 +739,7 @@ async def UWU(ctx, *, sentence):
                     case 1:
                         uwu_word += ' owo~'
                     case 2:
-                        uwu_word += '... 👉🥺👈'
+                        uwu_word += '☆..'
                     case _: # 50% chance of nothing happening, stops things from getting too chaotic
                         uwu_word += '~'
 
@@ -765,7 +761,7 @@ async def UWU(ctx, *, sentence):
                     case 1:
                         uwu_word += '?~ >w<'
                     case 2:
-                        uwu_word += '? ✧﹡:･ﾟ✧'
+                        uwu_word += '? *:･ﾟ✧(ꈍᴗꈍ)✧･ﾟ:*'
                     case _:
                         uwu_word += char_list[i]
 
