@@ -698,6 +698,7 @@ async def UWU(ctx, *, sentence):
         except IndexError:
             char_list.append('') # just adds an empty string to stop final errors
 
+        chance = random.randint(0, 5)
         match char_list[i]: # much easier to read than a ton of elif statements
             case 'l' | 'r':
                 uwu_word += 'w'
@@ -725,29 +726,37 @@ async def UWU(ctx, *, sentence):
                     uwu_word += 't'
 
             case '.':
-                uwu_word += '~'
+                match chance:
+                    case 0:
+                        uwu_word += '~ uwu'
+                    case 1:
+                        uwu_word += '~ owo'
+                    case 2:
+                        uwu_word += '... 🥺🥺🥺'
+                    case _: # 50% chance of nothing happening, stops things from getting too chaotic
+                        uwu_word += '~'
 
             case '!':
-                chance = random.randint(0, 5)
-                if chance == 0:
-                    uwu_word += '!!!'
-                if chance == 1:
-                    uwu_word += '!♡♡♡'
-                if chance == 2:
-                    uwu_word += '!! ^w^'
-                else: # 50% of nothing happening, stops things from getting too chaotic
-                    uwu_word += char_list[i]
+                match chance:
+                    case 0:
+                        uwu_word += '!!!'
+                    case 1:
+                        uwu_word += '!♡♡♡'
+                    case 2:
+                        uwu_word += '!! ^w^'
+                    case _:
+                        uwu_word += char_list[i]
 
             case '?':
-                chance = random.randint(0, 5)
-                if chance == 0:
-                    uwu_word += '?~'
-                if chance == 1:
-                    uwu_word += '?~ >w<'
-                if chance == 2:
-                    uwu_word += '? ✧﹡:･ﾟ✧'
-                else: # same goes here
-                    uwu_word += char_list[i]
+                match chance:
+                    case 0:
+                        uwu_word += '?~'
+                    case 1:
+                        uwu_word += '?~ >w<'
+                    case 2:
+                        uwu_word += '? ✧﹡:･ﾟ✧'
+                    case _:
+                        uwu_word += char_list[i]
 
             case _: # if no key letters are triggered it just adds the letter as-is
                 uwu_word += char_list[i]
