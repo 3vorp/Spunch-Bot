@@ -728,7 +728,7 @@ async def UWU(ctx, *, sentence):
                     case 1:
                         uwu_word += ' •w•,'
                     case 2:
-                        uwu_word += ' ♥w♥,'
+                        uwu_word += ' :3,'
                     case _:
                         uwu_word += char_list[i]
 
