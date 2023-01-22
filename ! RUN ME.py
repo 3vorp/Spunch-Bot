@@ -333,13 +333,13 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
         )
 
     except wikipedia.exceptions.DisambiguationError as error:
-        final = ', '.join(i for i in error.options[:-1]).lower()
-        final += f', and {error.options[-1].lower()}' # yes I wanted it to be formatted nicely
+        options = ', '.join(i for i in error.options[:-1]).lower()
+        options += f', and {error.options[-1].lower()}' # yes I wanted it to be formatted nicely
 
         await ctx.reply (
             embed = discord.Embed (
                 title = 'multiple options found:',
-                description = f'{final} are all possible options',
+                description = f'{options} are all possible options',
                 color = EMBED_COLOR
             )
             .set_footer (
