@@ -11,10 +11,10 @@ from config import * # saves me from having to use config.VARIABLE for everythin
 async def get_prefix(_, message): # somehow this actually works exactly how the old setup did
     global PREFIX # only needs to be declared global once since value is constant
 
-    try: # assigns server prefix if one exists, if not use default prefix
+    try: # assigns server prefix if one exists, if there's errors it just sets to the default
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
-    except KeyError:
+    except (KeyError, AttributeError): # AttributeError raised in DMs, KeyError if no server prefix exists
         PREFIX = DEFAULT_PREFIX
 
     return commands.when_mentioned_or(PREFIX)(bot, message)
@@ -87,7 +87,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     if isinstance(payload.channel_id, discord.channel.DMChannel):
         return # ignore dms because things really start breaking otherwise
 
-    message = (await bot
+    message = (await bot # getting necessary variables for future use
         .get_channel(payload.channel_id)
         .fetch_message(payload.message_id)
     )
@@ -97,12 +97,12 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
         emoji = payload.emoji.name
     )
 
-    user = payload.member # basically just boilerplate, tradeoff for working with raw events lol
+    user = payload.member
 
     try:
         user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
-    except AttributeError: # sometimes reaction.users() stops existing and idk why but this fixes it
+    except AttributeError: # sometimes reaction.users() stops existing but this fixes it somehow
         pass
 
     if bot.user not in user_list or user == bot.user:
@@ -111,23 +111,22 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
     if reaction.emoji == '🗑️' and message.author == bot.user:
-        try: # tries locating the original message for checking permissions
+        try: # checks permissions by looking at original message author and user permissions
             original = (await bot
                 .get_channel(message.reference.channel_id)
                 .fetch_message(message.reference.message_id)
             )
 
-            if original.author != user: # checks if original message and reactor are the same
-
-                deletable = False
-                await user.send (
+            if original.author != user and not user.guild_permissions.manage_messages:
+                deletable = False # if the user has mod perms they can delete using the reaction
+                await user.send ( # sends in DMs to not clutter chats
                     embed = discord.Embed (
                         title = 'you can\'t do that',
                         description = 'only the original sender can delete bot messages',
                         color = EMBED_COLOR
                     )
                     .set_footer (
-                        text = 'if you\'re moderating just use the delete button lol',
+                        text = 'also if you have manage message perms yeah that works too',
                         icon_url = EMBED_GIF
                     )
                 )
@@ -282,6 +281,22 @@ async def on_message(message):
 
 @bot.event
 async def on_command_error(ctx, error):
+    print(error)
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'you can\'t do that',
+                description = f'```{error}```',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'instant ban',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+        return
+
     await ctx.reply ( # handles basically all errors
         embed = discord.Embed (
             title = 'insert helpful error name here',
@@ -777,7 +792,6 @@ async def UWU(ctx, *, sentence):
         ),
         mention_author = False
     )
-
 
 @bot.command(aliases = ['rps'])
 async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 'scissors'])):
