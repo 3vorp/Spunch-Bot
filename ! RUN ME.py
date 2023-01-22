@@ -281,9 +281,9 @@ async def on_message(message):
 
 @bot.event
 async def on_command_error(ctx, error):
-    print(error)
+    print(error) # prints errors so you don't have to rely on the sent message
     if isinstance(error, commands.MissingPermissions):
-        await ctx.reply (
+        await ctx.reply ( # for permission based commands
             embed = discord.Embed (
                 title = 'you can\'t do that',
                 description = f'```{error}```',
@@ -297,7 +297,7 @@ async def on_command_error(ctx, error):
         )
         return
 
-    await ctx.reply ( # handles basically all errors
+    await ctx.reply ( # handles basically all generic errors
         embed = discord.Embed (
             title = 'insert helpful error name here',
             description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
@@ -396,6 +396,7 @@ async def FEEDBACK(ctx, *, message):
     )
 
 @bot.command(aliases = ['prefix', 'p'])
+@commands.guild_only()
 async def SETPREFIX(ctx, *, new_prefix):
     if new_prefix == 'reset' or DEFAULT_PREFIX == new_prefix:
         try:
