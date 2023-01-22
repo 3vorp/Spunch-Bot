@@ -84,26 +84,22 @@ deletable = True # global variable for whether to add delete reaction or not
 @bot.event
 async def on_raw_reaction_add(payload): # raw events can handle all messages and not just cache
     global deletable
-    if isinstance(payload.channel_id, discord.channel.DMChannel):
-        return # ignore dms because things really start breaking otherwise
+    try: # in DMs some of these break so this just silences that
+        message = (await bot
+            .get_channel(payload.channel_id)
+            .fetch_message(payload.message_id)
+        )
 
-    message = (await bot # getting necessary variables for future use
-        .get_channel(payload.channel_id)
-        .fetch_message(payload.message_id)
-    )
+        reaction = discord.utils.get (
+            message.reactions,
+            emoji = payload.emoji.name
+        )
 
-    reaction = discord.utils.get (
-        message.reactions,
-        emoji = payload.emoji.name
-    )
-
-    user = payload.member
-
-    try:
+        user = payload.member
         user_list = [i async for i in reaction.users()] # generates list of people who reacted
 
-    except AttributeError: # sometimes reaction.users() stops existing but this fixes it somehow
-        pass
+    except AttributeError: # sometimes reaction.users() stops existing also so yeah
+        return # ignores action if anything goes wrong since yeah
 
     if bot.user not in user_list or user == bot.user:
         return # additional guard clauses to prevent abuse/errors
@@ -171,8 +167,10 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 async def on_message(message):
     global deletable
     if deletable and message.author == bot.user: # automatically applies by default
-        await message.add_reaction('🗑️')
-        return # nothing else uses bot messages so this stops infinite loops
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            await message.add_reaction('🗑️') # DMs break with reactions badly
+
+        return # nothing else uses bot messages so just stop early
 
     else: # resets the status for the next message
         deletable = True
