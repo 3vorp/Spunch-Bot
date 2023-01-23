@@ -932,7 +932,7 @@ async def NUT(ctx, *, query = None):
         )
         return
 
-    DATABASE['nut_count'] = DATABASE['nut_count'] + 1
+    DATABASE['nut_count'] += 1
     await write_database() # adds one to global nut count and writes it
 
     if DATABASE["nut_count"] % 50 == 0: # special NUT
