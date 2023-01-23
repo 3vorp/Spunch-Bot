@@ -16,9 +16,10 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
 — `{PREFIX}wikipedia`, `{PREFIX}wiki`, `{PREFIX}w`: returns wikipedia article
 — `{PREFIX}feedback`, `{PREFIX}f`, `{PREFIX}suggest`: suggest stuff to implement
-— `{PREFIX}setprefix`, `{PREFIX}prefix`, `{PREFIX}p`: change prefix for server, add `reset` to reset prefix
-— `{PREFIX}length`, `{PREFIX}len`, `{PREFIX}l`: returns word and character count of string
+— `{PREFIX}setprefix`, `{PREFIX}prefix`, `{PREFIX}p`: change prefix for server, add `reset` to reset
+— `{PREFIX}setannouncements`, `{PREFIX}sa`: change announcement channel for server, add `none` to disable
 — `{PREFIX}changelog`, `{PREFIX}announcement`: show bot update changelogs
+— `{PREFIX}length`, `{PREFIX}len`, `{PREFIX}l`: returns word and character count of string
 — `{PREFIX}github`, `{PREFIX}git`, `{PREFIX}g`: show github listing
 — `{PREFIX}help`, `{PREFIX}h`, `{PREFIX}info`, `{PREFIX}i`: if no command mentioned shows main help message, otherwise shows specific help for that command
 
@@ -76,7 +77,7 @@ suggest stuff to implement
 ```
 **EXAMPLE:**
 ```
-{PREFIX}feedback setannouncements when
+{PREFIX}feedback slash commands when
 ```
 **NOTE:**
 
@@ -87,8 +88,6 @@ there is currently no way to see if feedback has been accepted, but this is plan
 
 '''
 set prefix for current server
-
-add reset to reset the prefix (obviously)
 
 **SYNTAX:**
 ```
@@ -108,20 +107,23 @@ add reset to reset the prefix (obviously)
 currently you can only have one prefix per server, so no prefix aliases for now
 '''
 
-), (('length', 'len', 'l'),
+), (('setannouncements', 'sa'),
 
 '''
-return word and character count of string
+change announcement channel for server
 
 **SYNTAX:**
 ```
-{PREFIX}length <message>
-{PREFIX}len <message>
+{PREFIX}setannouncements
+{PREFIX}setannouncements reset
+{PREFIX}sa none
 ```
-**EXAMPLE:**
-```
-{PREFIX}length this is a string of text
-```
+
+**NOTES:**
+by default the first available channel is set as the announcement one
+the channel the command is sent in will become the new one when used
+adding `none` will turn announcements for the server off
+`reset` will bring it back to the first available one
 '''
 
 ), (('changelog', 'announcement'),
@@ -144,6 +146,22 @@ show bot update changelogs
 by default only provides one
 orders by oldest to newest
 causes a lot of spam, beware of using large numbers
+'''
+
+), (('length', 'len', 'l'),
+
+'''
+return word and character count of string
+
+**SYNTAX:**
+```
+{PREFIX}length <message>
+{PREFIX}len <message>
+```
+**EXAMPLE:**
+```
+{PREFIX}length this is a string of text
+```
 '''
 
 ), (('github', 'git', 'g'),

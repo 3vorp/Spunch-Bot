@@ -14,7 +14,7 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
     try: # assigns server prefix if one exists, if there's errors it just sets to the default
         PREFIX = DATABASE[f'prefix_{message.guild.id}']
 
-    except (KeyError, AttributeError): # AttributeError raised in DMs, KeyError if no server prefix exists
+    except (KeyError, AttributeError): # AttributeError from DMs, KeyError from no server prefix
         PREFIX = DEFAULT_PREFIX
 
     return commands.when_mentioned_or(PREFIX)(bot, message)
@@ -101,7 +101,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     except AttributeError: # sometimes reaction.users() stops existing also so yeah
         return # ignores action if anything goes wrong since yeah
 
-    if bot.user not in user_list or user == bot.user:
+    if bot.user not in user_list or bot.user == user:
         return # additional guard clauses to prevent abuse/errors
 
 
@@ -145,22 +145,33 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
         else: # if no title is provided just use "global announcement" as title
             announcement_list = ['GLOBAL ANNOUNCEMENT', message.content]
 
-        for guild in bot.guilds: # just sends in the first channel available lol
+        for guild in bot.guilds: # sends to each server
+            try: # tries to get a custom announcement channel
+                channel = bot.get_channel(DATABASE[f'announcement_{guild.id}'])
+            except KeyError: # if none exists set it to the first available
+                channel = guild.text_channels[0]
 
-            deletable = False
-            await guild.text_channels[0].send (
-                embed = discord.Embed (
-                    title = announcement_list[0],
-                    description = announcement_list[1],
-                    color = EMBED_COLOR
+            if channel: # ignores server if it's turned off
+
+                deletable = False
+                await channel.send (
+                    embed = discord.Embed (
+                        title = announcement_list[0],
+                        description = announcement_list[1],
+                        color = EMBED_COLOR
+                    )
+                    .set_footer (
+                        text = f'you can use {PREFIX}setannouncements to set a custom announcement channel',
+                        icon_url = EMBED_GIF
+                    )
                 )
-            )
 
         await message.clear_reactions() # stops accidental double reactions or cannodling etc
 
 
     if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
         await message.clear_reactions() # didn't want to delete message so copy/paste still works
+
 
 
 @bot.event
@@ -396,7 +407,7 @@ async def FEEDBACK(ctx, *, message):
 @bot.command(aliases = ['prefix', 'p'])
 @commands.guild_only()
 async def SETPREFIX(ctx, *, new_prefix):
-    if new_prefix == 'reset' or DEFAULT_PREFIX == new_prefix:
+    if new_prefix in ('reset', DEFAULT_PREFIX): # way cleaner to check in list instead of `or` statement
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
             await write_database() # writes DATABASE dictionary into the json
@@ -440,25 +451,66 @@ async def SETPREFIX(ctx, *, new_prefix):
         mention_author = False
     )
 
-@bot.command(aliases = ['len', 'l'])
-async def LENGTH(ctx, *, sentence):
-    word_list = sentence.split() # you need both word list and sentence
+@bot.command(aliases = ['sa'])
+@commands.guild_only()
+async def SETANNOUNCEMENTS(ctx, option = ''):
+    if option == 'reset':
+        try:
+            del DATABASE[f'announcement_{ctx.guild.id}']
+            await write_database()
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'announcement channel has been reset',
+                    description = f'use `{PREFIX}setannouncements` to set a new one',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'default announcement channel is the first accessible one',
+                    icon_url = EMBED_GIF
+                ),
+                mention_author = False
+            )
 
-    if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
-        character = 'character'
-    else:
-        character = 'characters'
+        except KeyError:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = 'insert helpful error name here',
+                    description = 'there was no announcement channel set for this server',
+                    color = EMBED_COLOR
+                )
+                .set_footer (
+                    text = 'you\'re still an absolute clampongus though',
+                    icon_url = EMBED_GIF
+                ),
+                mention_author = False
+            )
+        return
 
-    if len(word_list) == 1:
-        word = 'word'
-    else:
-        word = 'words'
+    if option in ('off', 'none', 'false'):
+        DATABASE[f'announcement_{ctx.guild.id}'] = False
+        await write_database()
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'announcements turned off',
+                description = f'you can still use `{PREFIX}changelog` to see the latest announcements',
+                color = EMBED_COLOR
+            ),
+            mention_author = False
+        )
+        return
+
+    DATABASE[f'announcement_{ctx.guild.id}'] = ctx.channel.id
+    await write_database()
 
     await ctx.reply (
         embed = discord.Embed (
-            title = f'your sentence is {len(sentence)} {character} long and {len(word_list)} {word} long:',
-            description = f'```{sentence}```',
+            title = 'announcement channel set to this channel',
+            description = f'reset it with `{PREFIX}setannouncements` reset',
             color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'this command literally took me two months to implement kill me',
+            icon_url = EMBED_GIF
         ),
         mention_author = False
     )
@@ -491,6 +543,29 @@ async def CHANGELOG(ctx, amount: int = 1):
             ),
             mention_author = False
         )
+
+@bot.command(aliases = ['len', 'l'])
+async def LENGTH(ctx, *, sentence):
+    word_list = sentence.split() # you need both word list and sentence
+
+    if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
+        character = 'character'
+    else:
+        character = 'characters'
+
+    if len(word_list) == 1:
+        word = 'word'
+    else:
+        word = 'words'
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'your sentence is {len(sentence)} {character} long and {len(word_list)} {word} long:',
+            description = f'```{sentence}```',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
 
 @bot.command(aliases = ['git', 'g'])
 async def GITHUB(ctx):
@@ -719,7 +794,7 @@ async def UWU(ctx, *, sentence):
                 uwu_word += 'w'
 
             case 'o' | 'a' | 'u' | 'i' | 'e': # can be reused for multiple vowels
-                if char_list[i-1] == 'n' or char_list[i-1] == 'm':
+                if char_list[i-1] in ('n', 'm'):
                     uwu_word += f'y{char_list[i]}' # adds y for maximum uwu
 
                 elif char_list[i-1] == ' ' and char_list[i+1] != ' ' and chance == 0:
@@ -846,7 +921,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 
 
 @bot.command(aliases = ['n'])
 async def NUT(ctx, *, query = None):
-    if query == 'total' or query == 'amount':
+    if query in ('total', 'amount'):
         await ctx.reply (
             embed = discord.Embed (
                 title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
