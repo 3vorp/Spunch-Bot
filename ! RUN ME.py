@@ -461,12 +461,8 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
             await ctx.reply (
                 embed = discord.Embed (
                     title = 'announcement channel has been reset',
-                    description = f'use `{PREFIX}setannouncements` to set a new one',
+                    description = f'default announcement channel is {ctx.guild.text_channels[0].mention}',
                     color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = 'default announcement channel is the first accessible one',
-                    icon_url = EMBED_GIF
                 ),
                 mention_author = False
             )
@@ -491,7 +487,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
         await write_database()
         await ctx.reply (
             embed = discord.Embed (
-                title = 'announcements turned off',
+                title = 'announcements have been turned off for this server',
                 description = f'you can still use `{PREFIX}changelog` to see the latest announcements',
                 color = EMBED_COLOR
             ),
@@ -505,7 +501,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
     await ctx.reply (
         embed = discord.Embed (
             title = 'announcement channel set to this channel',
-            description = f'reset it with `{PREFIX}setannouncements` reset',
+            description = f'you can change it back using `{PREFIX}setannouncements reset`',
             color = EMBED_COLOR
         )
         .set_footer (
