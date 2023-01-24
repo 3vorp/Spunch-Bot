@@ -75,7 +75,7 @@ async def on_ready():
 
 
 
-### DELETE BUTTON / REACTION ###
+### REACTION BOILERPLATE ###
 
 
 
@@ -104,6 +104,9 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
     if bot.user not in user_list or bot.user == user:
         return # additional guard clauses to prevent abuse/errors
 
+
+
+### DELETE REACTION ###
 
 
     if reaction.emoji == '🗑️' and message.author == bot.user:
@@ -186,8 +189,6 @@ async def on_message(message):
     else: # resets the status for the next message
         deletable = True
 
-    ctx = await bot.get_context(message) # til you can just... create the ctx variable
-
     if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
         await message.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
         await message.add_reaction('❌')
@@ -198,6 +199,7 @@ async def on_message(message):
 
 
 
+    ctx = await bot.get_context(message) # til you can just... create the ctx variable
     sentence = message.content.lower() # removes case sensitivity
 
     match sentence: # only direct matches go here
