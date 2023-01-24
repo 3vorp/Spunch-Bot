@@ -454,7 +454,7 @@ async def SETPREFIX(ctx, *, new_prefix):
 @bot.command(aliases = ['sa'])
 @commands.guild_only()
 async def SETANNOUNCEMENTS(ctx, option = ''):
-    if option == 'reset':
+    if option == 'reset' or ctx.channel == ctx.guild.text_channels[0]:
         try:
             del DATABASE[f'announcement_{ctx.guild.id}']
             await write_database()
