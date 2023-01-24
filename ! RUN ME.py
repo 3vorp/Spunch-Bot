@@ -186,7 +186,7 @@ async def on_message(message):
     else: # resets the status for the next message
         deletable = True
 
-
+    ctx = await bot.get_context(message) # til you can just... create the ctx variable
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
         await message.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
@@ -249,15 +249,7 @@ async def on_message(message):
             )
 
         case bot.user.mention: # on bot mention without command listed
-            PREFIX = await get_prefix(None, message) # you can't access prefix here for whatever reason
-            await message.reply (
-                embed = discord.Embed (
-                    title = 'pong', # PREFIX is now actually a list, the last entry is the server one
-                    description = f'use `{PREFIX[-1]}help` for a list of commands',
-                    color = EMBED_COLOR
-                ),
-                mention_author = False
-            )
+            await HELP(ctx) # passes the ctx created way above
 
         case _ if 'forgor' in sentence: # I know this is ugly but at least it's consistent
             await message.add_reaction('💀')
