@@ -250,11 +250,11 @@ async def on_message(message):
                 mention_author = False
             )
 
-        case 'nut':
-            await NUT(ctx) # nut is both a keyword and a command because uhh yes
-
         case bot.user.mention: # on bot mention without command listed
             await HELP(ctx) # passes the ctx created way above
+
+        case _ if sentence.startswith('nut'):
+            await NUT(ctx, query = sentence[4:]) # nut is both a keyword and a command because uhh yes
 
         case _ if 'forgor' in sentence: # I know this is ugly but at least it's consistent
             await message.add_reaction('💀')
@@ -914,7 +914,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 
 
 @bot.command(aliases = ['n'])
 async def NUT(ctx, *, query = None):
-    if query in ('total', 'amount'):
+    if query in ('total', 'amount', 'query'):
         await ctx.reply (
             embed = discord.Embed (
                 title = f'total amount of NUT: **{DATABASE["nut_count"]}**',
