@@ -244,7 +244,7 @@ you can also omit stuff at the end completely if you don't want a footer/color/i
 ```
 {PREFIX}embed example title; no footer/image necessary
 ```
-if the first searchument is a url (starts with https:// or http://), it will try and find an image with that url
+if the first argument is a url (starts with https:// or http://), it will try and find an image with that url
 it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
