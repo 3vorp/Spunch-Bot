@@ -194,7 +194,7 @@ async def on_message(message):
 
 
 
-### GENERAL / JOKE RESPONSES ###
+### KEYWORDS ###
 
 
 
@@ -247,6 +247,9 @@ async def on_message(message):
                 ),
                 mention_author = False
             )
+
+        case 'nut':
+            await NUT(ctx) # nut is both a keyword and a command because uhh yes
 
         case bot.user.mention: # on bot mention without command listed
             await HELP(ctx) # passes the ctx created way above
