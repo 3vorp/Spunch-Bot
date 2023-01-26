@@ -21,7 +21,7 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
 
 bot = commands.Bot ( # generating the actual bot client
     intents = discord.Intents.all(), # permission stuff
-    command_prefix = get_prefix, # idk how this doesn't need parentheses but it works
+    command_prefix = get_prefix, # apparently you can pass functions as arguments
     case_insensitive = True, # this and prefix spaces are for mobile users mostly
     strip_after_prefix = True # I hate when bots don't do this
 )
