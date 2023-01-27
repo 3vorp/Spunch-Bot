@@ -186,8 +186,8 @@ async def on_message(message):
 
         return # nothing else uses bot messages so just stop early
 
-    else: # resets the status for the next message
-        deletable = True
+    # resets the status for the next message
+    deletable = True
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
         await message.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
