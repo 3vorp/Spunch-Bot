@@ -2,7 +2,7 @@
 
 ## an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
-the version of the bot I develop is not public mostly because it's a huge hazard — there's a ton of security vulnerablities I can't be bothered to fix
+the version of the bot I develop is not public mostly because I don't use any development bots out of laziness — the stuff I'm testing goes directly to production and is pushed to github independently of it being run, meaning that there's probably gonna be a lot of crashing and security flaws if I made it public
 
 as a result it's mostly intended to be forked and run on your own, which is why it's on github in the first place
 
@@ -13,7 +13,7 @@ anyways bearing that in mind use this at your own risk lol
 requirements
 
 - have python installed (minimum 3.10 because match case)
-- the following libraries:
+- the following libraries: (some of them are installed by default I'm too lazy to figure out which ones)
     - discord.py (obviously)
     - os (used for database/token stuff)
     - random (used for 8ball command and a few other things)
@@ -48,6 +48,8 @@ it just uses regular json formatting, read the example file for specifics
 
 oh also if you're renaming the bot etc the frame of spongeboy used on static images is always 106
 
+---
+
 # IF YOU ARE USING VISUAL STUDIO CODE (VSCODE) AND ARE USING THE CODE RUNNER EXTENSION:
 
 the default method that the Code Runner extension uses for running a python file is by running it straight from the path
@@ -60,5 +62,7 @@ to resolve this go into the `settings.json` file (contained in your appdata/appl
 ```
 
 this will ensure that you are changing to the proper directory _before_ running the file, allowing you to access all the other files contained in the directory (database, config, etc)
+
+---
 
 from there just run the python file and enjoy
