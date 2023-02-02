@@ -42,11 +42,12 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 
 # dictionaries have a lot of limitations with storing data, similar to json
 # there's no way to have aliases in the conventional sense, like how using the tuple here works
-# so a 2d list with standardized indexing ends up working a lot better
+# so a 2d list with standardized indexing ends up working a lot better for stuff like the help command
+# however a dictionary can be parsed from the list contents for stuff like slash command descriptions
 
 
 
-help_list = ( # I know this is hard to read but it's a lot better than having it all in one file so oh well
+help_list = (
 
 (('wikipedia', 'wiki', 'w'),
 
@@ -363,6 +364,9 @@ just for fun, don't take this command too seriously lol
 '''
 )
 )
+
+
+help_dict = {key[0]: value.split('\n')[1] for key, value in help_list}
 
 # generic messages that didn't fit anywhere else
 help_footer = '''
