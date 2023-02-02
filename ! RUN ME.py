@@ -53,6 +53,7 @@ async def write_database(): # saves a LOT of copy paste
 
 @bot.event
 async def on_ready():
+    await bot.tree.sync() # idk why discord can't just have slash commands synced by default
     global deletable
     await bot.change_presence (
         activity = discord.Game ( # shows "playing spongeboy gif on repeat"
@@ -321,7 +322,11 @@ async def on_command_error(ctx, error):
 
 
 
-@bot.command(aliases = ['wiki', 'w'])
+@bot.hybrid_command (
+    name = 'wikipedia', # since it's a slash command prefix will always be slash
+    description = info_strings.help_dict['wikipedia'].replace('{PREFIX}', '/'),
+    aliases = ['wiki', 'w']
+)
 async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
     try:
         article = wikipedia.page(search, pageid = None, auto_suggest = False)
@@ -369,7 +374,11 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
             mention_author = False
         )
 
-@bot.command(aliases = ['suggest', 'f'])
+@bot.hybrid_command (
+    name = 'feedback',
+    description = info_strings.help_dict['feedback'].replace('{PREFIX}', '/'),
+    aliases = ['suggest', 'f']
+)
 async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
@@ -400,7 +409,11 @@ async def FEEDBACK(ctx, *, message):
         mention_author = False
     )
 
-@bot.command(aliases = ['prefix', 'p'])
+@bot.hybrid_command (
+    name = 'setprefix',
+    description = info_strings.help_dict['setprefix'].replace('{PREFIX}', '/'),
+    aliases = ['prefix', 'p']
+)
 @commands.guild_only()
 async def SETPREFIX(ctx, *, new_prefix):
     if new_prefix in ('reset', DEFAULT_PREFIX): # way cleaner to check in list instead of `or` statement
@@ -447,7 +460,11 @@ async def SETPREFIX(ctx, *, new_prefix):
         mention_author = False
     )
 
-@bot.command(aliases = ['sa'])
+@bot.hybrid_command (
+    name = 'setannouncements',
+    description = info_strings.help_dict['setannouncements'].replace('{PREFIX}', '/'),
+    aliases = ['sa']
+)
 @commands.guild_only()
 async def SETANNOUNCEMENTS(ctx, option = ''):
     if option == 'reset' or ctx.channel == ctx.guild.text_channels[0]:
@@ -507,7 +524,11 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
         mention_author = False
     )
 
-@bot.command(aliases = ['announcement'])
+@bot.hybrid_command (
+    name = 'changelog',
+    description = info_strings.help_dict['changelog'].replace('{PREFIX}', '/'),
+    aliases = ['announcement']
+)
 async def CHANGELOG(ctx, amount: int = 1):
     changelogs = [ # scrapes the announcement channel for all recent messages
         message async for message in (bot
@@ -536,7 +557,11 @@ async def CHANGELOG(ctx, amount: int = 1):
             mention_author = False
         )
 
-@bot.command(aliases = ['len', 'l'])
+@bot.hybrid_command (
+    name = 'length',
+    description = info_strings.help_dict['length'].replace('{PREFIX}', '/'),
+    aliases = ['len', 'l']
+)
 async def LENGTH(ctx, *, sentence):
     word_list = sentence.split() # you need both word list and sentence
 
@@ -559,7 +584,11 @@ async def LENGTH(ctx, *, sentence):
         mention_author = False
     )
 
-@bot.command(aliases = ['git', 'g'])
+@bot.hybrid_command (
+    name = 'github',
+    description = info_strings.help_dict['github'].replace('{PREFIX}', '/'),
+    aliases = ['git', 'g']
+)
 async def GITHUB(ctx):
     await ctx.reply (
         embed = discord.Embed (
@@ -577,7 +606,11 @@ async def GITHUB(ctx):
         mention_author = False
     )
 
-@bot.command(aliases = ['h', 'info', 'i'])
+@bot.hybrid_command (
+    name = 'help',
+    description = info_strings.help_dict['help'].replace('{PREFIX}', '/'),
+    aliases = ['h', 'info', 'i']
+)
 async def HELP(ctx, search = 'all'): # only really need to track the first word
     if search == 'all':
         await ctx.reply (
@@ -636,7 +669,11 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
 
 
-@bot.command(aliases = ['s'])
+@bot.hybrid_command (
+    name = 'say',
+    description = info_strings.help_dict['say'].replace('{PREFIX}', '/'),
+    aliases = ['s']
+)
 async def SAY(ctx, *, sentence):
     global deletable
     await ctx.message.delete()
@@ -644,12 +681,16 @@ async def SAY(ctx, *, sentence):
     deletable = False # having a delete button next to bot text looked weird
     await ctx.channel.send(sentence)
 
-@bot.command(aliases = ['e'])
+@bot.hybrid_command (
+    name = 'embed',
+    description = info_strings.help_dict['embed'].replace('{PREFIX}', '/'),
+    aliases = ['e']
+)
 async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in one string
     global deletable # this command is useful for server info so it's not deletable
     arg_list = args.split(';') # so you can have spaces in the embed
 
-    if arg_list[0].startswith('https://') or arg_list[0].startswith('http://'):
+    if arg_list[0].startswith('http'):
         IMAGE = arg_list[0] # this way you can have image embeds and titles
         TITLE = None
     else:
@@ -676,12 +717,18 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
         FOOTER = ''
 
     try:
-        FOOTER_IMAGE = arg_list[4]
+        if arg_list[4].startswith('http'):
+            FOOTER_IMAGE = arg_list[4]
+        else:
+            raise IndexError
     except IndexError:
         FOOTER_IMAGE = None
 
     try:
-        THUMBNAIL = arg_list[5]
+        if arg_list[5].startswith('http'):
+            THUMBNAIL = arg_list[4]
+        else:
+            raise IndexError
     except IndexError:
         THUMBNAIL = None
 
@@ -706,7 +753,11 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
         )
     )
 
-@bot.command(aliases = ['8ball', 'b'])
+@bot.hybrid_command (
+    name = 'ball',
+    description = info_strings.help_dict['ball'].replace('{PREFIX}', '/'),
+    aliases = ['8ball', 'b']
+)
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     ball_choices = [ # infinitely expandable list
         'yes', 'no',
@@ -730,7 +781,11 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
         mention_author = False
     )
 
-@bot.command(aliases = ['roll', 'd', 'r'])
+@bot.hybrid_command (
+    name = 'dice',
+    description = info_strings.help_dict['dice'].replace('{PREFIX}', '/'),
+    aliases = ['roll', 'd', 'r']
+)
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     rolls = [random.randint(1, sides) for _ in range(count)] # _ ignores iterator
 
@@ -754,7 +809,11 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
         mention_author = False
     )
 
-@bot.command(aliases = ['m'])
+@bot.hybrid_command (
+    name = 'mock',
+    description = info_strings.help_dict['mock'].replace('{PREFIX}', '/'),
+    aliases = ['m']
+)
 async def MOCK(ctx, *, sentence):
     mocked_word = list(sentence.lower()) # list of characters rather than words
     for i in range(len(mocked_word)):
@@ -770,7 +829,11 @@ async def MOCK(ctx, *, sentence):
         mention_author = False
     )
 
-@bot.command(aliases = ['u', 'owo']) # I'm so sorry
+@bot.hybrid_command (
+    name = 'uwu',
+    description = info_strings.help_dict['uwu'].replace('{PREFIX}', '/'),
+    aliases = ['u', 'owo']
+) # I'm so sorry
 async def UWU(ctx, *, sentence):
     char_list = list(sentence.lower())
     uwu_word = ''
@@ -859,7 +922,11 @@ async def UWU(ctx, *, sentence):
         mention_author = False
     )
 
-@bot.command(aliases = ['rps'])
+@bot.hybrid_command (
+    name = 'rockpaperscissors',
+    description = info_strings.help_dict['rockpaperscissors'].replace('{PREFIX}', '/'),
+    aliases = ['rps']
+)
 async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 'scissors'])):
     bot_answer = random.choice(['rock', 'paper', 'scissors'])
 
@@ -911,7 +978,11 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 
             mention_author = False
         )
 
-@bot.command(aliases = ['n'])
+@bot.hybrid_command (
+    name = 'nut',
+    description = info_strings.help_dict['nut'].replace('{PREFIX}', '/'),
+    aliases = ['n']
+)
 async def NUT(ctx, *, query = None):
     if query in ('total', 'amount', 'query'):
         await ctx.reply (
