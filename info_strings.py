@@ -31,7 +31,7 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 — `{PREFIX}dice`, `{PREFIX}d`, `{PREFIX}roll`, `{PREFIX}r`: roll any number of dice with any number of sides
 — `{PREFIX}mock`, `{PREFIX}m`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 — `{PREFIX}uwu`, `{PREFIX}u`, `{PREFIX}owo`: uwu-ify text, i hate this as much as you do
-— `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against spunch bot
+— `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against me
 — `{PREFIX}nut`, `{PREFIX}n`: sacrifice NUT to me, adds one to global counter
 
 **specific info for a command can be found by running**
@@ -51,9 +51,9 @@ help_list = (
 
 (('wikipedia', 'wiki', 'w'),
 
-'''
-returns wikipedia article
+'returns wikipedia article',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}wikipedia <wikipedia article>
@@ -64,14 +64,14 @@ returns wikipedia article
 ```
 **NOTE:**
 
-you have to be specific, otherwise spunch bot will just show all possible options
+will show all possible options if you aren't specific enough
 '''
 
 ), (('feedback', 'f', 'suggest'),
 
-'''
-suggest stuff to implement
+'suggest stuff to implement',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}feedback <suggestion(s)>
@@ -87,9 +87,9 @@ there is currently no way to see if feedback has been accepted, but this is plan
 
 ), (('setprefix', 'prefix', 'p'),
 
-'''
-set prefix for current server
+'set prefix for current server',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}prefix <prefix>
@@ -110,9 +110,9 @@ currently you can only have one prefix per server, so no prefix aliases for now
 
 ), (('setannouncements', 'sa'),
 
-'''
-change announcement channel for server
+'change announcement channel for server',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}setannouncements
@@ -129,9 +129,9 @@ adding `none` will turn announcements for the server off
 
 ), (('changelog', 'announcement'),
 
-'''
-show bot update changelogs
+'show bot update changelogs',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}changelog <amount>
@@ -151,9 +151,9 @@ causes a lot of spam, beware of using large numbers
 
 ), (('length', 'len', 'l'),
 
-'''
-return word and character count of string
+'return word and character count of string',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}length <message>
@@ -167,9 +167,9 @@ return word and character count of string
 
 ), (('github', 'git', 'g'),
 
-'''
-show github listing
+'show github listing',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}github
@@ -178,11 +178,9 @@ show github listing
 
 ), (('help', 'h', 'info', 'i'),
 
+'if no command mentioned, shows main help message; otherwise, shows specific help for that command',
+
 '''
-if no command mentioned, shows main help message
-
-otherwise, shows specific help for that command
-
 **SYNTAX:**
 ```
 {PREFIX}help <command>
@@ -200,9 +198,9 @@ otherwise, shows specific help for that command
 
 (('say', 's'),
 
-'''
-make the bot say stuff
+'make the bot say stuff',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}say <message>
@@ -215,9 +213,9 @@ make the bot say stuff
 
 ), (('embed', 'e'),
 
-'''
-like `{PREFIX}say`, but better
+'like `{PREFIX}say`, but better',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}embed <title>; <description>; <hex color>; <footer>; <footer image>; <thumbnail image>
@@ -251,9 +249,9 @@ it will give a nonloading image if the url doesn't point to an image, since that
 
 ), (('ball', '8ball', 'b'),
 
-'''
-random answers for random questions
+'random answers for random questions',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}8ball <question>
@@ -270,9 +268,9 @@ questions have to be yes/no formatted for the bot to make sense
 
 ), (('dice', 'd', 'roll', 'r'),
 
-'''
-roll any number of dice with any number of sides
+'roll any number of dice with any number of sides',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}dice <number of dice> <number of sides>
@@ -294,9 +292,9 @@ you can provide how many dice without providing how many sides, bot will assume 
 
 ), (('mock', 'm'),
 
-'''
-MoCk a sTrInG Of tExT To lOoK LiKe tHiS
+'MoCk a sTrInG Of tExT To lOoK LiKe tHiS',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}mock <message>
@@ -310,9 +308,9 @@ MoCk a sTrInG Of tExT To lOoK LiKe tHiS
 
 ), (('uwu', 'u', 'owo'),
 
-'''
-uwu-ify text, i hate this as much as you do
+'uwu-ify text, i hate this as much as you do',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}uwu <message>
@@ -327,9 +325,9 @@ uwu-ify text, i hate this as much as you do
 ),
 (('rockpaperscissors', 'rps'),
 
-'''
-rock paper scissors against spunch bot
+'rock paper scissors against me',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}rockpaperscissors <choice>
@@ -344,14 +342,14 @@ rock paper scissors against spunch bot
 ```
 **NOTE:**
 
-if you don't specify what you're playing spunch bot will decide for you randomly
+if you don't specify what you're playing i will decide for you randomly
 '''
 
 ), (('nut', 'n'),
 
-'''
-sacrifice NUT to me, adds one to global counter
+'sacrifice NUT to me, adds one to global counter',
 
+'''
 **SYNTAX:**
 ```
 {PREFIX}nut
@@ -366,7 +364,7 @@ just for fun, don't take this command too seriously lol
 )
 
 
-help_dict = {key[0]: value.split('\n')[1] for key, value in help_list}
+help_dict = {i[0][0]: i[1] for i in help_list}
 
 # generic messages that didn't fit anywhere else
 help_footer = '''

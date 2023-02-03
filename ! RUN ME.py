@@ -636,7 +636,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
                     title = eval(f'f"""help for {command}"""'), # formatted list of aliases
-                    description = eval(f'f"""{i[1]}"""'), # grabs description from second index
+                    description = eval(f'f"""{i[1]}\n{i[2]}"""'), # grabs description from second index
                     color = EMBED_COLOR
                 )
                 .set_footer (
