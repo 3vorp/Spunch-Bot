@@ -287,6 +287,7 @@ async def on_message(message):
 
 @bot.event
 async def on_command_error(ctx, error):
+    PREFIX = (await get_prefix(None, ctx.message))[-1]
     print(error) # prints errors so you don't have to rely on the sent message
     if isinstance(error, commands.MissingPermissions):
         await ctx.reply ( # for permission based commands
@@ -414,6 +415,7 @@ async def FEEDBACK(ctx, *, message):
     description = info_strings.help_dict['setprefix'].replace('{PREFIX}', '/'),
     aliases = ['prefix', 'p']
 )
+@discord.app_commands.describe(new_prefix = 'default is `~`, use `reset` to reset prefix')
 @commands.guild_only()
 async def SETPREFIX(ctx, *, new_prefix):
     if new_prefix in ('reset', DEFAULT_PREFIX): # way cleaner to check in list instead of `or` statement
@@ -616,7 +618,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
                 title = '**spunch bot**',
-                description = eval(f'f"""{info_strings.help_all}"""'),
+                description = eval(f'f"""{info_strings.help_string}"""'),
                 color = EMBED_COLOR
             )
             .set_footer (
@@ -630,7 +632,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         )
         return
 
-    for i in info_strings.help_list: # iterates through the main command list
+    for i in list(info_strings.help_list.values())[0]: # iterate through each command on list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
             command = '/'.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
             await ctx.reply (
@@ -735,7 +737,7 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
     await ctx.message.delete()
 
     deletable = False
-    await ctx.channel.send ( # deletes original message so doesn't use reply
+    await ctx.send ( # deletes original message so doesn't use reply
         embed = discord.Embed ( # compiles all variables from above into one embed
             title = TITLE,
             description = DESCRIPTION,

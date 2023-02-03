@@ -1,55 +1,30 @@
 '''
-I tried making this a json but dealing with super long strings really didn't work well,
-and honestly this is a lot easier to read,
-plus in the main file you can just use info_strings.variable to access it
+while initially planned as a json, a lot of parsing from the main list ended up being required
+so a second file ended up working far better for generating variables
+
+so essentially, it's a dictionary with the keys being the command categories
+the values of these keys are tuples with every command in the given category
+from there a further index is used to get the specific command number
+
+and from there it's sorted as:
+    tuple of aliases,
+    short description,
+    syntax/example/notes
+
+there ends up being a lot of wrappers and really weird looking for loops
+but this way it covers pretty much all necessary use cases
+
+and more readable versions are parsed in `help_string` and `help_dict`
+since the list version is optimized for the help command above all
 '''
 
 
 
-# as PREFIX is evaluated per-command it's parsed in the main file instead using eval()
-help_all = '''
-an atrocity made in discord.py by `Evorp#5819` because I was bored idk
+help_list = {
+'utility': (
+(
 
-**COMMANDS AVAILABLE:**
-
-**utility:**
-
-— `{PREFIX}wikipedia`, `{PREFIX}wiki`, `{PREFIX}w`: returns wikipedia article
-— `{PREFIX}feedback`, `{PREFIX}f`, `{PREFIX}suggest`: suggest stuff to implement
-— `{PREFIX}setprefix`, `{PREFIX}prefix`, `{PREFIX}p`: change prefix for server, add `reset` to reset
-— `{PREFIX}setannouncements`, `{PREFIX}sa`: change announcement channel for server, add `none` to disable
-— `{PREFIX}changelog`, `{PREFIX}announcement`: show bot update changelogs
-— `{PREFIX}length`, `{PREFIX}len`, `{PREFIX}l`: returns word and character count of string
-— `{PREFIX}github`, `{PREFIX}git`, `{PREFIX}g`: show github listing
-— `{PREFIX}help`, `{PREFIX}h`, `{PREFIX}info`, `{PREFIX}i`: if no command mentioned shows main help message, otherwise shows specific help for that command
-
-**fun:**
-
-— `{PREFIX}say`, `{PREFIX}s`: say stuff with bot
-— `{PREFIX}embed`, `{PREFIX}e`: like `{PREFIX}say` but better (use `{PREFIX}help embed` for the specific syntax required)
-— `{PREFIX}ball`, `{PREFIX}8ball`, `{PREFIX}b`: random answers for random questions
-— `{PREFIX}dice`, `{PREFIX}d`, `{PREFIX}roll`, `{PREFIX}r`: roll any number of dice with any number of sides
-— `{PREFIX}mock`, `{PREFIX}m`: MoCk a sTrInG Of tExT To lOoK LiKe tHiS
-— `{PREFIX}uwu`, `{PREFIX}u`, `{PREFIX}owo`: uwu-ify text, i hate this as much as you do
-— `{PREFIX}rockpaperscissors`, `{PREFIX}rps`: rock paper scissors against me
-— `{PREFIX}nut`, `{PREFIX}n`: sacrifice NUT to me, adds one to global counter
-
-**specific info for a command can be found by running**
-```{PREFIX}help <command>```
-'''
-
-
-
-# dictionaries have a lot of limitations with storing data, similar to json
-# there's no way to have aliases in the conventional sense, like how using the tuple here works
-# so a 2d list with standardized indexing ends up working a lot better for stuff like the help command
-# however a dictionary can be parsed from the list contents for stuff like slash command descriptions
-
-
-
-help_list = (
-
-(('wikipedia', 'wiki', 'w'),
+('wikipedia', 'wiki', 'w'),
 
 'returns wikipedia article',
 
@@ -67,7 +42,10 @@ help_list = (
 will show all possible options if you aren't specific enough
 '''
 
-), (('feedback', 'f', 'suggest'),
+),
+(
+
+('feedback', 'f', 'suggest'),
 
 'suggest stuff to implement',
 
@@ -85,7 +63,10 @@ will show all possible options if you aren't specific enough
 there is currently no way to see if feedback has been accepted, but this is planned for the future
 '''
 
-), (('setprefix', 'prefix', 'p'),
+),
+(
+
+('setprefix', 'prefix', 'p'),
 
 'set prefix for current server',
 
@@ -108,7 +89,10 @@ there is currently no way to see if feedback has been accepted, but this is plan
 currently you can only have one prefix per server, so no prefix aliases for now
 '''
 
-), (('setannouncements', 'sa'),
+),
+(
+
+('setannouncements', 'sa'),
 
 'change announcement channel for server',
 
@@ -127,7 +111,10 @@ adding `none` will turn announcements for the server off
 `reset` will bring it back to the first available one
 '''
 
-), (('changelog', 'announcement'),
+),
+(
+
+('changelog', 'announcement'),
 
 'show bot update changelogs',
 
@@ -149,7 +136,10 @@ orders by oldest to newest
 causes a lot of spam, beware of using large numbers
 '''
 
-), (('length', 'len', 'l'),
+),
+(
+
+('length', 'len', 'l'),
 
 'return word and character count of string',
 
@@ -165,7 +155,10 @@ causes a lot of spam, beware of using large numbers
 ```
 '''
 
-), (('github', 'git', 'g'),
+),
+(
+
+('github', 'git', 'g'),
 
 'show github listing',
 
@@ -176,7 +169,10 @@ causes a lot of spam, beware of using large numbers
 ```
 '''
 
-), (('help', 'h', 'info', 'i'),
+),
+(
+
+('help', 'h', 'info', 'i'),
 
 'if no command mentioned, shows main help message; otherwise, shows specific help for that command',
 
@@ -194,9 +190,11 @@ causes a lot of spam, beware of using large numbers
 ```
 '''
 
-), # fun section
+)
+), 'fun': (
+(
 
-(('say', 's'),
+('say', 's'),
 
 'make the bot say stuff',
 
@@ -211,7 +209,10 @@ causes a lot of spam, beware of using large numbers
 ```
 '''
 
-), (('embed', 'e'),
+),
+(
+
+('embed', 'e'),
 
 'like `{PREFIX}say`, but better',
 
@@ -247,7 +248,10 @@ if the first argument is a url (starts with https:// or http://), it will try an
 it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
-), (('ball', '8ball', 'b'),
+),
+(
+
+('ball', '8ball', 'b'),
 
 'random answers for random questions',
 
@@ -266,7 +270,10 @@ it will give a nonloading image if the url doesn't point to an image, since that
 questions have to be yes/no formatted for the bot to make sense
 '''
 
-), (('dice', 'd', 'roll', 'r'),
+),
+(
+
+('dice', 'd', 'roll', 'r'),
 
 'roll any number of dice with any number of sides',
 
@@ -290,7 +297,10 @@ default is one 6 sided dice
 you can provide how many dice without providing how many sides, bot will assume 6 by default
 '''
 
-), (('mock', 'm'),
+),
+(
+
+('mock', 'm'),
 
 'MoCk a sTrInG Of tExT To lOoK LiKe tHiS',
 
@@ -306,7 +316,10 @@ you can provide how many dice without providing how many sides, bot will assume 
 ```
 '''
 
-), (('uwu', 'u', 'owo'),
+),
+(
+
+('uwu', 'u', 'owo'),
 
 'uwu-ify text, i hate this as much as you do',
 
@@ -323,7 +336,9 @@ you can provide how many dice without providing how many sides, bot will assume 
 '''
 
 ),
-(('rockpaperscissors', 'rps'),
+(
+
+('rockpaperscissors', 'rps'),
 
 'rock paper scissors against me',
 
@@ -345,7 +360,10 @@ you can provide how many dice without providing how many sides, bot will assume 
 if you don't specify what you're playing i will decide for you randomly
 '''
 
-), (('nut', 'n'),
+),
+(
+
+('nut', 'n'),
 
 'sacrifice NUT to me, adds one to global counter',
 
@@ -360,11 +378,34 @@ if you don't specify what you're playing i will decide for you randomly
 
 just for fun, don't take this command too seriously lol
 '''
+
 )
 )
+}
 
 
-help_dict = {i[0][0]: i[1] for i in help_list}
+
+help_dict = {i[0][0]: i[1] for i in list(help_list.values())[0]}
+
+
+
+# a LOT of parsing is required to make this work, since it needs to generate command categories etc
+help_string = '''
+an atrocity made in discord.py by `Evorp#5819` because I was bored idk
+
+**COMMANDS AVAILABLE:**
+'''
+
+for key in help_list:
+    help_string += f'\n**{key}:**\n\n'
+    for name, desc, _ in help_list[key]:
+        help_string += '— '
+        for i in name[:-1]:
+            help_string += '`{PREFIX}' + f'{i}`, '
+        help_string += '`{PREFIX}' + f'{name[-1]}`: {desc}\n'
+help_string += '**specific info for a command can be found by running**```{PREFIX}help <command>```'
+
+
 
 # generic messages that didn't fit anywhere else
 help_footer = '''
