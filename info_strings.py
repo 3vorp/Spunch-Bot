@@ -407,10 +407,11 @@ just for fun, don't take this command too seriously lol
 }
 
 
-help_list = tuple(i for j in help_categorized.values() for i in j)
+# gets rid of one "layer" of the list and flattens it down to a more usable version
+help_list = [i for j in help_categorized.values() for i in j]
 
 
-
+# uses the flattened help list and formats it into a much more convenient dictionary
 help_dict = {i[0][0]: i[1] for i in help_list}
 
 

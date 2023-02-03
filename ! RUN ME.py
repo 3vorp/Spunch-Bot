@@ -791,8 +791,8 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     rolls = [random.randint(1, sides) for _ in range(count)] # _ ignores iterator
 
-    if count > 1: # won't show roll count if there was only one roll and no need for a sum
-        footer = f'if you\'re interested these were the results for each roll: {rolls}'
+    if count > 1 and len(rolls) <= 30: # won't show roll count if there was only one
+        footer = f'individual rolls: {rolls}'
         icon_url = EMBED_GIF
     else:
         footer = ''
