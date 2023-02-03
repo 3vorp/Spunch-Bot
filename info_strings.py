@@ -1,26 +1,49 @@
 '''
-while initially planned as a json, a lot of parsing from the main list ended up being required
+while initially planned as a json, a lot of parsing ended up being required
 so a second file ended up working far better for generating variables
 
-so essentially, it's a dictionary with the keys being the command categories
-the values of these keys are tuples with every command in the given category
-from there a further index is used to get the specific command number
+I needed a way that would accommodate all formats I'd be parsing the text as
+this resulted in the actual strings going into `help_categorized`
+it's hard to parse and harder to read, sorted as
+```
+command category:
+    command name:
+        tuple of aliases,
+        short description,
+        syntax/example/notes
+```
 
-and from there it's sorted as:
-    tuple of aliases,
+with two layers of nesting
+
+it's also hard to iterate over or do anything meaningful with
+so I generated `help_list` from the contents
+it essentially fully removes the dictionary aspect making it a basic 2d list
+```
+command name:
+    tuple of aliases
     short description,
     syntax/example/notes
+```
 
-there ends up being a lot of wrappers and really weird looking for loops
-but this way it covers pretty much all necessary use cases
+this is still sorted via index rather than via key though
+so if you want a specific description from a command etc there's no way
+`help_dict` is generated because of this, for use in slash command descriptions etc
+it's pretty easy to read through and parse:
+```
+main command name: short description
+```
 
-and more readable versions are parsed in `help_string` and `help_dict`
-since the list version is optimized for the help command above all
+finally, the reason why command categories were necessary to have in `help_categorized`
+`help_string` contains a formatted version of every command with description and categorized
+meaning that the commands would need some form of category system to have stuff in the right place
+
+prior to me using this system I'd have to write down everything twice
+but now it's procedurally generated from the contents of `help_categorized`
 '''
 
 
 
-help_list = {
+help_categorized = {
 'utility': (
 (
 
@@ -384,9 +407,12 @@ just for fun, don't take this command too seriously lol
 }
 
 
+help_list = (i for j in help_categorized.values() for i in j)
 
-help_dict = {i[0][0]: i[1] for i in list(help_list.values())[0]}
 
+
+help_dict = {i[0][0]: i[1] for i in help_list}
+print(help_dict)
 
 
 # a LOT of parsing is required to make this work, since it needs to generate command categories etc
@@ -396,9 +422,9 @@ an atrocity made in discord.py by `Evorp#5819` because I was bored idk
 **COMMANDS AVAILABLE:**
 '''
 
-for key in help_list:
+for key in help_categorized:
     help_string += f'\n**{key}:**\n\n'
-    for name, desc, _ in help_list[key]:
+    for name, desc, _ in help_categorized[key]:
         help_string += '— '
         for i in name[:-1]:
             help_string += '`{PREFIX}' + f'{i}`, '

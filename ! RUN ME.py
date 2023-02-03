@@ -632,7 +632,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         )
         return
 
-    for i in list(info_strings.help_list.values())[0]: # iterate through each command on list
+    for i in info_strings.help_list: # iterate through the main command list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
             command = '/'.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
             await ctx.reply (
