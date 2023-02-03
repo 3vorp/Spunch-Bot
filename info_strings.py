@@ -407,12 +407,12 @@ just for fun, don't take this command too seriously lol
 }
 
 
-help_list = (i for j in help_categorized.values() for i in j)
+help_list = tuple(i for j in help_categorized.values() for i in j)
 
 
 
 help_dict = {i[0][0]: i[1] for i in help_list}
-print(help_dict)
+
 
 
 # a LOT of parsing is required to make this work, since it needs to generate command categories etc
