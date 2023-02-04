@@ -132,7 +132,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                 )
                 return
 
-        except AttributeError: # passes to delete the message if there's no reply
+        except (AttributeError, discord.errors.NotFound): # if no reply/slash command
             pass
 
         await message.delete() # if all these checks passes the message is actually deleted
