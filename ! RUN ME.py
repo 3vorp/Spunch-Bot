@@ -328,6 +328,7 @@ async def on_command_error(ctx, error):
     description = info_strings.help_dict['wikipedia'].replace('{PREFIX}', '/'),
     aliases = ['wiki', 'w']
 )
+@discord.app_commands.describe(search = 'your wikipedia search')
 async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
     try:
         article = wikipedia.page(search, pageid = None, auto_suggest = False)
@@ -380,6 +381,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
     description = info_strings.help_dict['feedback'].replace('{PREFIX}', '/'),
     aliases = ['suggest', 'f']
 )
+@discord.app_commands.describe(message = 'the message you want to send; please be specific')
 async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
@@ -415,10 +417,12 @@ async def FEEDBACK(ctx, *, message):
     description = info_strings.help_dict['setprefix'].replace('{PREFIX}', '/'),
     aliases = ['prefix', 'p']
 )
-@discord.app_commands.describe(new_prefix = 'default is `~`, use `reset` to reset prefix')
+@discord.app_commands.describe (
+    new_prefix = f'default is `{DEFAULT_PREFIX}`, use `reset` to reset prefix'
+)
 @commands.guild_only()
 async def SETPREFIX(ctx, *, new_prefix):
-    if new_prefix in ('reset', DEFAULT_PREFIX): # way cleaner to check in list instead of `or` statement
+    if new_prefix in ('reset', DEFAULT_PREFIX): # easier to check if in list than with `or`
         try:
             del DATABASE[f'prefix_{ctx.guild.id}'] # removes value entirely
             await write_database() # writes DATABASE dictionary into the json
@@ -466,6 +470,9 @@ async def SETPREFIX(ctx, *, new_prefix):
     name = 'setannouncements',
     description = info_strings.help_dict['setannouncements'].replace('{PREFIX}', '/'),
     aliases = ['sa']
+)
+@discord.app_commands.describe (
+    option = 'use `reset` to reset channel or `none` to disable for given server'
 )
 @commands.guild_only()
 async def SETANNOUNCEMENTS(ctx, option = ''):
@@ -531,6 +538,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
     description = info_strings.help_dict['changelog'].replace('{PREFIX}', '/'),
     aliases = ['announcement']
 )
+@discord.app_commands.describe(amount = 'how many changelogs you want (defaults to one)')
 async def CHANGELOG(ctx, amount: int = 1):
     changelogs = [ # scrapes the announcement channel for all recent messages
         message async for message in (bot
@@ -564,6 +572,7 @@ async def CHANGELOG(ctx, amount: int = 1):
     description = info_strings.help_dict['length'].replace('{PREFIX}', '/'),
     aliases = ['len', 'l']
 )
+@discord.app_commands.describe(sentence = 'pretty self explanatory lol')
 async def LENGTH(ctx, *, sentence):
     word_list = sentence.split() # you need both word list and sentence
 
@@ -613,6 +622,7 @@ async def GITHUB(ctx):
     description = info_strings.help_dict['help'].replace('{PREFIX}', '/'),
     aliases = ['h', 'info', 'i']
 )
+@discord.app_commands.describe(search = 'specific command to look for, or use `all` to show full list')
 async def HELP(ctx, search = 'all'): # only really need to track the first word
     if search == 'all':
         await ctx.reply (
@@ -676,6 +686,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
     description = info_strings.help_dict['say'].replace('{PREFIX}', '/'),
     aliases = ['s']
 )
+@discord.app_commands.describe(sentence = 'pretty self explanatory lol')
 async def SAY(ctx, *, sentence):
     global deletable
     if ctx.interaction: # filter so that the slash command doesn't have the reply
@@ -695,7 +706,25 @@ async def SAY(ctx, *, sentence):
     description = info_strings.help_dict['embed'].replace('{PREFIX}', '/'),
     aliases = ['e']
 )
-async def EMBED(ctx, *, title = '', description = '', color = '', footer = '', footer_image = '', thumbnail = '', image = ''):
+@discord.app_commands.describe (
+    title = 'title of embed',
+    description = 'description of embed',
+    color = 'color of embed in hex (e.g. #ff0000)',
+    footer = 'footer text',
+    footer_image = 'url to footer image/gif',
+    thumbnail = 'url to thumbnail image/gif',
+    image = 'url to full image'
+)
+async def EMBED (
+    ctx, *,
+    title = '',
+    description = '',
+    color = '',
+    footer = '',
+    footer_image = '',
+    thumbnail = '',
+    image = ''
+):
     global deletable # this command is useful for server info so it's not deletable
 
     if ctx.interaction: # if slash command
@@ -795,6 +824,7 @@ async def EMBED(ctx, *, title = '', description = '', color = '', footer = '', f
     description = info_strings.help_dict['ball'].replace('{PREFIX}', '/'),
     aliases = ['8ball', 'b']
 )
+@discord.app_commands.describe(question = 'if left blank will just give answer')
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     ball_choices = [ # infinitely expandable list
         'yes', 'no',
@@ -822,6 +852,10 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     name = 'dice',
     description = info_strings.help_dict['dice'].replace('{PREFIX}', '/'),
     aliases = ['roll', 'd', 'r']
+)
+@discord.app_commands.describe (
+    count = 'number of dice (default 1)',
+    sides = 'how many sides each dice has (default 6)'
 )
 async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for number stuff
     rolls = [random.randint(1, sides) for _ in range(count)] # _ ignores iterator
@@ -851,6 +885,7 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
     description = info_strings.help_dict['mock'].replace('{PREFIX}', '/'),
     aliases = ['m']
 )
+@discord.app_commands.describe(sentence = 'pretty self explanatory lol')
 async def MOCK(ctx, *, sentence):
     mocked_word = list(sentence.lower()) # list of characters rather than words
     for i in range(len(mocked_word)):
@@ -871,6 +906,7 @@ async def MOCK(ctx, *, sentence):
     description = info_strings.help_dict['uwu'].replace('{PREFIX}', '/'),
     aliases = ['u', 'owo']
 )
+@discord.app_commands.describe(sentence = 'there\'s no going back')
 async def UWU(ctx, *, sentence): # I'm so sorry
     char_list = list(sentence.lower())
     uwu_word = ''
@@ -964,42 +1000,43 @@ async def UWU(ctx, *, sentence): # I'm so sorry
     description = info_strings.help_dict['rockpaperscissors'].replace('{PREFIX}', '/'),
     aliases = ['rps']
 )
-async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 'scissors'])):
-    bot_answer = random.choice(['rock', 'paper', 'scissors'])
+@discord.app_commands.describe(choice = 'must be either `rock`, `paper`, or `scissors`')
+async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scissors'])):
+    bot_choice = random.choice(['rock', 'paper', 'scissors'])
 
-    if bot_answer == user_answer:
+    if bot_choice == choice:
         await ctx.reply (
             embed = discord.Embed (
                 title = 'it\'s a tie',
-                description = f'you sent {user_answer}, i sent {bot_answer}',
+                description = f'you sent {choice}, i sent {bot_choice}',
                 color = EMBED_COLOR
             ),
             mention_author = False
         )
 
     elif ( # pain
-        (user_answer == 'scissors' and bot_answer == 'paper') or
-        (user_answer == 'paper' and bot_answer == 'rock') or
-        (user_answer == 'rock' and bot_answer == 'scissors')
+        (choice == 'scissors' and bot_choice == 'paper') or
+        (choice == 'paper' and bot_choice == 'rock') or
+        (choice == 'rock' and bot_choice == 'scissors')
     ):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'you win',
-                description = f'you sent {user_answer}, i sent {bot_answer}',
+                description = f'you sent {choice}, i sent {bot_choice}',
                 color = EMBED_COLOR
             ),
             mention_author = False
         )
 
     elif ( # pain II
-        (user_answer == 'paper' and bot_answer == 'scissors') or
-        (user_answer == 'rock' and bot_answer == 'paper') or
-        (user_answer == 'scissors' and bot_answer == 'rock')
+        (choice == 'paper' and bot_choice == 'scissors') or
+        (choice == 'rock' and bot_choice == 'paper') or
+        (choice == 'scissors' and bot_choice == 'rock')
     ):
         await ctx.reply (
             embed = discord.Embed (
                 title = 'i win',
-                description = f'you sent {user_answer}, i sent {bot_answer}',
+                description = f'you sent {choice}, i sent {bot_choice}',
                 color = EMBED_COLOR
             ),
             mention_author = False
@@ -1009,7 +1046,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 
         await ctx.reply (
             embed = discord.Embed (
                 title = 'that wasn\'t an option so i automatically win :sunglasses:',
-                description = f'you sent {user_answer}, i sent {bot_answer}',
+                description = f'you sent {choice}, i sent {bot_choice}',
                 color = EMBED_COLOR
             ),
             mention_author = False
@@ -1020,6 +1057,7 @@ async def ROCKPAPERSCISSORS(ctx, user_answer = random.choice (['rock', 'paper', 
     description = info_strings.help_dict['nut'].replace('{PREFIX}', '/'),
     aliases = ['n']
 )
+@discord.app_commands.describe(query = 'whether to just show the current count')
 async def NUT(ctx, *, query = None):
     if query in ('total', 'amount', 'query'):
         await ctx.reply (
