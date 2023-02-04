@@ -682,7 +682,6 @@ async def SAY(ctx, *, sentence):
         deletable = False
         msg = await ctx.send('** **')
         await msg.delete()
-
     else:
         await ctx.message.delete()
 
@@ -704,7 +703,6 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
         await msg.delete()
     else:
         await ctx.message.delete()
-
 
     arg_list = args.split(';') # so you can have spaces in the embed
 
@@ -849,8 +847,8 @@ async def MOCK(ctx, *, sentence):
     name = 'uwu',
     description = info_strings.help_dict['uwu'].replace('{PREFIX}', '/'),
     aliases = ['u', 'owo']
-) # I'm so sorry
-async def UWU(ctx, *, sentence):
+)
+async def UWU(ctx, *, sentence): # I'm so sorry
     char_list = list(sentence.lower())
     uwu_word = ''
     for i in range(len(char_list)):
