@@ -1,0 +1,20 @@
+spunch bot license
+2023 february 3rd
+
+copyright © Evorp, all rights reserved
+
+stuff you can do:
+    fork and freely redistribute this bot anywhere you want
+    switch out the branding as long as you make clear that it's a fork of this
+    use code snippets or commands (with credit somewhere obvious)
+
+stuff you can't do:
+    monetize my work
+    not give clear credit
+    not link back to the github repo somewhere obvious
+    make your projects look official when they aren't
+
+I (Evorp) reserve the right to:
+    refuse the ability to distribute
+    take legal action if you don't comply with this license
+    change this license at any time for any reason
