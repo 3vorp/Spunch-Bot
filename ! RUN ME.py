@@ -740,7 +740,7 @@ async def EMBED (
         arg_list = arg_list.split(';')
 
     if ''.join(arg_list) == '': # if nothing was sent
-        await ctx.reply (
+        await ctx.channel.send (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
                 description = 'you need to actually provide arguments lol',
