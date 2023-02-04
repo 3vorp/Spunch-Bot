@@ -678,10 +678,18 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 )
 async def SAY(ctx, *, sentence):
     global deletable
-    await ctx.message.delete()
+    if ctx.interaction: # filter so that the slash command doesn't have the reply
+        deletable = False
+        msg = await ctx.send('** **')
+        await msg.delete()
+
+    else:
+        await ctx.message.delete()
 
     deletable = False # having a delete button next to bot text looked weird
-    await ctx.channel.send(sentence)
+    await ctx.channel.send(sentence) # can't use ctx.send() because slash command
+
+
 
 @bot.hybrid_command (
     name = 'embed',
@@ -690,6 +698,14 @@ async def SAY(ctx, *, sentence):
 )
 async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in one string
     global deletable # this command is useful for server info so it's not deletable
+    if ctx.interaction:
+        deletable = False
+        msg = await ctx.send('** **')
+        await msg.delete()
+    else:
+        await ctx.message.delete()
+
+
     arg_list = args.split(';') # so you can have spaces in the embed
 
     if arg_list[0].startswith('http'):
@@ -734,10 +750,8 @@ async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in 
     except IndexError:
         THUMBNAIL = None
 
-    await ctx.message.delete()
-
     deletable = False
-    await ctx.send ( # deletes original message so doesn't use reply
+    await ctx.channel.send ( # deletes original message so doesn't use reply
         embed = discord.Embed ( # compiles all variables from above into one embed
             title = TITLE,
             description = DESCRIPTION,
