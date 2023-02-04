@@ -695,23 +695,46 @@ async def SAY(ctx, *, sentence):
     description = info_strings.help_dict['embed'].replace('{PREFIX}', '/'),
     aliases = ['e']
 )
-async def EMBED(ctx, *, args): # can't split by spaces so needs to be passed in one string
+async def EMBED(ctx, *, title = '', description = '', color = '', footer = '', footer_image = '', thumbnail = '', image = ''):
     global deletable # this command is useful for server info so it's not deletable
-    if ctx.interaction:
+
+    if ctx.interaction: # if slash command
         deletable = False
-        msg = await ctx.send('** **')
-        await msg.delete()
-    else:
+        msg = await ctx.send('** **') # needs to complete interaction to prevent error
+        await msg.delete() # idk why you have to do it this way but oh well it works
+
+        arg_list = [title, description, color, footer, footer_image, thumbnail]
+
+    else: # if prefix command you can delete directly
         await ctx.message.delete()
+        arg_list = title # in non-prefix commands everything gets passed into title
+        arg_list = arg_list.split(';')
 
-    arg_list = args.split(';') # so you can have spaces in the embed
+    if ''.join(arg_list) == '': # if nothing was sent
+        await ctx.reply (
+            embed = discord.Embed (
+                title = 'insert helpful error name here',
+                description = 'you need to actually provide arguments lol',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'you\'re still an absolute clampongus though',
+                icon_url = EMBED_GIF
+            ),
+            mention_author = False
+        )
+        return
 
-    if arg_list[0].startswith('http'):
-        IMAGE = arg_list[0] # this way you can have image embeds and titles
-        TITLE = None
-    else:
+    if image: # if the slash command passed a separate thumbnail
         TITLE = arg_list[0]
-        IMAGE = None
+        IMAGE == image
+    else: # prefix command doesn't have thumbnail
+        if arg_list[0].startswith('http'):
+            TITLE = None
+            IMAGE = arg_list[0]
+        else:
+            TITLE = arg_list[0]
+            IMAGE = None
 
     try: # just sets it to nothing/defaults if nothing is specified
         DESCRIPTION = arg_list[1]
