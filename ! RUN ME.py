@@ -754,7 +754,7 @@ async def EMBED (
         )
         return
 
-    if image: # if the slash command passed a separate thumbnail
+    if image: # if the slash command passed a separate main image
         TITLE = arg_list[0]
         IMAGE == image
     else: # prefix command doesn't have thumbnail
