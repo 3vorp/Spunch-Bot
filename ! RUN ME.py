@@ -325,7 +325,7 @@ async def on_command_error(ctx, error):
 
 @bot.hybrid_command (
     name = 'wikipedia', # since it's a slash command prefix will always be slash
-    description = info_strings.help_dict['wikipedia'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['wikipedia'],
     aliases = ['wiki', 'w']
 )
 @discord.app_commands.describe(search = 'your wikipedia search')
@@ -378,7 +378,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
 
 @bot.hybrid_command (
     name = 'feedback',
-    description = info_strings.help_dict['feedback'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['feedback'],
     aliases = ['suggest', 'f']
 )
 @discord.app_commands.describe(message = 'the message you want to send; please be specific')
@@ -414,7 +414,7 @@ async def FEEDBACK(ctx, *, message):
 
 @bot.hybrid_command (
     name = 'setprefix',
-    description = info_strings.help_dict['setprefix'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['setprefix'],
     aliases = ['prefix', 'p']
 )
 @discord.app_commands.describe (
@@ -468,7 +468,7 @@ async def SETPREFIX(ctx, *, new_prefix):
 
 @bot.hybrid_command (
     name = 'setannouncements',
-    description = info_strings.help_dict['setannouncements'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['setannouncements'],
     aliases = ['sa']
 )
 @discord.app_commands.describe (
@@ -535,7 +535,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
 
 @bot.hybrid_command (
     name = 'changelog',
-    description = info_strings.help_dict['changelog'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['changelog'],
     aliases = ['announcement']
 )
 @discord.app_commands.describe(amount = 'how many changelogs you want (defaults to one)')
@@ -569,7 +569,7 @@ async def CHANGELOG(ctx, amount: int = 1):
 
 @bot.hybrid_command (
     name = 'length',
-    description = info_strings.help_dict['length'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['length'],
     aliases = ['len', 'l']
 )
 @discord.app_commands.describe(sentence = 'pretty self explanatory lol')
@@ -596,8 +596,19 @@ async def LENGTH(ctx, *, sentence):
     )
 
 @bot.hybrid_command (
+    name = 'license',
+    description = info_strings.help_dict['license'],
+    aliases = ['tos']
+)
+async def LICENSE(ctx):
+    await ctx.reply (
+        file = discord.File('license.txt'),
+        mention_author = False
+    )
+
+@bot.hybrid_command (
     name = 'github',
-    description = info_strings.help_dict['github'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['github'],
     aliases = ['git', 'g']
 )
 async def GITHUB(ctx):
@@ -619,11 +630,14 @@ async def GITHUB(ctx):
 
 @bot.hybrid_command (
     name = 'help',
-    description = info_strings.help_dict['help'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['help'],
     aliases = ['h', 'info', 'i']
 )
 @discord.app_commands.describe(search = 'specific command to look for, or use `all` to show full list')
 async def HELP(ctx, search = 'all'): # only really need to track the first word
+    global PREFIX
+    if ctx.interaction:
+        PREFIX = '/'
     if search == 'all':
         await ctx.reply (
             embed = discord.Embed ( # passed variables need to be evaluated per-message
@@ -644,7 +658,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
     for i in info_strings.help_list: # iterate through the main command list
         if search in i[0]: # i[0] is always a tuple of the command aliases for any given command
-            command = '/'.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
+            command = ' / '.join(f'{PREFIX}{j}' for j in i[0]) # list comprehension to string
             await ctx.reply (
                 embed = discord.Embed ( # same reason for using eval() as in the main help command
                     title = eval(f'f"""help for {command}"""'), # formatted list of aliases
@@ -683,7 +697,7 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
 @bot.hybrid_command (
     name = 'say',
-    description = info_strings.help_dict['say'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['say'],
     aliases = ['s']
 )
 @discord.app_commands.describe(sentence = 'pretty self explanatory lol')
@@ -699,11 +713,9 @@ async def SAY(ctx, *, sentence):
     deletable = False # having a delete button next to bot text looked weird
     await ctx.channel.send(sentence) # can't use ctx.send() because slash command
 
-
-
 @bot.hybrid_command (
     name = 'embed',
-    description = info_strings.help_dict['embed'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['embed'],
     aliases = ['e']
 )
 @discord.app_commands.describe (
@@ -732,7 +744,7 @@ async def EMBED (
         msg = await ctx.send('** **') # needs to complete interaction to prevent error
         await msg.delete() # idk why you have to do it this way but oh well it works
 
-        arg_list = [title, description, color, footer, footer_image, thumbnail]
+        arg_list = [title, description, color, footer, footer_image, thumbnail, image]
 
     else: # if prefix command you can delete directly
         await ctx.message.delete()
@@ -756,7 +768,7 @@ async def EMBED (
 
     if image: # if the slash command passed a separate main image
         TITLE = arg_list[0]
-        IMAGE == image
+        IMAGE = image
     else: # prefix command doesn't have thumbnail
         if arg_list[0].startswith('http'):
             TITLE = None
@@ -821,7 +833,7 @@ async def EMBED (
 
 @bot.hybrid_command (
     name = 'ball',
-    description = info_strings.help_dict['ball'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['ball'],
     aliases = ['8ball', 'b']
 )
 @discord.app_commands.describe(question = 'if left blank will just give answer')
@@ -850,7 +862,7 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
 
 @bot.hybrid_command (
     name = 'dice',
-    description = info_strings.help_dict['dice'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['dice'],
     aliases = ['roll', 'd', 'r']
 )
 @discord.app_commands.describe (
@@ -882,7 +894,7 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
 
 @bot.hybrid_command (
     name = 'mock',
-    description = info_strings.help_dict['mock'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['mock'],
     aliases = ['m']
 )
 @discord.app_commands.describe(sentence = 'pretty self explanatory lol')
@@ -903,7 +915,7 @@ async def MOCK(ctx, *, sentence):
 
 @bot.hybrid_command (
     name = 'uwu',
-    description = info_strings.help_dict['uwu'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['uwu'],
     aliases = ['u', 'owo']
 )
 @discord.app_commands.describe(sentence = 'there\'s no going back')
@@ -997,7 +1009,7 @@ async def UWU(ctx, *, sentence): # I'm so sorry
 
 @bot.hybrid_command (
     name = 'rockpaperscissors',
-    description = info_strings.help_dict['rockpaperscissors'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['rockpaperscissors'],
     aliases = ['rps']
 )
 @discord.app_commands.describe(choice = 'must be either `rock`, `paper`, or `scissors`')
@@ -1054,7 +1066,7 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
 
 @bot.hybrid_command (
     name = 'nut',
-    description = info_strings.help_dict['nut'].replace('{PREFIX}', '/'),
+    description = info_strings.help_dict['nut'],
     aliases = ['n']
 )
 @discord.app_commands.describe(query = 'whether to just show the current count')

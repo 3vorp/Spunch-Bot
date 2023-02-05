@@ -181,6 +181,20 @@ causes a lot of spam, beware of using large numbers
 ),
 (
 
+('license', 'tos'),
+
+'show license',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}license
+```
+'''
+
+),
+(
+
 ('github', 'git', 'g'),
 
 'show github listing',
@@ -411,6 +425,7 @@ just for fun, don't take this command too seriously lol
 help_list = [i for j in help_categorized.values() for i in j]
 
 
+
 # uses the flattened help list and formats it into a much more convenient dictionary
 help_dict = {i[0][0]: i[1] for i in help_list}
 
@@ -430,7 +445,7 @@ for key in help_categorized:
         for i in name[:-1]:
             help_string += '`{PREFIX}' + f'{i}`, '
         help_string += '`{PREFIX}' + f'{name[-1]}`: {desc}\n'
-help_string += '**specific info for a command can be found by running**```{PREFIX}help <command>```'
+help_string += '**\nspecific info for a command can be found by running**```{PREFIX}help <command>```'
 
 
 
