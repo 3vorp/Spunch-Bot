@@ -427,7 +427,7 @@ help_list = [i for j in help_categorized.values() for i in j]
 
 
 # uses the flattened help list and formats it into a much more convenient dictionary
-help_dict = {i[0][0]: i[1] for i in help_list}
+help_dict = {i[0][0]: i[1].replace('{PREFIX}', '/') for i in help_list}
 
 
 
