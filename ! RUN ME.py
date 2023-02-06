@@ -170,7 +170,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                     )
                 )
 
-        await message.clear_reactions() # stops accidental double reactions or cannodling etc
+        await message.clear_reactions() # stops accidental double reactions or canoodling etc
 
 
     if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
