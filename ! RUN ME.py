@@ -385,21 +385,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
 async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
-    deletable = False
-    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
-        embed = discord.Embed (
-            title = f'feedback sent by **{ctx.author}**:',
-            description = f'sent in {ctx.channel.mention}: ```{message}```',
-            color = EMBED_COLOR
-        )
-        .set_footer (
-            text = 'idk maybe react to this if you complete it or something',
-            icon_url = EMBED_GIF
-        )
-    )
-
-    deletable = True
-    await ctx.reply ( # sends confirmation message to user
+    confirmation = await ctx.reply ( # sends confirmation message to user
         embed = discord.Embed (
             title = 'your feedback has been sent:',
             description = f'```{message}```',
@@ -410,6 +396,20 @@ async def FEEDBACK(ctx, *, message):
             icon_url = EMBED_GIF
         ),
         mention_author = False
+    )
+
+    deletable = False
+    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
+        embed = discord.Embed (
+            title = f'feedback sent by **{ctx.author}**:',
+            url = confirmation.jump_url,
+            description = f'```{message}```',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'idk maybe react to this if you complete it or something',
+            icon_url = EMBED_GIF
+        )
     )
 
 @bot.hybrid_command (
