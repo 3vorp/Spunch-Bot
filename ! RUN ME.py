@@ -167,6 +167,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
             await message.edit (
                 embed = discord.Embed (
                     title = message.embeds[0].title,
+                    url = message.embeds[0].url,
                     description = message.embeds[0].description,
                     color = GREEN_COLOR
                 )
@@ -194,6 +195,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
             await message.edit (
                 embed = discord.Embed (
                     title = message.embeds[0].title,
+                    url = message.embeds[0].url,
                     description = message.embeds[0].description,
                     color = RED_COLOR
                 )
