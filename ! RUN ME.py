@@ -144,12 +144,17 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
     elif message.channel.id == SUGGEST_CHANNEL:
-        link = [int(i) for i in message.embeds[0].url.split('/')[-2:]]
+        try:
+            link = [int(i) for i in message.embeds[0].url.split('/')[-2:]]
 
-        fetched_message = (await bot # parsing url into more readable format
-            .get_channel(link[0])
-            .fetch_message(link[1])
-        ) # fetching message using the parsed url
+            fetched_message = (await bot # parsing url into more readable format
+                .get_channel(link[0])
+                .fetch_message(link[1])
+            ) # fetching message using the parsed url
+
+        except (AttributeError, discord.errors.NotFound):
+            await message.clear_reactions()
+            return
 
         if reaction.emoji == '✅':
             await fetched_message.edit (
