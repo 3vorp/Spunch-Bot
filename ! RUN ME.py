@@ -70,7 +70,7 @@ async def on_ready():
         )
         .set_footer (
             text = f'Online as {bot.user}',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         )
     )
 
@@ -119,7 +119,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
             if original.author != user and not user.guild_permissions.manage_messages:
                 deletable = False # if the user has mod perms they can delete using the reaction
-                await user.send ( # sends in DMs to not clutter chats
+                await user.send ( # sends in DMs to not clutter chats further
                     embed = discord.Embed (
                         title = 'you can\'t do that',
                         description = 'only the original sender can delete bot messages',
@@ -127,7 +127,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                     )
                     .set_footer (
                         text = 'also if you have manage message perms yeah that works too',
-                        icon_url = EMBED_GIF
+                        icon_url = ICON_URL
                     )
                 )
                 return
@@ -135,7 +135,75 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
         except (AttributeError, discord.errors.NotFound): # if no reply/slash command
             pass
 
-        await message.delete() # if all these checks passes the message is actually deleted
+        await message.delete() # only happens if all these checks pass
+
+
+
+### FEEDBACK HANDLER
+
+
+
+    elif message.channel.id == SUGGEST_CHANNEL:
+        link = [int(i) for i in message.embeds[0].url.split('/')[-2:]]
+
+        fetched_message = (await bot # parsing url into more readable format
+            .get_channel(link[0])
+            .fetch_message(link[1])
+        ) # fetching message using the parsed url
+
+        if reaction.emoji == '✅':
+            await fetched_message.edit (
+                embed = discord.Embed (
+                    title = fetched_message.embeds[0].title,
+                    description = fetched_message.embeds[0].description,
+                    color = GREEN_COLOR
+                )
+                .set_footer (
+                    text = 'suggestion has been implemented, look out for the next changelog',
+                    icon_url = ICON_URL
+                )
+            )
+
+            await message.edit (
+                embed = discord.Embed (
+                    title = message.embeds[0].title,
+                    description = message.embeds[0].description,
+                    color = GREEN_COLOR
+                )
+                .set_footer (
+                    text = 'confirmed suggestion as added/will add',
+                    icon_url = ICON_URL
+                )
+            )
+
+            await message.clear_reactions() # remove reactions from original message
+
+        elif reaction.emoji == '❌':
+            await fetched_message.edit (
+                embed = discord.Embed (
+                    title = fetched_message.embeds[0].title,
+                    description = fetched_message.embeds[0].description,
+                    color = RED_COLOR
+                )
+                .set_footer (
+                    text = 'suggestion will not be implemented',
+                    icon_url = ICON_URL
+                )
+            )
+
+            await message.edit (
+                embed = discord.Embed (
+                    title = message.embeds[0].title,
+                    description = message.embeds[0].description,
+                    color = RED_COLOR
+                )
+                .set_footer (
+                    text = 'confirmed suggestion as not implemented/won\'t be implemented',
+                    icon_url = ICON_URL
+                )
+            )
+
+            await message.clear_reactions()
 
 
 
@@ -143,7 +211,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
 
-    if reaction.emoji == '✅' and message.channel.id == ANNOUNCEMENT_CHANNEL:
+    elif reaction.emoji == '✅' and message.channel.id == ANNOUNCEMENT_CHANNEL:
         if '\n' in message.content:
             announcement_list = message.content.split('\n', 1)
         else: # if no title is provided just use "global announcement" as title
@@ -166,12 +234,11 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                     )
                     .set_footer (
                         text = f'you can use {PREFIX}setannouncements to set a custom announcement channel',
-                        icon_url = EMBED_GIF
+                        icon_url = ICON_URL
                     )
                 )
 
         await message.clear_reactions() # stops accidental double reactions or canoodling etc
-
 
     if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
         await message.clear_reactions() # didn't want to delete message so copy/paste still works
@@ -222,7 +289,7 @@ async def on_message(message):
                     color = EMBED_COLOR
                 )
                 .set_image (
-                    url = BIG_GIF
+                    url = THUMBNAIL_URL
                 ),
                 mention_author = False
             )
@@ -271,7 +338,7 @@ async def on_message(message):
                 )
                 .set_footer (
                     text = 'Swahili → English',
-                    icon_url = EMBED_GIF
+                    icon_url = ICON_URL
                 ),
                 mention_author = False
             ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
@@ -294,11 +361,11 @@ async def on_command_error(ctx, error):
             embed = discord.Embed (
                 title = 'you can\'t do that',
                 description = f'```{error}```',
-                color = EMBED_COLOR
+                color = RED_COLOR
             )
             .set_footer (
                 text = 'instant ban',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -308,11 +375,11 @@ async def on_command_error(ctx, error):
         embed = discord.Embed (
             title = 'insert helpful error name here',
             description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
-            color = EMBED_COLOR
+            color = RED_COLOR
         )
         .set_footer (
             text = 'you\'re still an absolute clampongus though',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         ),
         mention_author = False
     )
@@ -350,11 +417,11 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
             embed = discord.Embed (
                 title = 'insert helpful error name here',
                 description = f'no wikipedia article called "{search}" was found',
-                color = EMBED_COLOR
+                color = RED_COLOR
             )
             .set_footer (
                 text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -371,7 +438,7 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
             )
             .set_footer (
                 text = 'be more specific',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -385,32 +452,34 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
 async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
-    confirmation = await ctx.reply ( # sends confirmation message to user
+    confirmation = await ctx.reply ( # assigned to variable so it can be linked to later
         embed = discord.Embed (
             title = 'your feedback has been sent:',
             description = f'```{message}```',
             color = EMBED_COLOR
         )
         .set_footer (
-            text = 'in the meantime idk go touch grass',
-            icon_url = EMBED_GIF
+            text = 'this status will be changed when something has happened',
+            icon_url = ICON_URL
         ),
         mention_author = False
     )
 
     deletable = False
-    await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
+    msg = await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
             title = f'feedback sent by **{ctx.author}**:',
-            url = confirmation.jump_url,
+            url = confirmation.jump_url, # previous message was assigned as a variable
             description = f'```{message}```',
             color = EMBED_COLOR
         )
         .set_footer (
             text = 'idk maybe react to this if you complete it or something',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         )
     )
+    await msg.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
+    await msg.add_reaction('❌')
 
 @bot.hybrid_command (
     name = 'setprefix',
@@ -440,11 +509,11 @@ async def SETPREFIX(ctx, *, new_prefix):
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
                     description = 'there was no prefix set for this server',
-                    color = EMBED_COLOR
+                    color = RED_COLOR
                 )
                 .set_footer (
                     text = 'you\'re still an absolute clampongus though',
-                    icon_url = EMBED_GIF
+                    icon_url = ICON_URL
                 ),
                 mention_author = False
             )
@@ -461,7 +530,7 @@ async def SETPREFIX(ctx, *, new_prefix):
         )
         .set_footer (
             text = 'this was painful to implement so you better appreciate it',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         ),
         mention_author = False
     )
@@ -494,11 +563,11 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
                 embed = discord.Embed (
                     title = 'insert helpful error name here',
                     description = 'there was no announcement channel set for this server',
-                    color = EMBED_COLOR
+                    color = RED_COLOR
                 )
                 .set_footer (
                     text = 'you\'re still an absolute clampongus though',
-                    icon_url = EMBED_GIF
+                    icon_url = ICON_URL
                 ),
                 mention_author = False
             )
@@ -528,7 +597,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
         )
         .set_footer (
             text = 'this command literally took me two months to implement kill me',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         ),
         mention_author = False
     )
@@ -562,7 +631,7 @@ async def CHANGELOG(ctx, amount: int = 1):
             )
             .set_footer ( # adds original send date just for fun
                 text = 'originally sent at',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -620,7 +689,7 @@ async def GITHUB(ctx):
         )
         .set_footer (
             text = 'fair warning that it\'s kinda a dumpster fire to read through',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         )
         .set_thumbnail (
             url = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
@@ -647,10 +716,10 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
             )
             .set_footer (
                 text = eval(f'f"""{info_strings.help_footer}"""'),
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             )
             .set_thumbnail (
-                url = BIG_GIF
+                url = THUMBNAIL_URL
             ),
             mention_author = False
         )
@@ -667,10 +736,10 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
                 )
                 .set_footer (
                     text = eval(f'f"""{info_strings.help_footer}"""'),
-                    icon_url = EMBED_GIF
+                    icon_url = ICON_URL
                 )
                 .set_thumbnail (
-                    url = BIG_GIF
+                    url = THUMBNAIL_URL
                 ),
                 mention_author = False
             )
@@ -680,11 +749,11 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
         embed = discord.Embed (
             title = 'insert helpful error name here',
             description = eval(f'f"""{info_strings.help_not_found}"""'),
-            color = EMBED_COLOR
+            color = RED_COLOR
         )
         .set_footer (
             text = 'you\'re still an absolute clampongus though',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         ),
         mention_author = False
     )
@@ -756,11 +825,11 @@ async def EMBED (
             embed = discord.Embed (
                 title = 'insert helpful error name here',
                 description = 'you need to actually provide arguments lol',
-                color = EMBED_COLOR
+                color = RED_COLOR
             )
             .set_footer (
                 text = 'you\'re still an absolute clampongus though',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -874,7 +943,7 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
 
     if count > 1 and len(rolls) <= 30: # won't show roll count if there was only one
         footer = f'individual rolls: {rolls}'
-        icon_url = EMBED_GIF
+        icon_url = ICON_URL
     else:
         footer = ''
         icon_url = None
@@ -1094,7 +1163,7 @@ async def NUT(ctx, *, query = None):
             )
             .set_footer (
                 text = 'i\'m literally just checking for multiples of 50 lol',
-                icon_url = EMBED_GIF
+                icon_url = ICON_URL
             ),
             mention_author = False
         )
@@ -1108,7 +1177,7 @@ async def NUT(ctx, *, query = None):
         )
         .set_footer (
             text = f'total nuts collected: {DATABASE["nut_count"]}',
-            icon_url = EMBED_GIF
+            icon_url = ICON_URL
         ),
         mention_author = False
     )

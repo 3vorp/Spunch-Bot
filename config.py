@@ -5,14 +5,16 @@
 # change this to change the default prefix — if the server has set a prefix it will override this
 DEFAULT_PREFIX = '~'
 
-# this is just a hex color code (#C3BA5C) with 0x in front of it so discord parses it as hex
+# these are just hex color codes with "0x" in front of it so discord parses it properly
 EMBED_COLOR = 0xc3ba5c
+GREEN_COLOR = 0x5cc394
+RED_COLOR = 0xc35c5c
 
 # the original spongeboy gif™
-EMBED_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
+ICON_URL = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
 
 # used in info embeds
-BIG_GIF = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
+THUMBNAIL_URL = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/big_icon.gif'
 
 
 
