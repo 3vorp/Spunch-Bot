@@ -8,7 +8,7 @@ DEFAULT_PREFIX = '~'
 # these are just hex color codes with "0x" in front of it so discord parses it properly
 EMBED_COLOR = 0xc3ba5c
 GREEN_COLOR = 0x5cc394
-RED_COLOR = 0xc35c5c
+RED_COLOR = 0xda4f4f
 
 # the original spongeboy gif™
 ICON_URL = 'https://raw.githubusercontent.com/3vorp/Spunch-Bot/main/assets/embed_icon.gif'
