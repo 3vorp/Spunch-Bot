@@ -548,11 +548,11 @@ async def SETPREFIX(ctx, *, new_prefix):
     aliases = ['sa']
 )
 @discord.app_commands.describe (
-    option = 'use `reset` to reset channel or `none` to disable for given server'
+    config = 'use `reset` to reset channel or `none` to disable for given server'
 )
 @commands.guild_only()
-async def SETANNOUNCEMENTS(ctx, option = ''):
-    if option == 'reset' or ctx.channel == ctx.guild.text_channels[0]:
+async def SETANNOUNCEMENTS(ctx, config = ''):
+    if config == 'reset' or ctx.channel == ctx.guild.text_channels[0]:
         try:
             del DATABASE[f'announcement_{ctx.guild.id}']
             await write_database()
@@ -580,7 +580,7 @@ async def SETANNOUNCEMENTS(ctx, option = ''):
             )
         return
 
-    if option in ('off', 'none', 'false'):
+    if config in ('off', 'none', 'false'):
         DATABASE[f'announcement_{ctx.guild.id}'] = False
         await write_database()
         await ctx.reply (
