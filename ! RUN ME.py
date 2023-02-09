@@ -1161,7 +1161,7 @@ async def NUT(ctx, *, query = None):
     DATABASE['nut_count'] += 1
     await write_database() # adds one to global nut count and writes it
 
-    if DATABASE["nut_count"] % 50 == 0: # special NUT
+    if DATABASE['nut_count'] % 50 == 0: # special NUT
         await ctx.reply (
             embed = discord.Embed (
                 title = 'you have sacrificed a special NUT',
