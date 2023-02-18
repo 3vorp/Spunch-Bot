@@ -144,6 +144,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
     elif message.channel.id == SUGGEST_CHANNEL:
+        fetchable = True
         try:
             link = [int(i) for i in message.embeds[0].url.split('/')[-2:]]
 
@@ -153,22 +154,9 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
             ) # fetching message using the parsed url
 
         except (AttributeError, discord.errors.NotFound):
-            await message.clear_reactions()
-            return
+            fetchable = False # checks whether to update the original message or not
 
         if reaction.emoji == '✅':
-            await fetched_message.edit (
-                embed = discord.Embed (
-                    title = fetched_message.embeds[0].title,
-                    description = fetched_message.embeds[0].description,
-                    color = GREEN_COLOR
-                )
-                .set_footer (
-                    text = 'suggestion has been implemented, look out for the next changelog',
-                    icon_url = ICON_URL
-                )
-            )
-
             await message.edit (
                 embed = discord.Embed (
                     title = message.embeds[0].title,
@@ -177,18 +165,32 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                     color = GREEN_COLOR
                 )
                 .set_footer (
-                    text = 'confirmed suggestion as added/will add',
+                    text = 'suggestion has been implemented',
                     icon_url = ICON_URL
                 )
             )
 
+            if fetchable: # only edits original confirmation if it exists to prevent errors
+                await fetched_message.edit (
+                    embed = discord.Embed (
+                        title = fetched_message.embeds[0].title,
+                        description = fetched_message.embeds[0].description,
+                        color = GREEN_COLOR
+                    )
+                    .set_footer (
+                        text = 'suggestion has been implemented, look out for the next changelog',
+                        icon_url = ICON_URL
+                    )
+                )
+
             await message.clear_reactions() # remove reactions from original message
 
         elif reaction.emoji == '❌':
-            await fetched_message.edit (
+            await message.edit (
                 embed = discord.Embed (
-                    title = fetched_message.embeds[0].title,
-                    description = fetched_message.embeds[0].description,
+                    title = message.embeds[0].title,
+                    url = message.embeds[0].url,
+                    description = message.embeds[0].description,
                     color = RED_COLOR
                 )
                 .set_footer (
@@ -197,18 +199,18 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
                 )
             )
 
-            await message.edit (
-                embed = discord.Embed (
-                    title = message.embeds[0].title,
-                    url = message.embeds[0].url,
-                    description = message.embeds[0].description,
-                    color = RED_COLOR
+            if fetchable:
+                await fetched_message.edit (
+                    embed = discord.Embed (
+                        title = fetched_message.embeds[0].title,
+                        description = fetched_message.embeds[0].description,
+                        color = RED_COLOR
+                    )
+                    .set_footer (
+                        text = 'suggestion will not be implemented',
+                        icon_url = ICON_URL
+                    )
                 )
-                .set_footer (
-                    text = 'confirmed suggestion as not implemented/won\'t be implemented',
-                    icon_url = ICON_URL
-                )
-            )
 
             await message.clear_reactions()
 
@@ -255,13 +257,20 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 @bot.event
 async def on_message(message):
     global deletable
-    if deletable and message.author == bot.user: # automatically applies by default
-        if not isinstance(message.channel, discord.channel.DMChannel):
+    if message.author == bot.user: # stops the bot replying to itself
+        if deletable and not isinstance(message.channel, discord.channel.DMChannel):
             await message.add_reaction('🗑️') # DMs break with reactions badly
 
         return # nothing else uses bot messages so just stop early
 
     deletable = True # resets the status for the next message
+    ctx = await bot.get_context(message) # til you can just... create the ctx variable
+    sentence = message.content.lower() # removes case sensitivity
+
+    if message.channel.id == SUGGEST_CHANNEL: # automatically converts to suggestion format
+        await FEEDBACK(ctx, message = sentence)
+        await message.delete() # deletes original message to save hassle in feedback command
+
 
     if message.channel.id == ANNOUNCEMENT_CHANNEL: # initializes global announcements
         await message.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
@@ -273,8 +282,6 @@ async def on_message(message):
 
 
 
-    ctx = await bot.get_context(message) # til you can just... create the ctx variable
-    sentence = message.content.lower() # removes case sensitivity
 
     match sentence: # only direct matches go here
         case 'f':
@@ -459,24 +466,33 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
 async def FEEDBACK(ctx, *, message):
     global deletable # modifying value so every function that uses it declares it global
 
-    confirmation = await ctx.reply ( # assigned to variable so it can be linked to later
-        embed = discord.Embed (
-            title = 'your feedback has been sent:',
-            description = f'```{message}```',
-            color = EMBED_COLOR
+    if ctx.channel.id != SUGGEST_CHANNEL: # only sends confirmation if it's not in the channel
+        confirmation = await ctx.reply ( # assigned to variable so it can be linked to later
+            embed = discord.Embed (
+                title = 'your feedback has been sent:',
+                description = f'```{message}```',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'this status will be changed when something has happened',
+                icon_url = ICON_URL
+            ),
+            mention_author = False
         )
-        .set_footer (
-            text = 'this status will be changed when something has happened',
-            icon_url = ICON_URL
-        ),
-        mention_author = False
-    )
+        url = confirmation.jump_url # previous message was assigned as a variable to do this
+
+    else: # if it's in the feedback channel
+        if ctx.interaction:
+            msg = await ctx.send('** **') # completes interaction for slash command
+            await msg.delete()
+
+        url = None # if there's no reference url there's no point setting it
 
     deletable = False
     msg = await bot.get_channel(SUGGEST_CHANNEL).send ( # edit this channel in config.py
         embed = discord.Embed (
             title = f'feedback sent by **{ctx.author}**:',
-            url = confirmation.jump_url, # previous message was assigned as a variable
+            url = url,
             description = f'```{message}```',
             color = EMBED_COLOR
         )
@@ -485,6 +501,7 @@ async def FEEDBACK(ctx, *, message):
             icon_url = ICON_URL
         )
     )
+
     await msg.add_reaction('✅') # actual pushing is in on_raw_reaction_add()
     await msg.add_reaction('❌')
 
