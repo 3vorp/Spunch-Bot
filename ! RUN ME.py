@@ -931,22 +931,20 @@ async def EMBED (
 )
 @discord.app_commands.describe(question = 'if left blank will just give answer')
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
-    ball_choices = [ # infinitely expandable list
-        'yes', 'no',
-        'maybe', 'idk',
-        'ask later', 'definitely',
-        'never', 'never ask me that again',
-        'yesn\'t', 'doubt'
-    ]
-
     if question: # checks if exists
         description = f'```{question}```'
     else: # sets blank if it doesn't exist
-        description = ''
+        description = None
 
     await ctx.reply ( # if no option provided no description will be set
         embed = discord.Embed (
-            title = random.choice(ball_choices),
+            title = random.choice([ # infinitely expandable list
+                'yes', 'no',
+                'maybe', 'idk',
+                'ask later', 'definitely',
+                'never', 'never ask me that again',
+                'yesn\'t', 'doubt'
+            ]),
             description = description,
             color = EMBED_COLOR
         ),
