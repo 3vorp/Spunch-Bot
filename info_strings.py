@@ -492,3 +492,7 @@ There are two possible reasons for this error appearing:
 
 The bot will mostly work without a database, however commands such as `prefix` and `nut` will result in a LOT of errors.
 '''
+
+error_title = 'insert helpful error name here'
+
+error_clampongus = 'you\'re still an absolute clampongus though'

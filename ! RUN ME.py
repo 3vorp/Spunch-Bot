@@ -416,12 +416,12 @@ async def on_command_error(ctx, error):
 
     await ctx.reply ( # handles basically all generic errors
         embed = discord.Embed (
-            title = 'insert helpful error name here',
+            title = info_strings.error_title,
             description = f'```{error}```\n**use `{PREFIX}help` for a list of commands**',
             color = RED_COLOR
         )
         .set_footer (
-            text = 'you\'re still an absolute clampongus though',
+            text = info_strings.error_clampongus,
             icon_url = ICON_URL
         ),
         mention_author = False
@@ -458,12 +458,12 @@ async def WIKIPEDIA(ctx, *, search): # "*" puts message into next variable as-is
     except wikipedia.exceptions.PageError:
         await ctx.reply (
             embed = discord.Embed (
-                title = 'insert helpful error name here',
+                title = info_strings.error_title,
                 description = f'no wikipedia article called "{search}" was found',
                 color = RED_COLOR
             )
             .set_footer (
-                text = 'you\'re still an absolute clampongus though',
+                text = info_strings.error_clampongus,
                 icon_url = ICON_URL
             ),
             mention_author = False
@@ -560,12 +560,12 @@ async def SETPREFIX(ctx, *, new_prefix):
         except KeyError:
             await ctx.reply (
                 embed = discord.Embed (
-                    title = 'insert helpful error name here',
+                    title = info_strings.error_title,
                     description = 'there was no prefix set for this server',
                     color = RED_COLOR
                 )
                 .set_footer (
-                    text = 'you\'re still an absolute clampongus though',
+                    text = info_strings.error_clampongus,
                     icon_url = ICON_URL
                 ),
                 mention_author = False
@@ -614,12 +614,12 @@ async def SETANNOUNCEMENTS(ctx, config = ''):
         except KeyError:
             await ctx.reply (
                 embed = discord.Embed (
-                    title = 'insert helpful error name here',
+                    title = info_strings.error_title,
                     description = 'there was no announcement channel set for this server',
                     color = RED_COLOR
                 )
                 .set_footer (
-                    text = 'you\'re still an absolute clampongus though',
+                    text = info_strings.error_clampongus,
                     icon_url = ICON_URL
                 ),
                 mention_author = False
@@ -800,12 +800,12 @@ async def HELP(ctx, search = 'all'): # only really need to track the first word
 
     await ctx.reply ( # if the return statement was never reached it probably doesn't exist
         embed = discord.Embed (
-            title = 'insert helpful error name here',
+            title = info_strings.error_title,
             description = eval(f'f"""{info_strings.help_not_found}"""'),
             color = RED_COLOR
         )
         .set_footer (
-            text = 'you\'re still an absolute clampongus though',
+            text = info_strings.error_clampongus,
             icon_url = ICON_URL
         ),
         mention_author = False
@@ -876,12 +876,12 @@ async def EMBED (
     if ''.join(arg_list) == '': # if nothing was sent
         await ctx.channel.send (
             embed = discord.Embed (
-                title = 'insert helpful error name here',
+                title = info_strings.error_title,
                 description = 'you need to actually provide arguments lol',
                 color = RED_COLOR
             )
             .set_footer (
-                text = 'you\'re still an absolute clampongus though',
+                text = info_strings.error_clampongus,
                 icon_url = ICON_URL
             ),
             mention_author = False
