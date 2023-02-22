@@ -27,6 +27,26 @@ bot = commands.Bot ( # generating the actual bot client
 )
 bot.remove_command('help') # default help command is garbage and idk why it's there honestly
 
+async def get_reply_content(ctx): # I'm not touching this ever again the function name is self-explanatory
+    if ctx.message.content:
+        return None # if there's already message content no need to look for replies
+
+    elif ctx.message.reference:
+        original = (await bot
+            .get_channel(ctx.message.reference.channel_id)
+            .fetch_message(ctx.message.reference.message_id)
+        )
+        original_ctx = await bot.get_context(original)
+
+        if original_ctx.message.embeds:
+            if original_ctx.message.embeds[0].title:
+                return original_ctx.message.embeds[0].title
+            elif original_ctx.message.embeds[0].description:
+                return original_ctx.message.embeds[0].description
+        else:
+            return original_ctx.message.content
+    return None
+
 
 
 ### DATABASE ###
@@ -108,6 +128,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
 ### DELETE REACTION ###
+
 
 
     if reaction.emoji == '🗑️' and message.author == bot.user:
@@ -667,7 +688,7 @@ async def CHANGELOG(ctx, amount: int = 1):
 )
 @discord.app_commands.describe(sentence = 'pretty self explanatory lol')
 async def LENGTH(ctx, *, sentence):
-    word_list = sentence.split() # you need both word list and sentence
+    word_list = sentence.split()
 
     if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
         character = 'character'
@@ -933,8 +954,11 @@ async def EMBED (
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     if question: # checks if exists
         description = f'```{question}```'
+
     else: # sets blank if it doesn't exist
-        description = None
+        description = await get_reply_content(ctx)
+        if description:
+            description = f'```{description}```'
 
     await ctx.reply ( # if no option provided no description will be set
         embed = discord.Embed (
