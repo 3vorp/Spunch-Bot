@@ -1196,6 +1196,9 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
 )
 @commands.guild_only()
 async def BEAN(ctx, member: discord.Member, *, reason = ''):
+    if member == bot.user:
+        member = ctx.author
+        reason = 'trying to stop me lol'
     await ctx.reply (
         embed = discord.Embed (
             title = f'{member} has been beaned',
