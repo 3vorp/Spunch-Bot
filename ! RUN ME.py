@@ -97,7 +97,7 @@ async def on_ready():
             color = EMBED_COLOR
         )
         .set_footer (
-            text = f'Online as {bot.user}',
+            text = f'online as {bot.user}',
             icon_url = ICON_URL
         )
     )
