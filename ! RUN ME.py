@@ -78,8 +78,8 @@ async def on_ready():
     await bot.tree.sync() # idk why discord can't just have slash commands synced by default
     global deletable
     await bot.change_presence (
-        activity = discord.Game ( # shows "playing spongeboy gif on repeat"
-            name = 'spongeboy gif on repeat'
+        activity = discord.Game ( # shows "playing spunch bop gif on repeat"
+            name = 'spunch bop gif on repeat'
         )
     )
 
@@ -320,7 +320,7 @@ async def on_message(message):
                 mention_author = False
             )
 
-        case 'spongeboy':
+        case 'spunch bop' | 'spongeboy':
             await message.reply (
                 embed = discord.Embed (
                     color = EMBED_COLOR
