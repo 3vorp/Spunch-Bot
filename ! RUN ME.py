@@ -32,20 +32,22 @@ async def get_reply_content(ctx): # I'm not touching this ever again the functio
         return None # if there's already message content no need to look for replies
 
     elif ctx.message.reference:
-        original = (await bot
+        original = (await bot # fetches original message if it exists
             .get_channel(ctx.message.reference.channel_id)
             .fetch_message(ctx.message.reference.message_id)
-        ) # fetches original message
+        )
         original_ctx = await bot.get_context(original)
 
-        if original_ctx.message.embeds:
+        if original_ctx.message.content: # tries to find message content in the original message
+            return original_ctx.message.content
+
+        elif original_ctx.message.embeds: # if all else fails search for embeds (if replying to bot etc)
             if original_ctx.message.embeds[0].title:
                 return original_ctx.message.embeds[0].title
-            elif original_ctx.message.embeds[0].description:
+            elif original_ctx.message.embeds[0].description: # only uses description if no title set
                 return original_ctx.message.embeds[0].description
-        else:
-            return original_ctx.message.content
-    return None
+
+    return None # if there's no message reference and no message content/embeds then there's nothing to get
 
 
 
