@@ -35,7 +35,7 @@ async def get_reply_content(ctx): # I'm not touching this ever again the functio
         original = (await bot
             .get_channel(ctx.message.reference.channel_id)
             .fetch_message(ctx.message.reference.message_id)
-        )
+        ) # fetches original message
         original_ctx = await bot.get_context(original)
 
         if original_ctx.message.embeds:
@@ -1178,6 +1178,29 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
             ),
             mention_author = False
         )
+
+@bot.hybrid_command (
+    name = 'bean',
+    description = info_strings.help_dict['bean']
+)
+@discord.app_commands.describe (
+    member = 'who you want to b e a n',
+    reason = 'i loved it when spunch bot said it was beaning time and beaned everywhere'
+)
+@commands.guild_only()
+async def BEAN(ctx, member: discord.Member, *, reason = ''):
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'{member} has been beaned',
+            description = f'reason: ```{reason}```',
+            color = EMBED_COLOR
+        )
+        .set_footer (
+            text = 'why can\'t you mention people in embed titles aaa',
+            icon_url = ICON_URL
+        ),
+        mention_author = False
+    )
 
 @bot.hybrid_command (
     name = 'nut',

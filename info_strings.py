@@ -375,6 +375,23 @@ you can provide how many dice without providing how many sides, bot will assume 
 ),
 (
 
+('bean',),
+
+'ban but  b e a n s',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}bean <user> <reason>
+```
+**EXAMPLE:**
+```
+{PREFIX}bean @everyone plotting my demise
+'''
+
+),
+(
+
 ('rockpaperscissors', 'rps'),
 
 'rock paper scissors against me',
