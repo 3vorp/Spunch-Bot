@@ -27,6 +27,30 @@ bot = commands.Bot ( # generating the actual bot client
 )
 bot.remove_command('help') # default help command is garbage and idk why it's there honestly
 
+
+
+### DATABASE ###
+
+
+
+try:
+    with open('database.json', 'r') as db:
+        DATABASE = json.load(db)
+
+except FileNotFoundError:
+    print(info_strings.error_database) # no eval() necessary because it's not an f string
+    DATABASE = {} # stops initial errors, still won't really work though
+
+async def write_database(): # saves a LOT of copy paste
+    with open('database.json', 'w') as db:
+        json.dump(DATABASE, db, indent = 4, ensure_ascii = False)
+
+
+
+### RANDOM UTILITIES ###
+
+
+
 async def get_reply_content(ctx): # I'm not touching this ever again the function name is self-explanatory
     if ctx.message.content:
         return None # if there's already message content no need to look for replies
@@ -51,24 +75,6 @@ async def get_reply_content(ctx): # I'm not touching this ever again the functio
 
 
 
-### DATABASE ###
-
-
-
-try:
-    with open('database.json', 'r') as db:
-        DATABASE = json.load(db)
-
-except FileNotFoundError:
-    print(info_strings.error_database) # no eval() necessary because it's not an f string
-    DATABASE = {} # stops initial errors, still won't really work though
-
-async def write_database(): # saves a LOT of copy paste
-    with open('database.json', 'w') as db:
-        json.dump(DATABASE, db, indent = 4, ensure_ascii = False)
-
-
-
 ### STARTUP MESSAGE / PRESENCE ###
 
 
@@ -78,8 +84,8 @@ async def on_ready():
     await bot.tree.sync() # idk why discord can't just have slash commands synced by default
     global deletable
     await bot.change_presence (
-        activity = discord.Game ( # shows "playing spunch bop gif on repeat"
-            name = 'spunch bop gif on repeat'
+        activity = discord.Game ( # shows "playing spunch bop gif"
+            name = 'spunch 🅱op gif'
         )
     )
 
