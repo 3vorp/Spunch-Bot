@@ -450,7 +450,7 @@ help_dict = {i[0][0]: i[1].replace('{PREFIX}', '/') for i in help_list}
 
 # a LOT of parsing is required to make this work, since it needs to generate command categories etc
 help_string = '''
-an atrocity made in discord.py by `Evorp#5819` because I was bored idk
+an atrocity made in discord.py by `{", ".join(bot.get_user(i).name + "#" + bot.get_user(i).discriminator for i in DEVELOPER_IDS)}` because I was bored idk
 
 **COMMANDS AVAILABLE:**
 '''

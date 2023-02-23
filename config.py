@@ -1,9 +1,17 @@
-### general branding stuff ####
+'''
+I would normally use a json here since it's basically just key: value pairs
+but since there's a lot of comments and mutable data the strict syntax just doesn't work nicely imo
+'''
+
+### general branding stuff ###
 
 
 
 # change this to change the default prefix — if the server has set a prefix it will override this
 DEFAULT_PREFIX = '~'
+
+# used for handling certain command permissions
+DEVELOPER_IDS = [360249987927638016]
 
 # these are just hex color codes with "0x" in front of it so discord parses it properly
 EMBED_COLOR = 0xc3ba5c
