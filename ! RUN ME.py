@@ -172,7 +172,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
 
-    elif message.channel.id == SUGGEST_CHANNEL:
+    elif message.channel.id == SUGGEST_CHANNEL and user.id in DEVELOPER_IDS:
         fetchable = True
         try:
             link = [int(i) for i in message.embeds[0].url.split('/')[-2:]]
@@ -249,7 +249,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
 
 
-    elif reaction.emoji == '✅' and message.channel.id == ANNOUNCEMENT_CHANNEL:
+    elif reaction.emoji == '✅' and message.channel.id == ANNOUNCEMENT_CHANNEL and user.id in DEVELOPER_IDS:
         if '\n' in message.content:
             announcement_list = message.content.split('\n', 1)
         else: # if no title is provided just use "global announcement" as title
@@ -278,7 +278,7 @@ async def on_raw_reaction_add(payload): # raw events can handle all messages and
 
         await message.clear_reactions() # stops accidental double reactions or canoodling etc
 
-    if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL:
+    if reaction.emoji == '❌' and message.channel.id == ANNOUNCEMENT_CHANNEL and user.id in DEVELOPER_IDS:
         await message.clear_reactions() # didn't want to delete message so copy/paste still works
 
 
@@ -1187,6 +1187,29 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
         )
 
 @bot.hybrid_command (
+    name = 'behave',
+    description = info_strings.help_dict['behave'],
+)
+async def BEHAVE(ctx):
+    global deletable
+    if ctx.author.id in DEVELOPER_IDS:
+        deletable = False
+        await ctx.reply (
+            'I\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)',
+            mention_author = False
+        )
+        return
+
+    await ctx.reply (
+        embed = discord.Embed (
+            title = f'{ctx.author} has been banned',
+            description = f'reason: ```lol no```',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
+
+@bot.hybrid_command (
     name = 'bean',
     description = info_strings.help_dict['bean']
 )
@@ -1199,6 +1222,7 @@ async def BEAN(ctx, member: discord.Member, *, reason = ''):
     if member == bot.user:
         member = ctx.author
         reason = 'trying to stop me lol'
+
     await ctx.reply (
         embed = discord.Embed (
             title = f'{member} has been beaned',

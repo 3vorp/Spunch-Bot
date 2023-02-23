@@ -375,6 +375,21 @@ you can provide how many dice without providing how many sides, bot will assume 
 ),
 (
 
+('behave',),
+
+'for when i\'m being naughty 😈',
+
+'''
+**SYNTAX:**
+{PREFIX}behave
+
+**NOTES:**
+if you aren't authorized to MAKE me behave I may perform a bit of trolling
+'''
+
+),
+(
+
 ('bean',),
 
 'ban but  b e a n s',
