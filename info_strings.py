@@ -89,6 +89,75 @@ there is currently no way to see if feedback has been accepted, but this is plan
 ),
 (
 
+('length', 'len', 'l'),
+
+'return word and character count of string',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}length <message>
+{PREFIX}len <message>
+```
+**EXAMPLE:**
+```
+{PREFIX}length this is a string of text
+```
+'''
+
+),
+(
+
+('license', 'tos'),
+
+'show license',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}license
+```
+'''
+
+),
+(
+
+('github', 'git', 'g'),
+
+'show github listing',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}github
+```
+'''
+
+),
+(
+
+('help', 'h', 'info', 'i'),
+
+'if no command mentioned, shows main help message; otherwise, shows specific help for that command',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}help <command>
+{PREFIX}info <all>
+{PREFIX}help
+```
+**EXAMPLE:**
+```
+{PREFIX}info wikipedia
+{PREFIX}help all
+```
+'''
+
+)
+), 'server': (
+(
+
 ('setprefix', 'prefix', 'p'),
 
 'set prefix for current server',
@@ -162,75 +231,6 @@ causes a lot of spam, beware of using large numbers
 ),
 (
 
-('length', 'len', 'l'),
-
-'return word and character count of string',
-
-'''
-**SYNTAX:**
-```
-{PREFIX}length <message>
-{PREFIX}len <message>
-```
-**EXAMPLE:**
-```
-{PREFIX}length this is a string of text
-```
-'''
-
-),
-(
-
-('license', 'tos'),
-
-'show license',
-
-'''
-**SYNTAX:**
-```
-{PREFIX}license
-```
-'''
-
-),
-(
-
-('github', 'git', 'g'),
-
-'show github listing',
-
-'''
-**SYNTAX:**
-```
-{PREFIX}github
-```
-'''
-
-),
-(
-
-('help', 'h', 'info', 'i'),
-
-'if no command mentioned, shows main help message; otherwise, shows specific help for that command',
-
-'''
-**SYNTAX:**
-```
-{PREFIX}help <command>
-{PREFIX}info <all>
-{PREFIX}help
-```
-**EXAMPLE:**
-```
-{PREFIX}info wikipedia
-{PREFIX}help all
-```
-'''
-
-)
-), 'fun': (
-(
-
 ('say', 's'),
 
 'make the bot say stuff',
@@ -285,7 +285,8 @@ if the first argument is a url (starts with https:// or http://), it will try an
 it will give a nonloading image if the url doesn't point to an image, since that's how I made the bot
 '''
 
-),
+)
+), 'fun': (
 (
 
 ('ball', '8ball', 'b'),
