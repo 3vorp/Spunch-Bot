@@ -376,14 +376,36 @@ you can provide how many dice without providing how many sides, bot will assume 
 ),
 (
 
+('wordle',),
+
+'run a wordle game builder, resets every day at 4PM pacific',
+
+'''
+**SYNTAX:**
+```
+{PREFIX}wordle
+
+<guesses>
+```
+
+**NOTES:**
+if you don't make a guess within a minute the game will time out
+only the user who sent the original message can actually make guesses
+
+'''
+
+),
+(
+
 ('behave',),
 
 'for when i\'m being naughty 😈',
 
 '''
 **SYNTAX:**
+```
 {PREFIX}behave
-
+```
 **NOTES:**
 if you aren't authorized to MAKE me behave I may perform a bit of trolling
 '''

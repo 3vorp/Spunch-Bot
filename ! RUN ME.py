@@ -81,16 +81,23 @@ async def get_reply_content(ctx): # I'm not touching this ever again the functio
 
 @bot.event
 async def on_ready():
-    await bot.tree.sync() # idk why discord can't just have slash commands synced by default
     global deletable
+    await bot.tree.sync()
     await bot.change_presence (
         activity = discord.Game ( # shows "playing spunch bop gif"
             name = 'spunch 🅱op gif'
         )
     )
 
+    last_start = [
+        message async for message in (bot
+            .get_channel(STARTUP_CHANNEL)
+            .history(limit = 1)
+        )
+    ]
+
     deletable = False
-    await bot.get_channel(STARTUP_CHANNEL).send (
+    new_start = await bot.get_channel(STARTUP_CHANNEL).send (
         embed = discord.Embed ( # time.time() is a unix timestamp
             title = 'hello i\'m alive now',
             description = f'started at <t:{int(time.time())}>',
@@ -101,6 +108,11 @@ async def on_ready():
             icon_url = ICON_URL
         )
     )
+
+    if last_start[0].created_at.date() != new_start.created_at.date():
+        with open('assets/wordle_answers.txt', 'r') as f: # generates new wordle if it's a new day
+            DATABASE['wordle'] = random.choice(f.read().split('\n'))
+            await write_database()
 
 
 
@@ -697,15 +709,8 @@ async def CHANGELOG(ctx, amount: int = 1):
 async def LENGTH(ctx, *, sentence):
     word_list = sentence.split()
 
-    if len(sentence) == 1: # grammar stuff because I'm a perfectionist lol
-        character = 'character'
-    else:
-        character = 'characters'
-
-    if len(word_list) == 1:
-        word = 'word'
-    else:
-        word = 'words'
+    character = 'character' if len(sentence) == 1 else 'characters'
+    word = 'word' if len(word_list) == 1 else 'words' # proper plurals because I'm a perfectionlist lol
 
     await ctx.reply (
         embed = discord.Embed (
@@ -1185,6 +1190,126 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
             ),
             mention_author = False
         )
+
+@bot.hybrid_command (
+    name = 'wordle',
+    description = info_strings.help_dict['wordle']
+)
+async def WORDLE(ctx):
+    with open('assets/wordle_choices.txt', 'r') as f: # generates all possible words to compare against
+        possible = f.read().split('\n')
+
+    guesses = []
+    i = 0
+    word = DATABASE['wordle']
+    word_char_list = [*word]
+
+    wordle_embed = await ctx.reply ( # assigned to variable to be deleted more easily
+        embed = discord.Embed (
+            title = f'wordle for today',
+            description = f'type your guess below and this message will edit accordingly',
+            color = EMBED_COLOR
+        ),
+        mention_author = False
+    )
+
+    while i < 6:
+        try:
+            guess = await bot.wait_for('message', timeout = 60)
+
+        except TimeoutError:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = info_strings.error_title,
+                    description = 'aborted due to inactivity',
+                    color = RED_COLOR
+                )
+                .set_footer (
+                    text = info_strings.error_clampongus,
+                    icon_url = ICON_URL
+                ),
+                mention_author = False
+            )
+            break
+
+        if len(guess.content) != 5:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = info_strings.error_title,
+                    description = 'your word needs to be five characters exactly',
+                    color = RED_COLOR
+                )
+                .set_footer (
+                    text = info_strings.error_clampongus,
+                    icon_url = ICON_URL
+                ),
+                mention_author = False
+            )
+            continue
+
+        if guess.content not in possible:
+            await ctx.reply (
+                embed = discord.Embed (
+                    title = info_strings.error_title,
+                    description = 'that\'s not a valid word',
+                    color = RED_COLOR
+                )
+                .set_footer (
+                    text = info_strings.error_clampongus,
+                    icon_url = ICON_URL
+                ),
+                mention_author = False
+            )
+            continue
+
+        elif guess.author != ctx.author:
+            continue # ignores if not from the person sending the message
+
+        guess_char_list = [*guess.content]
+
+        for j in range(len(guess_char_list)):
+            if guess_char_list[j] == word_char_list[j]:
+                guess_char_list[j] = '🟩'
+            elif guess_char_list[j] in word_char_list:
+                guess_char_list[j] = '🟨'
+            else:
+                guess_char_list[j] = '⬜'
+
+        guesses.append('```' + ' '.join([*guess.content]) + "```\n" + ''.join(guess_char_list))
+        formatted = "\n".join(i for i in guesses)
+
+        await wordle_embed.edit (
+            embed = discord.Embed (
+                title = wordle_embed.embeds[0].title,
+                description = formatted,
+                color = EMBED_COLOR
+            )
+        )
+
+        i += 1
+
+        if guess.content == word:
+            attempt = 'attempt' if i == 1 else 'attempts'
+            await wordle_embed.edit (
+                embed = discord.Embed (
+                    title = wordle_embed.embeds[0].title,
+                    description = f'you guessed the word in **{i} {attempt}**\n{formatted}',
+                    color = GREEN_COLOR
+                )
+            )
+            await guess.delete()
+            return
+
+        await guess.delete()
+
+    await wordle_embed.edit (
+        embed = discord.Embed (
+            title = wordle_embed.embeds[0].title,
+            description = f'the word was **{word}**\n{formatted}',
+            color = RED_COLOR
+        )
+    )
+
 
 @bot.hybrid_command (
     name = 'behave',
