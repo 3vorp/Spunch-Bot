@@ -378,7 +378,7 @@ you can provide how many dice without providing how many sides, bot will assume 
 
 ('wordle',),
 
-'run a wordle game builder, daily resets every day at 4PM pacific',
+'run a wordle game builder, daily resets at midnight utc',
 
 '''
 **SYNTAX:**
