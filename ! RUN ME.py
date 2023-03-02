@@ -89,7 +89,7 @@ async def on_ready():
         )
     )
 
-    last_start = [
+    last_start = [ # used to check whether to reset the wordle
         message async for message in (bot
             .get_channel(STARTUP_CHANNEL)
             .history(limit = 1)
@@ -1202,22 +1202,22 @@ async def WORDLE(ctx):
     guesses = []
     i = 0
     word = DATABASE['wordle']
-    word_char_list = [*word]
+    word_char_list = [*word] # splits into char array to be edited per-letter more easily
 
     wordle_embed = await ctx.reply ( # assigned to variable to be deleted more easily
         embed = discord.Embed (
             title = f'wordle for today',
-            description = f'type your guess below and this message will edit accordingly',
+            description = f'type your guess below and this message will be edited accordingly',
             color = EMBED_COLOR
         ),
         mention_author = False
     )
 
-    while i < 6:
+    while i < 6: # change this number to change how many guesses are allowed
         try:
             guess = await bot.wait_for('message', timeout = 60)
 
-        except TimeoutError:
+        except TimeoutError: # if nobody has sent a message it gets canceled
             await ctx.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1230,9 +1230,9 @@ async def WORDLE(ctx):
                 ),
                 mention_author = False
             )
-            break
+            break # breaks out of loop early
 
-        if len(guess.content) != 5:
+        if len(guess.content) != 5: # guard clauses to check against anything else that's not allowed
             await ctx.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1247,7 +1247,7 @@ async def WORDLE(ctx):
             )
             continue
 
-        if guess.content not in possible:
+        if guess.content not in possible: # checks if it's actually a word
             await ctx.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1267,7 +1267,7 @@ async def WORDLE(ctx):
 
         guess_char_list = [*guess.content]
 
-        for j in range(len(guess_char_list)):
+        for j in range(len(guess_char_list)): # generates the colored square graphic thingy
             if guess_char_list[j] == word_char_list[j]:
                 guess_char_list[j] = '🟩'
             elif guess_char_list[j] in word_char_list:
@@ -1276,9 +1276,9 @@ async def WORDLE(ctx):
                 guess_char_list[j] = '⬜'
 
         guesses.append('```' + ' '.join([*guess.content]) + "```\n" + ''.join(guess_char_list))
-        formatted = "\n".join(i for i in guesses)
+        formatted = "\n".join(i for i in guesses) # it's used in multiple places
 
-        await wordle_embed.edit (
+        await wordle_embed.edit ( # edits with the new guesses
             embed = discord.Embed (
                 title = wordle_embed.embeds[0].title,
                 description = formatted,
@@ -1288,7 +1288,7 @@ async def WORDLE(ctx):
 
         i += 1
 
-        if guess.content == word:
+        if guess.content == word: # if you guessed the word it lets you know
             attempt = 'attempt' if i == 1 else 'attempts'
             await wordle_embed.edit (
                 embed = discord.Embed (
@@ -1300,9 +1300,9 @@ async def WORDLE(ctx):
             await guess.delete()
             return
 
-        await guess.delete()
+        await guess.delete() # deletes guess after posting to save on spam
 
-    await wordle_embed.edit (
+    await wordle_embed.edit ( # if you didn't get it it tells you what the word actually was
         embed = discord.Embed (
             title = wordle_embed.embeds[0].title,
             description = f'the word was **{word}**\n{formatted}',
