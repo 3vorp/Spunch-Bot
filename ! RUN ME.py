@@ -1199,7 +1199,7 @@ async def WORDLE(ctx, *, practice = ''):
     with open('assets/wordle_choices.txt', 'r') as f: # generates all possible words to compare against
         possible = f.read().split('\n')
 
-    if practice in ('practice', 'new'): # you can also have a non-daily wordle solve
+    if practice.lower() in ('practice', 'new', 'true'): # you can also have a non-daily wordle solve
         with open('assets/wordle_answers.txt', 'r') as f: # generates new wordle if it's a new day
             word = random.choice(f.read().split('\n'))
         wordle_type = 'practice'
