@@ -1195,6 +1195,7 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
     name = 'wordle',
     description = info_strings.help_dict['wordle']
 )
+@discord.app_commands.describe(practice = 'leave blank for daily wordle')
 async def WORDLE(ctx, *, practice = ''):
     with open('assets/wordle_choices.txt', 'r') as f: # generates all possible words to compare against
         possible = f.read().split('\n')
