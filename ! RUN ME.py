@@ -1195,18 +1195,25 @@ async def ROCKPAPERSCISSORS(ctx, choice = random.choice (['rock', 'paper', 'scis
     name = 'wordle',
     description = info_strings.help_dict['wordle']
 )
-async def WORDLE(ctx):
+async def WORDLE(ctx, *, practice = ''):
     with open('assets/wordle_choices.txt', 'r') as f: # generates all possible words to compare against
         possible = f.read().split('\n')
 
+    if practice in ('practice', 'new'): # you can also have a non-daily wordle solve
+        with open('assets/wordle_answers.txt', 'r') as f: # generates new wordle if it's a new day
+            word = random.choice(f.read().split('\n'))
+        wordle_type = 'practice'
+    else:
+        word = DATABASE['wordle']
+        wordle_type = 'daily'
+
     guesses = []
     i = 0
-    word = DATABASE['wordle']
     word_char_list = [*word] # splits into char array to be edited per-letter more easily
 
     wordle_embed = await ctx.reply ( # assigned to variable to be deleted more easily
         embed = discord.Embed (
-            title = f'wordle for today',
+            title = f'{wordle_type} wordle',
             description = f'type your guess below and this message will be edited accordingly',
             color = EMBED_COLOR
         ),
@@ -1218,7 +1225,7 @@ async def WORDLE(ctx):
             guess = await bot.wait_for('message', timeout = 60)
 
         except TimeoutError: # if nobody has sent a message it gets canceled
-            await ctx.reply (
+            await wordle_embed.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
                     description = 'aborted due to inactivity',
@@ -1233,7 +1240,7 @@ async def WORDLE(ctx):
             break # breaks out of loop early
 
         if len(guess.content) != 5: # guard clauses to check against anything else that's not allowed
-            await ctx.reply (
+            await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
                     description = 'your word needs to be five characters exactly',
@@ -1248,7 +1255,7 @@ async def WORDLE(ctx):
             continue
 
         if guess.content not in possible: # checks if it's actually a word
-            await ctx.reply (
+            await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
                     description = 'that\'s not a valid word',

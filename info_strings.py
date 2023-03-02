@@ -378,12 +378,12 @@ you can provide how many dice without providing how many sides, bot will assume 
 
 ('wordle',),
 
-'run a wordle game builder, resets every day at 4PM pacific',
+'run a wordle game builder, daily resets every day at 4PM pacific',
 
 '''
 **SYNTAX:**
 ```
-{PREFIX}wordle
+{PREFIX}wordle <practice / daily>
 
 <guesses>
 ```
@@ -391,6 +391,7 @@ you can provide how many dice without providing how many sides, bot will assume 
 **NOTES:**
 if you don't make a guess within a minute the game will time out
 only the user who sent the original message can actually make guesses
+if no argument is supplied the bot will assume that you're running the daily wordle
 
 '''
 
