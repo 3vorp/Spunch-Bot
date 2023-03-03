@@ -405,7 +405,7 @@ async def on_message(message):
 ### ERROR HANDLING ###
 
 
-'''
+
 @bot.event
 async def on_command_error(ctx, error):
     PREFIX = (await get_prefix(None, ctx.message))[-1]
@@ -436,7 +436,7 @@ async def on_command_error(ctx, error):
             icon_url = ICON_URL
         ),
         mention_author = False
-    )'''
+    )
 
 
 
