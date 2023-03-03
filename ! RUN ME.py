@@ -405,7 +405,7 @@ async def on_message(message):
 ### ERROR HANDLING ###
 
 
-
+'''
 @bot.event
 async def on_command_error(ctx, error):
     PREFIX = (await get_prefix(None, ctx.message))[-1]
@@ -436,7 +436,7 @@ async def on_command_error(ctx, error):
             icon_url = ICON_URL
         ),
         mention_author = False
-    )
+    )'''
 
 
 
@@ -1226,7 +1226,7 @@ async def WORDLE(ctx, *, practice = ''):
             guess = await bot.wait_for('message', timeout = 60)
 
         except TimeoutError: # if nobody has sent a message it gets canceled
-            await wordle_embed.reply (
+            await ctx.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
                     description = 'aborted due to inactivity',
@@ -1240,7 +1240,12 @@ async def WORDLE(ctx, *, practice = ''):
             )
             break # breaks out of loop early
 
-        if len(guess.content) != 5: # guard clauses to check against anything else that's not allowed
+        try: # checks if original message exists
+            await ctx.fetch_message(wordle_embed.id)
+        except discord.errors.NotFound: # if the message was deleted it's treated like a cancellation
+            return
+
+        if len(guess.content) != 5: # only five letter words are allowed in wordle (obviously)
             await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1255,7 +1260,7 @@ async def WORDLE(ctx, *, practice = ''):
             )
             continue
 
-        if guess.content not in possible: # checks if it's actually a word
+        elif guess.content not in possible: # checks if it's actually a word
             await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1270,8 +1275,11 @@ async def WORDLE(ctx, *, practice = ''):
             )
             continue
 
+        elif guess.channel != ctx.channel:
+            continue # ignores if message not in the same channel
+
         elif guess.author != ctx.author:
-            continue # ignores if not from the person sending the message
+            continue # ignores if not from person sending message
 
         guess_char_list = [*guess.content]
 
@@ -1283,8 +1291,8 @@ async def WORDLE(ctx, *, practice = ''):
             else:
                 guess_char_list[j] = '⬜'
 
-        guesses.append('```' + ' '.join([*guess.content]) + "```\n" + ''.join(guess_char_list))
-        formatted = "\n".join(i for i in guesses) # it's used in multiple places
+        guesses.append('```' + ' '.join([*guess.content]) + '```\n' + ''.join(guess_char_list))
+        formatted = '\n'.join(i for i in guesses) # it's used in multiple places
 
         await wordle_embed.edit ( # edits with the new guesses
             embed = discord.Embed (
