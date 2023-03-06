@@ -1260,7 +1260,7 @@ async def WORDLE(ctx, *, practice = ''):
             )
             continue
 
-        elif guess.content not in possible: # checks if it's actually a word
+        elif guess.content.lower() not in possible: # checks if it's actually a word
             await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1291,7 +1291,7 @@ async def WORDLE(ctx, *, practice = ''):
             else:
                 guess_char_list[j] = '⬜'
 
-        guesses.append('```' + ' '.join([*guess.content]) + '```\n' + ''.join(guess_char_list))
+        guesses.append('```' + ' '.join([*guess.content]).upper() + '```\n' + ''.join(guess_char_list).upper())
         formatted = '\n'.join(i for i in guesses) # it's used in multiple places
 
         await wordle_embed.edit ( # edits with the new guesses
@@ -1304,7 +1304,7 @@ async def WORDLE(ctx, *, practice = ''):
 
         i += 1
 
-        if guess.content == word: # if you guessed the word it lets you know
+        if guess.content.lower() == word: # if you guessed the word it lets you know
             attempt = 'attempt' if i == 1 else 'attempts'
             await wordle_embed.edit (
                 embed = discord.Embed (
@@ -1321,7 +1321,7 @@ async def WORDLE(ctx, *, practice = ''):
     await wordle_embed.edit ( # if you didn't get it it tells you what the word actually was
         embed = discord.Embed (
             title = wordle_embed.embeds[0].title,
-            description = f'the word was **{word}**\n{formatted}',
+            description = f'the word was **{word.upper()}**\n{formatted}',
             color = RED_COLOR
         )
     )
