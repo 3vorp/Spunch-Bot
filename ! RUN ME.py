@@ -1245,7 +1245,13 @@ async def WORDLE(ctx, *, practice = ''):
         except discord.errors.NotFound: # if the message was deleted it's treated like a cancellation
             return
 
-        if len(guess.content) != 5: # only five letter words are allowed in wordle (obviously)
+        if guess.channel != ctx.channel:
+            continue # ignores if message not in the same channel
+
+        elif guess.author != ctx.author:
+            continue # ignores if not from person sending message
+
+        elif len(guess.content) != 5: # only five letter words are allowed in wordle (obviously)
             await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1274,12 +1280,6 @@ async def WORDLE(ctx, *, practice = ''):
                 mention_author = False
             )
             continue
-
-        elif guess.channel != ctx.channel:
-            continue # ignores if message not in the same channel
-
-        elif guess.author != ctx.author:
-            continue # ignores if not from person sending message
 
         guess_char_list = [*guess.content]
 
