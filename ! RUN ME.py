@@ -17,7 +17,7 @@ async def get_prefix(_, message): # somehow this actually works exactly how the 
     except (KeyError, AttributeError): # AttributeError from DMs, KeyError from no server prefix
         PREFIX = DEFAULT_PREFIX
 
-    return commands.when_mentioned_or(PREFIX)(bot, message)
+    return PREFIX
 
 bot = commands.Bot ( # generating the actual bot client
     intents = discord.Intents.all(), # permission stuff
@@ -371,7 +371,7 @@ async def on_message(message):
                 mention_author = False
             )
 
-        case bot.user.mention: # on bot mention without command listed
+        case _ if sentence.startswith(bot.user.mention): # on bot mention without command listed
             await HELP(ctx) # passes the ctx created way above
 
         case _ if sentence.startswith('nut'):
@@ -398,7 +398,7 @@ async def on_message(message):
             ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
 
         case _:
-            PREFIX = (await get_prefix(None, message))[-1]
+            PREFIX = await get_prefix(None, message)
             if sentence.startswith(PREFIX) and not sentence[len(PREFIX):].startswith(PREFIX):
                 await bot.process_commands(message) # allows commands to actually run
 
@@ -410,7 +410,7 @@ async def on_message(message):
 
 @bot.event
 async def on_command_error(ctx, error):
-    PREFIX = (await get_prefix(None, ctx.message))[-1]
+    PREFIX = await get_prefix(None, ctx.message)
     print(error) # prints errors so you don't have to rely on the sent message
     if isinstance(error, commands.MissingPermissions):
         await ctx.reply ( # for permission based commands
