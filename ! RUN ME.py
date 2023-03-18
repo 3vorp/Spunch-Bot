@@ -398,7 +398,9 @@ async def on_message(message):
             ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
 
         case _:
-            await bot.process_commands(message) # allows commands to actually run
+            PREFIX = (await get_prefix(None, message))[-1]
+            if sentence.startswith(PREFIX) and not sentence[len(PREFIX):].startswith(PREFIX):
+                await bot.process_commands(message) # allows commands to actually run
 
 
 
