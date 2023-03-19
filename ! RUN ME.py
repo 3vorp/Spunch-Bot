@@ -305,6 +305,7 @@ async def on_message(message):
         return # nothing else uses bot messages so just stop early
 
     deletable = True # resets the status for the next message
+    PREFIX = await get_prefix(None, message)
     ctx = await bot.get_context(message) # til you can just... create the ctx variable
     sentence = message.content.lower() # removes case sensitivity
 
@@ -371,36 +372,34 @@ async def on_message(message):
                 mention_author = False
             )
 
-        case _ if sentence.startswith(bot.user.mention): # on bot mention without command listed
-            await HELP(ctx) # passes the ctx created way above
+    if sentence.startswith(bot.user.mention): # on bot mention without command listed
+        await HELP(ctx) # passes the ctx created way above
 
-        case _ if sentence.startswith('nut'):
-            await NUT(ctx, query = sentence[4:]) # nut is both a keyword and a command because uhh yes
+    elif sentence.startswith('nut'):
+        await NUT(ctx, query = sentence[4:]) # nut is both a keyword and a command because uhh yes
 
-        case _ if 'forgor' in sentence: # I know this is ugly but at least it's consistent
-            await message.add_reaction('💀')
+    elif 'forgor' in sentence: # I know this is ugly but at least it's consistent
+        await message.add_reaction('💀')
 
-        case _ if 'bogos binted' in sentence: # allows for more variation
-            await message.add_reaction('👽')
+    elif 'bogos binted' in sentence: # allows for more variation
+        await message.add_reaction('👽')
 
-        case _ if 'mhhh' in sentence: # "mhhh moment" will still count, etc
-            await message.reply (
-                embed = discord.Embed (
-                    title = 'mhhh',
-                    description = '```Uh-oh moment```',
-                    color = EMBED_COLOR
-                )
-                .set_footer (
-                    text = 'Swahili → English',
-                    icon_url = ICON_URL
-                ),
-                mention_author = False
-            ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
+    elif 'mhhh' in sentence: # "mhhh moment" will still count, etc
+        await message.reply (
+            embed = discord.Embed (
+                title = 'mhhh',
+                description = '```Uh-oh moment```',
+                color = EMBED_COLOR
+            )
+            .set_footer (
+                text = 'Swahili → English',
+                icon_url = ICON_URL
+            ),
+            mention_author = False
+        ) # thanks complibot (https://github.com/Faithful-Resource-Pack/Discord-Bot)
 
-        case _:
-            PREFIX = await get_prefix(None, message)
-            if sentence.startswith(PREFIX) and not sentence[len(PREFIX):].startswith(PREFIX):
-                await bot.process_commands(message) # allows commands to actually run
+    elif sentence.startswith(PREFIX) and not sentence[len(PREFIX):].startswith(PREFIX):
+        await bot.process_commands(message) # allows commands to actually run
 
 
 
