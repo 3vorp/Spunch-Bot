@@ -52,7 +52,7 @@ async def write_database(): # saves a LOT of copy paste
 
 
 async def get_reply_content(ctx): # I'm not touching this ever again the function name is self-explanatory
-    if ctx.message.content:
+    if len(ctx.message.content.split()) > 1:
         return None # if there's already message content no need to look for replies
 
     elif ctx.message.reference:
@@ -965,15 +965,10 @@ async def EMBED (
 )
 @discord.app_commands.describe(question = 'if left blank will just give answer')
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
-    if question: # checks if exists
-        description = f'```{question}```'
+    description = question if question else await get_reply_content(ctx) # tries finding other options
+    print(description)
 
-    else: # sets blank if it doesn't exist
-        description = await get_reply_content(ctx)
-        if description:
-            description = f'```{description}```'
-
-    await ctx.reply ( # if no option provided no description will be set
+    await ctx.reply (
         embed = discord.Embed (
             title = random.choice([ # infinitely expandable list
                 'yes', 'no',
@@ -982,7 +977,7 @@ async def BALL(ctx, *, question = ''): # you can ask for opinion without input
                 'never', 'never ask me that again',
                 'yesn\'t', 'doubt'
             ]),
-            description = description,
+            description = f'```{description}```' if description else None,
             color = EMBED_COLOR
         ),
         mention_author = False
