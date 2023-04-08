@@ -966,7 +966,6 @@ async def EMBED (
 @discord.app_commands.describe(question = 'if left blank will just give answer')
 async def BALL(ctx, *, question = ''): # you can ask for opinion without input
     description = question if question else await get_reply_content(ctx) # tries finding other options
-    print(description)
 
     await ctx.reply (
         embed = discord.Embed (
