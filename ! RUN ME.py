@@ -1204,6 +1204,7 @@ async def WORDLE(ctx, *, practice = ''):
         wordle_type = 'daily'
 
     guesses = []
+    formatted = []
     i = 0
     word_char_list = [*word] # splits into char array to be edited per-letter more easily
 
@@ -1219,6 +1220,7 @@ async def WORDLE(ctx, *, practice = ''):
     while i < 6: # change this number to change how many guesses are allowed
         try:
             guess = await bot.wait_for('message', timeout = 60)
+            guess.content = guess.content.lower()
 
         except TimeoutError: # if nobody has sent a message it gets canceled
             await ctx.reply (
@@ -1261,7 +1263,7 @@ async def WORDLE(ctx, *, practice = ''):
             )
             continue
 
-        elif guess.content.lower() not in possible: # checks if it's actually a word
+        elif guess.content not in possible: # checks if it's actually a word
             await guess.reply (
                 embed = discord.Embed (
                     title = info_strings.error_title,
@@ -1299,7 +1301,7 @@ async def WORDLE(ctx, *, practice = ''):
 
         i += 1
 
-        if guess.content.lower() == word: # if you guessed the word it lets you know
+        if guess.content == word: # if you guessed the word it lets you know
             attempt = 'attempt' if i == 1 else 'attempts'
             await wordle_embed.edit (
                 embed = discord.Embed (
