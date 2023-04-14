@@ -701,6 +701,25 @@ async def CHANGELOG(ctx, amount: int = 1):
             mention_author = False
         )
 
+@bot.command(aliases = ['rm']) # yes this is a direct reference to the rm command in terminals
+async def removemessage(ctx): # dev command for removing clutter the bot might have sent on accident
+    if ctx.author.id not in DEVELOPER_IDS:
+        await ctx.message.add_reaction('❌')
+        return # returns early if you don't have permissions
+
+    try:
+        original = (await bot # directly copy/pasted from get_reply_content()
+            .get_channel(ctx.message.reference.channel_id)
+            .fetch_message(ctx.message.reference.message_id)
+        )
+        original_ctx = await bot.get_context(original)
+        await original_ctx.message.delete()
+
+    except AttributeError:
+        pass
+
+    await ctx.message.delete()
+
 @bot.hybrid_command (
     name = 'length',
     description = info_strings.help_dict['length'],

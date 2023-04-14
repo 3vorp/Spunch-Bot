@@ -158,6 +158,27 @@ there is currently no way to see if feedback has been accepted, but this is plan
 ), 'server': (
 (
 
+('removemessage', 'rm'),
+
+'remove a replied message',
+
+
+'''
+**SYNTAX:**
+```
+{PREFIX}removemessage
+{PREFIX}rm
+```
+**NOTES:**
+
+developer only
+no slash command available since you can't reply to messages with interactions being used
+intended for debugging only
+'''
+
+)
+(
+
 ('setprefix', 'prefix', 'p'),
 
 'set prefix for current server',
