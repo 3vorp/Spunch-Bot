@@ -176,7 +176,7 @@ no slash command available since you can't reply to messages with interactions b
 intended for debugging only
 '''
 
-)
+),
 (
 
 ('setprefix', 'prefix', 'p'),
