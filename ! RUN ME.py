@@ -1040,10 +1040,7 @@ async def DICE(ctx, count: int = 1, sides: int = 6): # needs to be int for numbe
 )
 @discord.app_commands.describe(sentence = 'pretty self explanatory lol')
 async def MOCK(ctx, *, sentence):
-    mocked_word = list(sentence.lower()) # list of characters rather than words
-    for i in range(len(mocked_word)):
-        if i % 2 == 0:
-            mocked_word[i] = mocked_word[i].upper()
+    mocked_word = [sentence.upper()[i] if i % 2 == 0 else sentence.lower()[i] for i in range(len(sentence))]
 
     await ctx.reply (
         embed = discord.Embed (
