@@ -1,6 +1,6 @@
 # **spunch bot**
 
-## an atrocity made in discord.py by `Evorp#5819` because I was bored idk
+## an atrocity made in discord.py by `@evorp` because I was bored idk
 
 the version of the bot I develop is not public mostly because I don't use any development bots out of laziness — the stuff I'm testing goes directly to production and is pushed to github independently of it being run, meaning that there's probably gonna be a lot of crashing and security flaws if I made it public
 
