@@ -1,3 +1,9 @@
+## note: spunch bot has been discontinued
+
+it's become super outdated, the codebase is flaming trash, and I've had much better stuff to do in recent times
+
+you can still run it but I won't help and good luck honestly
+
 # **spunch bot**
 
 ## an atrocity made in discord.py by `@evorp` because I was bored idk
